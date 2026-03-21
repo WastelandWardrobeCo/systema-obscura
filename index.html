@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Systema Obscura</title>
+  <style>
+    :root {
+      --bg: #050505;
+      --panel: #0d0d0d;
+      --panel-2: #111111;
+      --border: #232323;
+      --text: #f4f4f4;
+      --muted: #a1a1a1;
+      --soft: #6f6f6f;
+      --glow: rgba(255,255,255,0.08);
+      --glow-strong: rgba(255,255,255,0.18);
+      --max: 1200px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 28%),
+        linear-gradient(to bottom, rgba(255,255,255,0.02), transparent 20%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      letter-spacing: 0.01em;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .wrap {
+      width: min(var(--max), calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+      background: rgba(5,5,5,0.82);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .topbar-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      padding: 16px 0;
+    }
+
+    .brand {
+      font-size: 0.9rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: #ffffff;
+      white-space: nowrap;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+
+    nav a {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      transition: color 0.2s ease;
+    }
+
+    nav a:hover { color: #fff; }
+
+    .hero {
+      padding: 84px 0 56px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 20px;
+      padding: 8px 14px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.28em;
+      background: rgba(255,255,255,0.02);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 36px;
+      align-items: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.9rem, 7vw, 6.2rem);
+      line-height: 0.95;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      text-shadow: 0 0 24px rgba(255,255,255,0.08);
+    }
+
+    .hero p {
+      max-width: 760px;
+      font-size: 1.1rem;
+      color: var(--muted);
+      margin: 26px 0 0;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 34px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 22px;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 0.78rem;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,0.34);
+    }
+
+    .btn-primary {
+      background: #f5f5f5;
+      color: #050505;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: #f5f5f5;
+    }
+
+    .signal-box {
+      position: relative;
+      padding: 24px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: linear-gradient(to bottom, rgba(255,255,255,0.04), rgba(255,255,255,0.015));
+      box-shadow: 0 0 30px rgba(0,0,0,0.35);
+      overflow: hidden;
+    }
+
+    .signal-box::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.04),
+        rgba(255,255,255,0.04) 1px,
+        transparent 1px,
+        transparent 4px
+      );
+      pointer-events: none;
+      opacity: 0.35;
+    }
+
+    .signal-inner {
+      position: relative;
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 26px;
+      min-height: 320px;
+      background: rgba(0,0,0,0.7);
+    }
+
+    .signal-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      color: var(--soft);
+      margin-bottom: 20px;
+    }
+
+    .signal-title {
+      font-size: clamp(1.6rem, 3vw, 2.5rem);
+      line-height: 1.1;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 18px;
+    }
+
+    .signal-list {
+      margin: 26px 0 0;
+      padding: 0;
+      list-style: none;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .signal-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .section {
+      padding: 72px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .section-head {
+      max-width: 900px;
+      margin-bottom: 34px;
+    }
+
+    .kicker {
+      font-size: 0.76rem;
+      color: var(--soft);
+      text-transform: uppercase;
+      letter-spacing: 0.28em;
+      margin-bottom: 14px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      line-height: 1;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      font-size: 1.02rem;
+      margin-top: 16px;
+      max-width: 760px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .card {
+      background: linear-gradient(to bottom, rgba(255,255,255,0.025), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 28px;
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255,255,255,0.24);
+      box-shadow: 0 0 24px rgba(255,255,255,0.03);
+    }
+
+    .card-mark {
+      width: 100%;
+      height: 120px;
+      margin-bottom: 22px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background:
+        radial-gradient(circle at center, rgba(255,255,255,0.08), transparent 46%),
+        linear-gradient(to bottom, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-mark::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.03),
+        rgba(255,255,255,0.03) 1px,
+        transparent 1px,
+        transparent 5px
+      );
+      opacity: 0.25;
+    }
+
+    .card h3 {
+      margin: 0;
+      font-size: 1.35rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      line-height: 1.1;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 0.98rem;
+      margin: 14px 0 0;
+    }
+
+    .card .mini {
+      margin-top: 24px;
+      color: #fff;
+      font-size: 0.74rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    .manifesto {
+      display: grid;
+      grid-template-columns: 1fr 0.9fr;
+      gap: 22px;
+    }
+
+    .panel {
+      border: 1px solid rgba(255,255,255,0.1);
+      background: linear-gradient(to bottom, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      padding: 30px;
+    }
+
+    .panel p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .quote {
+      font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+      line-height: 1.2;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    .links {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .link-box {
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 18px;
+      background: rgba(255,255,255,0.015);
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .link-box:hover {
+      border-color: rgba(255,255,255,0.24);
+      transform: translateY(-3px);
+    }
+
+    .link-box strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.92rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .link-box span {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    footer {
+      padding: 36px 0 52px;
+    }
+
+    .footer-grid {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      color: var(--soft);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    @media (max-width: 960px) {
+      .hero-grid,
+      .cards,
+      .manifesto {
+        grid-template-columns: 1fr;
+      }
+
+      .signal-inner { min-height: auto; }
+    }
+
+    @media (max-width: 640px) {
+      .topbar-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      nav {
+        gap: 12px 16px;
+      }
+
+      .hero {
+        padding-top: 58px;
+      }
+
+      .links {
+        grid-template-columns: 1fr;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="#top">Systema Obscura</a>
+      <nav>
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#hub">Explore</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="eyebrow">Broadcast Begins</div>
+          <h1>Stories. Artifacts. Signals in the dark.</h1>
+          <p>
+            Systema Obscura is the central signal tower for fiction, strange design, collectible atmosphere, and cinematic worldbuilding. Books, roadside ghosts, post-apocalyptic objects, and late-night transmissions all living under one roof.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#projects">Enter the Signal</a>
+            <a class="btn btn-secondary" href="#hub">View the Hub</a>
+          </div>
+        </div>
+
+        <aside class="signal-box">
+          <div class="signal-inner">
+            <div class="signal-label">Current Transmission</div>
+            <h2 class="signal-title">Build the myth. Sell the artifact. Keep the signal alive.</h2>
+            <ul class="signal-list">
+              <li><span>Systema Obscura Presents</span><span>Broadcasting</span></li>
+              <li><span>Wasteland Wardrobe Co.</span><span>Live</span></li>
+              <li><span>Atomic Americana</span><span>Open Road</span></li>
+              <li><span>Books, Worlds, Experiments</span><span>Expanding</span></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="kicker">About the Signal</div>
+          <h2>A creative world disguised as a website.</h2>
+          <p>
+            This is not just a link page. It is the front door to a larger ecosystem. Systema Obscura is where fiction, design, merchandise, and visual storytelling converge into one recognizable identity: stark, strange, elegant, and a little haunted.
+          </p>
+        </div>
+
+        <div class="manifesto">
+          <div class="panel">
+            <div class="quote">A shelf. A screen. A poster. A motel key. A paperback. Different objects. Same weather system.</div>
+          </div>
+          <div class="panel">
+            <p>
+              Built for readers, collectors, travelers of impossible highways, and anyone drawn to black skies, white type, uneasy broadcasts, forgotten motels, silent bunkers, and stories that feel like they were found rather than made.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="projects">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="kicker">Primary Channels</div>
+          <h2>Three doors into the same strange building.</h2>
+          <p>
+            Each arm of the brand carries the same signal in a different form: books, products, souvenirs, warnings, collectibles, and worlds still under construction.
+          </p>
+        </div>
+
+        <div class="cards">
+          <article class="card">
+            <div>
+              <div class="card-mark"></div>
+              <h3>Systema Obscura Presents</h3>
+              <p>
+                Anthology fiction in the spirit of late-night television, impossible bargains, motel neon, whispered consequences, and the quiet terror of ordinary people stepping into the wrong moment.
+              </p>
+            </div>
+            <div class="mini">Books • Episodes • Transmissions</div>
+          </article>
+
+          <article class="card">
+            <div>
+              <div class="card-mark"></div>
+              <h3>Wasteland Wardrobe Co.</h3>
+              <p>
+                Post-apocalyptic and industrial-inspired objects shaped by rust, ruin, survival, warning signs, and the beauty of a world that kept going after the lights went out.
+              </p>
+            </div>
+            <div class="mini">Artifacts • Apparel • Decor</div>
+          </article>
+
+          <article class="card">
+            <div>
+              <div class="card-mark"></div>
+              <h3>Atomic Americana</h3>
+              <p>
+                Souvenirs from an America that never quite existed. Mid-century roadside nostalgia, strange travel culture, motel ghosts, diner glow, and exit signs pointing somewhere slightly wrong.
+              </p>
+            </div>
+            <div class="mini">Roadside Fiction • Travel Relics • Americana</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="hub">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="kicker">The Hub</div>
+          <h2>Choose your entry point.</h2>
+          <p>
+            Replace these placeholder links with your real destinations and this becomes your live command center. Etsy shops, Amazon author pages, videos, games, newsletter, whatever door you want people walking through.
+          </p>
+        </div>
+
+        <div class="links">
+          <a class="link-box" href="#">
+            <strong>Shop Wasteland Wardrobe Co.</strong>
+            <span>Industrial relics, post-apocalyptic design, and collectible objects.</span>
+          </a>
+          <a class="link-box" href="#">
+            <strong>Explore Atomic Americana</strong>
+            <span>Souvenirs from roadside America with a beautiful glitch in the timeline.</span>
+          </a>
+          <a class="link-box" href="#">
+            <strong>Read the Books</strong>
+            <span>Enter the world of Systema Obscura Presents and other fiction projects.</span>
+          </a>
+          <a class="link-box" href="#">
+            <strong>Latest Transmission</strong>
+            <span>Feature a new release, a promo drop, or your current flagship project.</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="kicker">Contact / Future Expansion</div>
+          <h2>Leave room for the next frequency.</h2>
+          <p>
+            This area can become a contact section, newsletter signup, release tracker, media kit, or a rotating featured item panel. The frame is built so the site can grow with the brand instead of trapping it.
+          </p>
+        </div>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#">Add Contact Link</a>
+          <a class="btn btn-secondary" href="#">Add Newsletter</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-grid">
+      <div>© Systema Obscura</div>
+      <div>All Signals Received</div>
+      <div>See You at the Next Exit</div>
+    </div>
+  </footer>
+</body>
+</html>
