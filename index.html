@@ -4,614 +4,262 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Systema Obscura</title>
-  <style>
-    :root {
-      --bg: #050505;
-      --panel: #0d0d0d;
-      --panel-2: #111111;
-      --border: #232323;
-      --text: #f4f4f4;
-      --muted: #a1a1a1;
-      --soft: #6f6f6f;
-      --glow: rgba(255,255,255,0.08);
-      --glow-strong: rgba(255,255,255,0.18);
-      --max: 1200px;
-    }
-
-    * { box-sizing: border-box; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      margin: 0;
-      font-family: Georgia, "Times New Roman", serif;
-      background:
-        radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 28%),
-        linear-gradient(to bottom, rgba(255,255,255,0.02), transparent 20%),
-        var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      letter-spacing: 0.01em;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .wrap {
-      width: min(var(--max), calc(100% - 32px));
-      margin: 0 auto;
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      backdrop-filter: blur(12px);
-      background: rgba(5,5,5,0.82);
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .topbar-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-      padding: 16px 0;
-    }
-
-    .brand {
-      font-size: 0.9rem;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: #ffffff;
-      white-space: nowrap;
-    }
-
-    nav {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 18px;
-    }
-
-    nav a {
-      font-size: 0.82rem;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: var(--muted);
-      transition: color 0.2s ease;
-    }
-
-    nav a:hover { color: #fff; }
-
-    .hero {
-      padding: 84px 0 56px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .eyebrow {
-      display: inline-block;
-      margin-bottom: 20px;
-      padding: 8px 14px;
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 999px;
-      color: var(--muted);
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.28em;
-      background: rgba(255,255,255,0.02);
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 36px;
-      align-items: center;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(2.9rem, 7vw, 6.2rem);
-      line-height: 0.95;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      text-shadow: 0 0 24px rgba(255,255,255,0.08);
-    }
-
-    .hero p {
-      max-width: 760px;
-      font-size: 1.1rem;
-      color: var(--muted);
-      margin: 26px 0 0;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-top: 34px;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 48px;
-      padding: 0 22px;
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 999px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      font-size: 0.78rem;
-      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-      cursor: pointer;
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-      border-color: rgba(255,255,255,0.34);
-    }
-
-    .btn-primary {
-      background: #f5f5f5;
-      color: #050505;
-    }
-
-    .btn-secondary {
-      background: transparent;
-      color: #f5f5f5;
-    }
-
-    .signal-box {
-      position: relative;
-      padding: 24px;
-      border: 1px solid rgba(255,255,255,0.1);
-      background: linear-gradient(to bottom, rgba(255,255,255,0.04), rgba(255,255,255,0.015));
-      box-shadow: 0 0 30px rgba(0,0,0,0.35);
-      overflow: hidden;
-    }
-
-    .signal-box::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(
-        to bottom,
-        rgba(255,255,255,0.04),
-        rgba(255,255,255,0.04) 1px,
-        transparent 1px,
-        transparent 4px
-      );
-      pointer-events: none;
-      opacity: 0.35;
-    }
-
-    .signal-inner {
-      position: relative;
-      border: 1px solid rgba(255,255,255,0.1);
-      padding: 26px;
-      min-height: 320px;
-      background: rgba(0,0,0,0.7);
-    }
-
-    .signal-label {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.25em;
-      color: var(--soft);
-      margin-bottom: 20px;
-    }
-
-    .signal-title {
-      font-size: clamp(1.6rem, 3vw, 2.5rem);
-      line-height: 1.1;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin: 0 0 18px;
-    }
-
-    .signal-list {
-      margin: 26px 0 0;
-      padding: 0;
-      list-style: none;
-      border-top: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .signal-list li {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 14px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      font-size: 0.95rem;
-      color: var(--muted);
-    }
-
-    .section {
-      padding: 72px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .section-head {
-      max-width: 900px;
-      margin-bottom: 34px;
-    }
-
-    .kicker {
-      font-size: 0.76rem;
-      color: var(--soft);
-      text-transform: uppercase;
-      letter-spacing: 0.28em;
-      margin-bottom: 14px;
-    }
-
-    h2 {
-      margin: 0;
-      font-size: clamp(2rem, 4vw, 3.4rem);
-      line-height: 1;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      font-weight: 600;
-    }
-
-    .section-head p {
-      color: var(--muted);
-      font-size: 1.02rem;
-      margin-top: 16px;
-      max-width: 760px;
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 22px;
-    }
-
-    .card {
-      background: linear-gradient(to bottom, rgba(255,255,255,0.025), rgba(255,255,255,0.01));
-      border: 1px solid rgba(255,255,255,0.1);
-      padding: 28px;
-      min-height: 320px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-      border-color: rgba(255,255,255,0.24);
-      box-shadow: 0 0 24px rgba(255,255,255,0.03);
-    }
-
-    .card-mark {
-      width: 100%;
-      height: 120px;
-      margin-bottom: 22px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background:
-        radial-gradient(circle at center, rgba(255,255,255,0.08), transparent 46%),
-        linear-gradient(to bottom, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card-mark::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(
-        to bottom,
-        rgba(255,255,255,0.03),
-        rgba(255,255,255,0.03) 1px,
-        transparent 1px,
-        transparent 5px
-      );
-      opacity: 0.25;
-    }
-
-    .card h3 {
-      margin: 0;
-      font-size: 1.35rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      line-height: 1.1;
-    }
-
-    .card p {
-      color: var(--muted);
-      font-size: 0.98rem;
-      margin: 14px 0 0;
-    }
-
-    .card .mini {
-      margin-top: 24px;
-      color: #fff;
-      font-size: 0.74rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-    }
-
-    .manifesto {
-      display: grid;
-      grid-template-columns: 1fr 0.9fr;
-      gap: 22px;
-    }
-
-    .panel {
-      border: 1px solid rgba(255,255,255,0.1);
-      background: linear-gradient(to bottom, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-      padding: 30px;
-    }
-
-    .panel p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 1rem;
-    }
-
-    .quote {
-      font-size: clamp(1.4rem, 2.5vw, 2.2rem);
-      line-height: 1.2;
-      color: #fff;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-    }
-
-    .links {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 18px;
-      margin-top: 24px;
-    }
-
-    .link-box {
-      border: 1px solid rgba(255,255,255,0.1);
-      padding: 18px;
-      background: rgba(255,255,255,0.015);
-      transition: border-color 0.2s ease, transform 0.2s ease;
-    }
-
-    .link-box:hover {
-      border-color: rgba(255,255,255,0.24);
-      transform: translateY(-3px);
-    }
-
-    .link-box strong {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 0.92rem;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-    }
-
-    .link-box span {
-      color: var(--muted);
-      font-size: 0.92rem;
-    }
-
-    footer {
-      padding: 36px 0 52px;
-    }
-
-    .footer-grid {
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      flex-wrap: wrap;
-      color: var(--soft);
-      font-size: 0.82rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-    }
-
-    @media (max-width: 960px) {
-      .hero-grid,
-      .cards,
-      .manifesto {
-        grid-template-columns: 1fr;
-      }
-
-      .signal-inner { min-height: auto; }
-    }
-
-    @media (max-width: 640px) {
-      .topbar-inner {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      nav {
-        gap: 12px 16px;
-      }
-
-      .hero {
-        padding-top: 58px;
-      }
-
-      .links {
-        grid-template-columns: 1fr;
-      }
-
-      .btn {
-        width: 100%;
-      }
-
-      .hero-actions {
-        flex-direction: column;
-      }
-    }
-  </style>
+  <meta name="description" content="Stories, artifacts, and transmissions from the American unknown." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="topbar">
-    <div class="wrap topbar-inner">
-      <a class="brand" href="#top">Systema Obscura</a>
-      <nav>
-        <a href="#about">About</a>
-        <a href="#projects">Projects</a>
-        <a href="#hub">Explore</a>
-        <a href="#contact">Contact</a>
-      </nav>
-    </div>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <a href="#" class="brand">SYSTEMA OBSCURA</a>
+    <nav class="nav">
+      <a href="#signal">Signal</a>
+      <a href="#channels">Channels</a>
+      <a href="#broadcast">Broadcast</a>
+      <a href="#artifacts">Artifacts</a>
+      <a href="#status">Status</a>
+    </nav>
   </header>
 
-  <main id="top">
-    <section class="hero">
-      <div class="wrap hero-grid">
-        <div>
-          <div class="eyebrow">Broadcast Begins</div>
-          <h1>Stories. Artifacts. Signals in the dark.</h1>
-          <p>
-            Systema Obscura is the central signal tower for fiction, strange design, collectible atmosphere, and cinematic worldbuilding. Books, roadside ghosts, post-apocalyptic objects, and late-night transmissions all living under one roof.
-          </p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="#projects">Enter the Signal</a>
-            <a class="btn btn-secondary" href="#hub">View the Hub</a>
+  <main>
+    <section class="hero wrap" id="signal">
+      <div class="eyebrow">BROADCAST BEGINS</div>
+      <h1>STORIES. ARTIFACTS.<br />SIGNALS IN THE DARK.</h1>
+      <p class="hero-copy">
+        Systema Obscura is the central signal tower for fiction, strange design,
+        collectible atmosphere, cinematic worldbuilding, and late-night transmissions.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#channels" class="btn btn-primary">
+          <span>ENTER THE ARCHIVE</span>
+          <small>ACCESS POINT // ARCHIVE ENTRY TERMINAL</small>
+        </a>
+        <a href="#broadcast" class="btn btn-secondary">VIEW THE HUB</a>
+      </div>
+
+      <div class="main-terminal crt reveal">
+        <div class="terminal-topbar">
+          <span class="seal">✦</span>
+          <span class="terminal-label">PRIMARY ARCHIVE TERMINAL</span>
+          <span class="live-dot"></span>
+        </div>
+        <div class="screen hero-screen">
+          <div class="screen-image">
+            <div class="mountains"></div>
+            <div class="fog"></div>
+            <div class="scanlines"></div>
+          </div>
+          <div class="screen-overlay">
+            <p>Broadcasting what was never meant to be found.</p>
           </div>
         </div>
+      </div>
+    </section>
 
-        <aside class="signal-box">
-          <div class="signal-inner">
-            <div class="signal-label">Current Transmission</div>
-            <h2 class="signal-title">Build the myth. Sell the artifact. Keep the signal alive.</h2>
-            <ul class="signal-list">
-              <li><span>Systema Obscura Presents</span><span>Broadcasting</span></li>
-              <li><span>Wasteland Wardrobe Co.</span><span>Live</span></li>
-              <li><span>Atomic Americana</span><span>Open Road</span></li>
-              <li><span>Books, Worlds, Experiments</span><span>Expanding</span></li>
-            </ul>
+    <section class="statement wrap reveal">
+      <div class="statement-rule"></div>
+      <p>Broadcasting what was never meant to be found.</p>
+      <div class="statement-rule"></div>
+    </section>
+
+    <section class="channels wrap" id="channels">
+      <div class="section-head reveal">
+        <p class="section-kicker">CHANNEL DIRECTORY</p>
+        <h2>Choose a signal.</h2>
+      </div>
+
+      <div class="channel-grid">
+        <a class="channel-card crt reveal active-channel" href="#">
+          <div class="screen">
+            <div class="channel-scene scene-sop"></div>
+            <div class="scanlines"></div>
+          </div>
+          <div class="channel-copy">
+            <h3>Systema Obscura Presents</h3>
+            <p>Stand-alone transmissions and twilight-bent fiction.</p>
+          </div>
+        </a>
+
+        <a class="channel-card crt reveal" href="#">
+          <div class="screen">
+            <div class="channel-scene scene-books"></div>
+            <div class="scanlines"></div>
+          </div>
+          <div class="channel-copy">
+            <h3>Books &amp; Fiction</h3>
+            <p>Novels, episodes, worlds, and narrative experiments.</p>
+          </div>
+        </a>
+
+        <a class="channel-card crt reveal" href="#">
+          <div class="screen">
+            <div class="channel-scene scene-aa"></div>
+            <div class="scanlines"></div>
+          </div>
+          <div class="channel-copy">
+            <h3>Atomic Americana</h3>
+            <p>Roadside ghosts, travel relics, and mid-century static.</p>
+          </div>
+        </a>
+
+        <a class="channel-card crt reveal" href="#">
+          <div class="screen">
+            <div class="channel-scene scene-wwc"></div>
+            <div class="scanlines"></div>
+          </div>
+          <div class="channel-copy">
+            <h3>Wasteland Wardrobe Co.</h3>
+            <p>Post-apocalyptic objects, prints, and relic-grade design.</p>
+          </div>
+        </a>
+
+        <a class="channel-card crt reveal" href="#">
+          <div class="screen">
+            <div class="channel-scene scene-wraith"></div>
+            <div class="scanlines"></div>
+          </div>
+          <div class="channel-copy">
+            <h3>Wasteland Wraith</h3>
+            <p>Anomaly files, canon, novels, and future artifacts.</p>
+          </div>
+        </a>
+
+        <a class="channel-card crt reveal" href="#">
+          <div class="screen">
+            <div class="channel-scene scene-lady"></div>
+            <div class="scanlines"></div>
+          </div>
+          <div class="channel-copy">
+            <h3>Lady &amp; Delilah</h3>
+            <p>Field reports from a harder, sharper mythology.</p>
+          </div>
+        </a>
+
+        <a class="channel-card crt reveal" href="#">
+          <div class="screen">
+            <div class="channel-scene scene-audio"></div>
+            <div class="scanlines"></div>
+          </div>
+          <div class="channel-copy">
+            <h3>Audio Signals</h3>
+            <p>Music, ambience, bunker tones, and transmission loops.</p>
+          </div>
+        </a>
+
+        <a class="channel-card crt reveal" href="#">
+          <div class="screen">
+            <div class="channel-scene scene-games"></div>
+            <div class="scanlines"></div>
+          </div>
+          <div class="channel-copy">
+            <h3>Experiments &amp; Games</h3>
+            <p>Interactive systems, prototypes, and playable strange.</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="broadcast wrap" id="broadcast">
+      <div class="section-head reveal">
+        <p class="section-kicker">PRIMARY BROADCAST</p>
+        <h2>The signal of the moment.</h2>
+      </div>
+
+      <div class="broadcast-grid">
+        <article class="broadcast-panel feature crt reveal">
+          <div class="screen feature-screen">
+            <div class="feature-scene"></div>
+            <div class="scanlines"></div>
+          </div>
+          <div class="feature-copy">
+            <p class="meta">CURRENT TRANSMISSION</p>
+            <h3>Build the myth. Sell the artifact. Keep the signal alive.</h3>
+            <p>
+              Use this space for your featured book, latest release, newest
+              collection, or flagship project.
+            </p>
+            <a href="#" class="text-link">Open transmission</a>
+          </div>
+        </article>
+
+        <aside class="status-panel reveal">
+          <div class="status-box">
+            <div class="status-row"><span>Systema Obscura Presents</span><strong>Broadcasting</strong></div>
+            <div class="status-row"><span>Wasteland Wardrobe Co.</span><strong>Live</strong></div>
+            <div class="status-row"><span>Atomic Americana</span><strong>Open Road</strong></div>
+            <div class="status-row"><span>Books, Worlds, Experiments</span><strong>Expanding</strong></div>
           </div>
         </aside>
       </div>
     </section>
 
-    <section class="section" id="about">
-      <div class="wrap">
-        <div class="section-head">
-          <div class="kicker">About the Signal</div>
-          <h2>A creative world disguised as a website.</h2>
-          <p>
-            This is not just a link page. It is the front door to a larger ecosystem. Systema Obscura is where fiction, design, merchandise, and visual storytelling converge into one recognizable identity: stark, strange, elegant, and a little haunted.
-          </p>
-        </div>
+    <section class="artifacts wrap" id="artifacts">
+      <div class="section-head reveal">
+        <p class="section-kicker">RECOVERED ARTIFACTS</p>
+        <h2>Objects from the archive.</h2>
+      </div>
 
-        <div class="manifesto">
-          <div class="panel">
-            <div class="quote">A shelf. A screen. A poster. A motel key. A paperback. Different objects. Same weather system.</div>
+      <div class="artifact-grid">
+        <article class="artifact crt reveal">
+          <div class="screen"><div class="artifact-scene artifact-book"></div><div class="scanlines"></div></div>
+          <div class="artifact-copy">
+            <h3>Occult Field Manual</h3>
+            <p>Featured book or collectible artifact spotlight.</p>
           </div>
-          <div class="panel">
-            <p>
-              Built for readers, collectors, travelers of impossible highways, and anyone drawn to black skies, white type, uneasy broadcasts, forgotten motels, silent bunkers, and stories that feel like they were found rather than made.
-            </p>
+        </article>
+
+        <article class="artifact crt reveal">
+          <div class="screen"><div class="artifact-scene artifact-keys"></div><div class="scanlines"></div></div>
+          <div class="artifact-copy">
+            <h3>Motel Keychains</h3>
+            <p>Atomic Americana travel relics and roadside mythology.</p>
           </div>
-        </div>
+        </article>
+
+        <article class="artifact crt reveal">
+          <div class="screen"><div class="artifact-scene artifact-wraith"></div><div class="scanlines"></div></div>
+          <div class="artifact-copy">
+            <h3>Anomaly Objects</h3>
+            <p>Signals from the Wraith line, canon, and future releases.</p>
+          </div>
+        </article>
+
+        <article class="artifact crt reveal">
+          <div class="screen"><div class="artifact-scene artifact-pin"></div><div class="scanlines"></div></div>
+          <div class="artifact-copy">
+            <h3>Signal Pins</h3>
+            <p>Collectible iconography from the archive’s darker shelves.</p>
+          </div>
+        </article>
       </div>
     </section>
 
-    <section class="section" id="projects">
-      <div class="wrap">
-        <div class="section-head">
-          <div class="kicker">Primary Channels</div>
-          <h2>Three doors into the same strange building.</h2>
-          <p>
-            Each arm of the brand carries the same signal in a different form: books, products, souvenirs, warnings, collectibles, and worlds still under construction.
-          </p>
-        </div>
-
-        <div class="cards">
-          <article class="card">
-            <div>
-              <div class="card-mark"></div>
-              <h3>Systema Obscura Presents</h3>
-              <p>
-                Anthology fiction in the spirit of late-night television, impossible bargains, motel neon, whispered consequences, and the quiet terror of ordinary people stepping into the wrong moment.
-              </p>
-            </div>
-            <div class="mini">Books • Episodes • Transmissions</div>
-          </article>
-
-          <article class="card">
-            <div>
-              <div class="card-mark"></div>
-              <h3>Wasteland Wardrobe Co.</h3>
-              <p>
-                Post-apocalyptic and industrial-inspired objects shaped by rust, ruin, survival, warning signs, and the beauty of a world that kept going after the lights went out.
-              </p>
-            </div>
-            <div class="mini">Artifacts • Apparel • Decor</div>
-          </article>
-
-          <article class="card">
-            <div>
-              <div class="card-mark"></div>
-              <h3>Atomic Americana</h3>
-              <p>
-                Souvenirs from an America that never quite existed. Mid-century roadside nostalgia, strange travel culture, motel ghosts, diner glow, and exit signs pointing somewhere slightly wrong.
-              </p>
-            </div>
-            <div class="mini">Roadside Fiction • Travel Relics • Americana</div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="hub">
-      <div class="wrap">
-        <div class="section-head">
-          <div class="kicker">The Hub</div>
-          <h2>Choose your entry point.</h2>
-          <p>
-            Replace these placeholder links with your real destinations and this becomes your live command center. Etsy shops, Amazon author pages, videos, games, newsletter, whatever door you want people walking through.
-          </p>
-        </div>
-
-        <div class="links">
-          <a class="link-box" href="https://wastelandwardrobeco.etsy.com">
-            <strong>Shop Wasteland Wardrobe Co.</strong>
-            <span>Industrial relics, post-apocalyptic design, and collectible objects.</span>
-          </a>
-          <a class="link-box" href="https://atomicamericana.etsy.com">
-            <strong>Explore Atomic Americana</strong>
-            <span>Souvenirs from roadside America with a beautiful glitch in the timeline.</span>
-          </a>
-          <a class="link-box" href="https://www.amazon.com/author/davidmcneal">
-            <strong>Read the Books</strong>
-            <span>Enter the world of Systema Obscura Presents and other fiction projects.</span>
-          </a>
-          <a class="link-box" href="https://wastelandwardrobeco.etsy.com">
-            <strong>Latest Transmission</strong>
-            <span>Feature a new release, a promo drop, or your current flagship project.</span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="contact">
-      <div class="wrap">
-        <div class="section-head">
-          <div class="kicker">Contact / Future Expansion</div>
-          <h2>Leave room for the next frequency.</h2>
-          <p>
-            This area can become a contact section, newsletter signup, release tracker, media kit, or a rotating featured item panel. The frame is built so the site can grow with the brand instead of trapping it.
-          </p>
-        </div>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="#">Add Contact Link</a>
-          <a class="btn btn-secondary" href="#">Add Newsletter</a>
-        </div>
+    <section class="entry wrap reveal">
+      <h2>Where will you begin?</h2>
+      <div class="entry-grid">
+        <a href="#" class="entry-link">Read</a>
+        <a href="#" class="entry-link">Shop</a>
+        <a href="#" class="entry-link">Explore</a>
+        <a href="#" class="entry-link">Enter the Archive</a>
       </div>
     </section>
   </main>
 
-  <footer>
-    <div class="wrap footer-grid">
-      <div>© Systema Obscura</div>
-      <div>All Signals Received</div>
-      <div>See You at the Next Exit</div>
+  <footer class="site-footer wrap" id="status">
+    <div class="footer-grid">
+      <div class="footer-status"><span>SIGNAL</span><strong>ACTIVE</strong></div>
+      <div class="footer-status"><span>ARCHIVE</span><strong>STABLE</strong></div>
+      <div class="footer-status"><span>TRANSMISSION</span><strong>LIVE</strong></div>
+      <div class="footer-status"><span>LAST UPDATE</span><strong>MANUAL</strong></div>
     </div>
+    <p class="footer-note">Systema Obscura // Replace placeholder links and text with your live destinations.</p>
   </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
