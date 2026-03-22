@@ -806,3 +806,6 @@ body::before {
     grid-template-columns: 1fr;
   }
 }
+.host-visual img {
+  filter: brightness(0.85) contrast(1.05);
+}
