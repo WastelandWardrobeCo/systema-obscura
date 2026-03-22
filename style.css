@@ -764,3 +764,45 @@ body::before {
     transition: none !important;
   }
 }
+.host-broadcast {
+  margin-top: 4rem;
+}
+
+.host-grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 380px) 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.host-visual .screen {
+  position: relative;
+  overflow: hidden;
+}
+
+.host-visual img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.host-copy h2 {
+  margin: 0.5rem 0 1rem;
+}
+
+.host-copy p {
+  margin-bottom: 1rem;
+  max-width: 600px;
+}
+
+.host-line {
+  font-style: italic;
+  opacity: 0.85;
+}
+
+@media (max-width: 800px) {
+  .host-grid {
+    grid-template-columns: 1fr;
+  }
+}
