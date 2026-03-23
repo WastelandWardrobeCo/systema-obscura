@@ -836,8 +836,8 @@ body::before {
 }
 
 .scene-sop {
-  background-image: url("/assets/tiles/sop-tile-v2.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: #000 url("/assets/tiles/sop-tile-v2.png") center center / cover no-repeat !important;
+  clip-path: none !important;
+  filter: none !important;
+  opacity: 1 !important;
 }
