@@ -844,3 +844,6 @@ body::before {
 .scene-sop::before {
   display: none !important;
 }
+.scene-sop {
+  filter: brightness(1.15) contrast(1.05);
+}
