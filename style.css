@@ -833,3 +833,10 @@ body::before {
   background-position: center;
   background-repeat: no-repeat;
 }
+
+.scene-sop {
+  background-image: url("./assets/tiles/sop-tile.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
