@@ -809,3 +809,27 @@ body::before {
 .host-visual img {
   filter: brightness(0.85) contrast(1.05);
 }
+/* ========================= */
+/* REAL TILE IMAGES OVERRIDE */
+/* ========================= */
+
+.scene-wwc {
+  background-image: url("./assets/tiles/wwc-tile.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.scene-aa {
+  background-image: url("./assets/tiles/atomic-americana-tile.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.scene-books {
+  background-image: url("./assets/tiles/books-tile.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
