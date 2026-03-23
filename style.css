@@ -841,3 +841,6 @@ body::before {
   filter: none !important;
   opacity: 1 !important;
 }
+.scene-sop::before {
+  display: none !important;
+}
