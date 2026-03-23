@@ -836,7 +836,8 @@ body::before {
 
 .scene-sop {
   background-image: url("./assets/tiles/sop-tile.png");
-  background-size: cover;
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
+  background-color: #000; /* fills empty space cleanly */
 }
