@@ -838,6 +838,6 @@ body::before {
 .scene-sop {
   background-image: url("/assets/tiles/sop-tile.png");
   background-size: cover;
-  background-position: center;
+  background-position: center top;
   background-repeat: no-repeat;
 }
