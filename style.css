@@ -1021,3 +1021,10 @@ body::before {
   opacity: 0.7;
   font-family: monospace;
 }
+.featured-transmission__media {
+  max-width: 420px;
+}
+
+.featured-transmission {
+  align-items: center;
+}
