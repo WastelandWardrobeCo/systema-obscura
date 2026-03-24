@@ -37,5 +37,5 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   randomLoop(softHeroFlicker, 9000, 16000);
-  randomLoop(softStatusBlink, 5000, 11000);
+  randomLoop(softStatusBlink, 9000, 18000);
 });
