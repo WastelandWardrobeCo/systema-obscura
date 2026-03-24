@@ -1380,3 +1380,53 @@ nav a[href*="youtube"]::after {
     text-shadow: 0 0 6px rgba(255, 59, 59, 0.6);
   }
 }
+/* =========================
+   QUICK ABOVE-THE-FOLD FIX
+   ========================= */
+
+.hero.wrap {
+  padding-top: 36px;
+  padding-bottom: 28px;
+}
+
+.hero h1 {
+  font-size: clamp(3.2rem, 7vw, 5.4rem);
+  line-height: 0.96;
+  margin-bottom: 18px;
+}
+
+.hero-copy {
+  max-width: 760px;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  margin-bottom: 22px;
+}
+
+.hero-actions {
+  margin-bottom: 28px;
+}
+
+/* shrink the terminal so it doesn't eat the fold */
+.main-terminal {
+  max-width: 980px;
+  margin-top: 12px;
+}
+
+.main-terminal .screen,
+.hero-screen {
+  min-height: 260px;
+  max-height: 260px;
+}
+
+/* tighten the section below */
+.channels.wrap {
+  padding-top: 24px;
+}
+
+.section-head {
+  margin-bottom: 18px;
+}
+
+.channel-grid {
+  margin-top: 0;
+}
