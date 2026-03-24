@@ -1028,3 +1028,20 @@ body::before {
 .featured-transmission {
   align-items: center;
 }
+.sop-button {
+  display: inline-block;
+  margin-top: 15px;
+  font-family: monospace;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  color: #bbb;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  padding-bottom: 2px;
+  transition: all 0.2s ease;
+}
+
+.sop-button:hover {
+  color: #fff;
+  border-color: #fff;
+}
