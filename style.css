@@ -1361,3 +1361,22 @@ nav a[href*="youtube"]::after {
   font-size: 0.7rem;
   margin-left: 4px;
 }
+/* LIVE SIGNAL dot pulse */
+nav a[href*="youtube"]::after {
+  content: " ●";
+  color: #ff3b3b;
+  font-size: 0.7rem;
+  margin-left: 4px;
+  animation: livePulse 2.2s ease-in-out infinite;
+}
+
+@keyframes livePulse {
+  0%, 100% {
+    opacity: 0.35;
+    text-shadow: 0 0 0 rgba(255, 59, 59, 0);
+  }
+  50% {
+    opacity: 1;
+    text-shadow: 0 0 6px rgba(255, 59, 59, 0.6);
+  }
+}
