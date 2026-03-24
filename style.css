@@ -1504,3 +1504,6 @@ nav a[href*="youtube"]::after {
 .hero h1 + p {
   margin-top: 14px;
 }
+.hero .eyebrow {
+  opacity: 0.55;
+}
