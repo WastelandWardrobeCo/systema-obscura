@@ -1439,3 +1439,49 @@ nav a[href*="youtube"]::after {
 .primary-terminal {
   display: none !important;
 }
+/* =========================
+   QUICK HOST SECTION TIGHTEN
+   ========================= */
+
+.host-broadcast.wrap {
+  padding-top: 28px;
+  padding-bottom: 18px;
+}
+
+.host-grid {
+  gap: 28px;
+  align-items: center;
+}
+
+.host-visual {
+  max-width: 330px;
+}
+
+.host-visual img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.host-copy h2 {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  margin-bottom: 12px;
+}
+
+.host-copy p {
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.host-line {
+  margin-bottom: 14px;
+}
+
+.statement.wrap {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.channels.wrap {
+  padding-top: 10px;
+}
