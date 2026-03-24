@@ -1355,3 +1355,9 @@ body::before {
   background: rgba(255,255,255,0.06);
   text-shadow: 0 0 6px rgba(255,255,255,0.15);
 }
+nav a[href*="youtube"]::after {
+  content: " ●";
+  color: #ff3b3b;
+  font-size: 0.7rem;
+  margin-left: 4px;
+}
