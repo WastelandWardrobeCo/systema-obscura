@@ -1430,3 +1430,12 @@ nav a[href*="youtube"]::after {
 .channel-grid {
   margin-top: 0;
 }
+/* =========================
+   TEMP: HIDE HERO TERMINAL
+   ========================= */
+
+.main-terminal,
+.hero-screen,
+.primary-terminal {
+  display: none !important;
+}
