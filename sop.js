@@ -39,3 +39,20 @@ document.addEventListener("DOMContentLoaded", () => {
   randomLoop(softHeroFlicker, 9000, 16000);
   randomLoop(softStatusBlink, 9000, 18000);
 });
+// SOP transition effect
+document.addEventListener("DOMContentLoaded", () => {
+  const sopLink = document.querySelector('a[href="sop.html"]');
+  const lock = document.getElementById("signalLock");
+
+  if (!sopLink || !lock) return;
+
+  sopLink.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    lock.classList.add("active");
+
+    setTimeout(() => {
+      window.location.href = "sop.html";
+    }, 180); // controlled delay
+  });
+});
