@@ -1485,3 +1485,22 @@ nav a[href*="youtube"]::after {
 .channels.wrap {
   padding-top: 10px;
 }
+/* =========================
+   HERO HEADLINE SOFTEN
+   ========================= */
+
+.hero h1 {
+  font-size: clamp(2.6rem, 5.5vw, 4.2rem);
+  line-height: 1.02;
+  letter-spacing: -0.5px;
+}
+
+/* reduce visual weight slightly */
+.hero h1 {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+/* tighten spacing so eye moves faster */
+.hero h1 + p {
+  margin-top: 14px;
+}
