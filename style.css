@@ -1058,3 +1058,222 @@ body::before {
     rgba(0,0,0,0.1) 100%
   );
 }
+/* =========================
+   SOP EXPERIENCE LAYER
+   ========================= */
+
+/* faint living screen texture across the SOP page */
+.sop-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.018) 0px,
+      rgba(255,255,255,0.018) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  opacity: 0.16;
+  animation: sopScanDrift 10s linear infinite;
+}
+
+/* occasional soft brightness pulse */
+.sop-page::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: rgba(255,255,255,0.02);
+  opacity: 0;
+  animation: sopSignalPulse 9s ease-in-out infinite;
+}
+
+/* keep page content above atmosphere layer */
+.sop-page .sop-archive {
+  position: relative;
+  z-index: 2;
+}
+
+/* hero gets a little more terminal life */
+.sop-hero__screen {
+  overflow: hidden;
+}
+
+.sop-hero__screen::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at center,
+    rgba(255,255,255,0.045) 0%,
+    rgba(255,255,255,0.018) 28%,
+    transparent 65%
+  );
+  opacity: 0.24;
+}
+
+/* system readout and metadata get restrained terminal styling */
+.sop-system-readout,
+.transmission-meta,
+.transmission-card__number,
+.transmission-card__status,
+.sop-kicker,
+.sop-return__link,
+.sop-button {
+  font-family: "Courier New", Courier, monospace;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+/* status text gets subtle instability */
+.transmission-card__status,
+.transmission-meta {
+  animation: sopStatusFlicker 11s steps(1, end) infinite;
+}
+
+/* stagger the flicker timing so everything doesn't blink together */
+.transmission-card:nth-child(2) .transmission-card__status { animation-delay: 1.2s; }
+.transmission-card:nth-child(3) .transmission-card__status { animation-delay: 2.8s; }
+.transmission-card:nth-child(4) .transmission-card__status { animation-delay: 0.7s; }
+.transmission-card:nth-child(5) .transmission-card__status { animation-delay: 3.6s; }
+.transmission-card:nth-child(6) .transmission-card__status { animation-delay: 1.9s; }
+.transmission-card:nth-child(7) .transmission-card__status { animation-delay: 4.4s; }
+
+/* analog card drift, very restrained */
+.transmission-card {
+  transform: translateY(0) scale(1);
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease,
+    filter 0.35s ease;
+  will-change: transform, filter;
+}
+
+.transmission-card:hover {
+  transform: translateY(-4px) scale(1.012);
+  filter: brightness(1.03) contrast(1.02);
+}
+
+/* slight image movement inside card on hover */
+.transmission-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  background-size: cover;
+  background-position: center;
+  transform: scale(1);
+  transition: transform 0.45s ease, opacity 0.45s ease;
+  opacity: 0;
+  z-index: 0;
+}
+
+.transmission-card:hover::before {
+  transform: scale(1.035);
+  opacity: 1;
+}
+
+/* keep overlay/content above internal drift layer */
+.transmission-card__overlay {
+  z-index: 1;
+}
+
+.transmission-card__content {
+  z-index: 2;
+}
+
+/* featured image gets slight signal presence */
+.featured-transmission__cover {
+  transition: transform 0.4s ease, filter 0.4s ease, box-shadow 0.4s ease;
+}
+
+.featured-transmission__cover:hover {
+  transform: scale(1.01);
+  filter: brightness(1.02) contrast(1.02);
+}
+
+/* button feels like a command, not a web button */
+.sop-button {
+  display: inline-block;
+  margin-top: 14px;
+  color: rgba(255,255,255,0.78);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.25);
+  padding-bottom: 3px;
+  transition: color 0.25s ease, border-color 0.25s ease, text-shadow 0.25s ease;
+}
+
+.sop-button:hover {
+  color: #ffffff;
+  border-bottom-color: rgba(255,255,255,0.6);
+  text-shadow: 0 0 6px rgba(255,255,255,0.15);
+}
+
+/* return link gets same treatment */
+.sop-return__link {
+  color: rgba(255,255,255,0.68);
+  transition: color 0.25s ease, border-color 0.25s ease, text-shadow 0.25s ease;
+}
+
+.sop-return__link:hover {
+  color: #ffffff;
+  text-shadow: 0 0 6px rgba(255,255,255,0.12);
+}
+
+/* cinematic title glow, very soft */
+.sop-title,
+.featured-transmission__copy h2,
+.transmission-card__title {
+  text-shadow: 0 0 8px rgba(255,255,255,0.06);
+}
+
+/* KEYFRAMES */
+
+@keyframes sopScanDrift {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(6px); }
+}
+
+@keyframes sopSignalPulse {
+  0%, 92%, 100% { opacity: 0; }
+  93% { opacity: 0.045; }
+  94% { opacity: 0.015; }
+  95% { opacity: 0.04; }
+  96% { opacity: 0; }
+}
+
+@keyframes sopStatusFlicker {
+  0%, 86%, 88%, 100% {
+    opacity: 0.72;
+  }
+  87% {
+    opacity: 0.28;
+  }
+  87.5% {
+    opacity: 0.8;
+  }
+}
+
+/* mobile restraint */
+@media (max-width: 800px) {
+  .sop-page::before {
+    opacity: 0.1;
+  }
+
+  .transmission-card:hover {
+    transform: none;
+    filter: none;
+  }
+
+  .transmission-card:hover::before {
+    transform: none;
+    opacity: 0;
+  }
+}
