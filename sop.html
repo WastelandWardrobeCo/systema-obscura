@@ -4,302 +4,173 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Systema Obscura Presents</title>
-  <meta name="description" content="Transmission archive for Systema Obscura Presents." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-    * { box-sizing: border-box; }
-    :root {
-      --bg: #050505;
-      --panel: #0b0b0b;
-      --line: rgba(255,255,255,.1);
-      --soft: rgba(255,255,255,.68);
-      --text: #f2efe9;
-      --muted: #b7b0a5;
-      --accent: #ece8e1;
-      --max: 1220px;
-      --radius: 28px;
-    }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      color: var(--text);
-      font-family: "Cormorant Garamond", serif;
-      background:
-        radial-gradient(circle at top center, rgba(255,255,255,.04), transparent 26%),
-        linear-gradient(180deg, #050505 0%, #030303 100%);
-      overflow-x: hidden;
-    }
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background:
-        linear-gradient(rgba(255,255,255,.02), rgba(255,255,255,0)),
-        radial-gradient(circle at center, transparent 45%, rgba(0,0,0,.36) 100%);
-      pointer-events: none;
-      z-index: 0;
-    }
-    .noise,.vignette { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
-    .noise {
-      opacity: .12;
-      background-image:
-        radial-gradient(circle at 20% 20%, rgba(255,255,255,.16) 0 1px, transparent 1px),
-        radial-gradient(circle at 80% 30%, rgba(255,255,255,.14) 0 1px, transparent 1px),
-        radial-gradient(circle at 40% 70%, rgba(255,255,255,.12) 0 1px, transparent 1px),
-        radial-gradient(circle at 60% 80%, rgba(255,255,255,.10) 0 1px, transparent 1px);
-      background-size: 180px 180px, 220px 220px, 200px 200px, 250px 250px;
-      mix-blend-mode: screen;
-    }
-    .vignette { box-shadow: inset 0 0 220px rgba(0,0,0,.9); }
-    .wrap { width: min(calc(100% - 32px), var(--max)); margin: 0 auto; position: relative; z-index: 2; }
-    .site-header {
-      position: sticky; top: 0; z-index: 20; display: flex; align-items: center; justify-content: space-between;
-      padding: 18px 24px; border-bottom: 1px solid rgba(255,255,255,.08);
-      background: rgba(2,2,2,.82); backdrop-filter: blur(10px);
-    }
-    .brand,.nav a,.text-link,.entry-link { text-decoration: none; color: var(--text); }
-    .brand { font-family: "IBM Plex Mono", monospace; letter-spacing: .32em; font-size: .93rem; white-space: nowrap; }
-    .nav { display: flex; gap: 26px; flex-wrap: wrap; justify-content: flex-end; }
-    .nav a { font-family: "IBM Plex Mono", monospace; color: var(--muted); font-size: .85rem; letter-spacing: .18em; text-transform: uppercase; }
-    .nav a:hover,.text-link:hover,.entry-link:hover { color: var(--text); }
-    .hero { padding: 78px 0 42px; }
-    .eyebrow,.section-kicker,.meta,.status-line {
-      font-family: "IBM Plex Mono", monospace; text-transform: uppercase; letter-spacing: .24em; font-size: .73rem; color: var(--muted);
-    }
-    .eyebrow {
-      display: inline-block; padding: 12px 18px; border: 1px solid rgba(255,255,255,.14); border-radius: 999px;
-      margin-bottom: 22px; background: rgba(255,255,255,.02);
-    }
-    .hero h1 { margin: 0; max-width: 12ch; font-size: clamp(3.15rem, 8vw, 6.4rem); line-height: .93; letter-spacing: -.03em; text-wrap: balance; }
-    .experience-line { margin-top: 14px; font-family: "IBM Plex Mono", monospace; font-size: .75rem; letter-spacing: .28em; text-transform: uppercase; color: rgba(255,255,255,.5); }
-    .hero-copy { max-width: 820px; margin: 24px 0 0; font-size: clamp(1.2rem, 2.2vw, 1.6rem); line-height: 1.45; color: var(--muted); }
-    .crt {
-      position: relative;
-      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01)), linear-gradient(180deg, #111 0%, #090909 100%);
-      border: 1px solid rgba(255,255,255,.1);
-      border-radius: var(--radius);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.04), inset 0 18px 35px rgba(255,255,255,.02), 0 20px 50px rgba(0,0,0,.45);
-      overflow: hidden;
-    }
-    .crt::before {
-      content: ""; position: absolute; inset: 0;
-      background: radial-gradient(circle at 50% 10%, rgba(255,255,255,.05), transparent 35%), radial-gradient(circle at 50% 120%, rgba(255,255,255,.03), transparent 35%);
-      pointer-events: none; z-index: 2;
-    }
-    .crt::after {
-      content: ""; position: absolute; inset: 0;
-      background: linear-gradient(180deg, rgba(255,255,255,.04), transparent 28%, transparent 72%, rgba(0,0,0,.18));
-      pointer-events: none; z-index: 2;
-    }
-    .screen {
-      position: relative; border-radius: 22px; overflow: hidden;
-      background: radial-gradient(circle at center, rgba(255,255,255,.09), rgba(255,255,255,.015) 42%, rgba(0,0,0,.96) 100%), #0d0d0d;
-      border: 1px solid rgba(255,255,255,.08); box-shadow: inset 0 0 24px rgba(255,255,255,.04), inset 0 0 70px rgba(0,0,0,.85);
-    }
-    .scanlines {
-      position: absolute; inset: 0;
-      background: repeating-linear-gradient(to bottom, rgba(255,255,255,.03) 0px, rgba(255,255,255,.03) 1px, rgba(0,0,0,0) 3px, rgba(0,0,0,0) 5px);
-      mix-blend-mode: screen; opacity: .28; pointer-events: none; animation: drift 11s linear infinite; z-index: 3;
-    }
-    .hero-terminal { margin-top: 34px; padding: 22px; }
-    .terminal-topbar {
-      display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 14px;
-      font-family: "IBM Plex Mono", monospace; text-transform: uppercase; letter-spacing: .14em; color: var(--muted); font-size: .72rem;
-    }
-    .live-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,.9); box-shadow: 0 0 10px rgba(255,255,255,.7); animation: blink 2.1s steps(1, end) infinite; }
-    .hero-screen {
-      min-height: 410px; position: relative;
-      background: radial-gradient(circle at 50% 26%, rgba(255,255,255,.24), transparent 14%),
-                  linear-gradient(to bottom, rgba(255,255,255,.03), rgba(0,0,0,.55)),
-                  url("./assets/tiles/sop-tile-v2.png") center center / cover no-repeat,
-                  #050505;
-    }
-    .hero-screen::before {
-      content: ""; position: absolute; inset: 0;
-      background: radial-gradient(circle at 50% 30%, rgba(255,255,255,.18), transparent 20%), linear-gradient(180deg, rgba(255,255,255,.04), rgba(0,0,0,.2));
-      pointer-events: none;
-    }
-    .screen-overlay { position: absolute; left: 24px; right: 24px; bottom: 20px; z-index: 2; color: var(--soft); text-shadow: 0 0 18px rgba(255,255,255,.08); }
-    .screen-overlay p { margin: 6px 0; }
-    .section-head { margin-bottom: 24px; }
-    .section-head h2,.entry h2 { margin: 8px 0 0; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1; }
-    .broadcast,.channels,.entry { padding: 42px 0 24px; }
-    .broadcast-grid { display: grid; grid-template-columns: 1.25fr .75fr; gap: 18px; align-items: start; }
-    .broadcast-panel { padding: 14px; }
-    .feature-screen {
-      min-height: 430px; position: relative;
-      background: linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.3)),
-                  url("./assets/sop/no-record-found.jpg") center center / cover no-repeat, #050505;
-    }
-    .feature-screen::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.15) 48%, rgba(0,0,0,.78) 100%); z-index: 1; }
-    .feature-copy { padding: 16px 10px 10px; position: relative; z-index: 3; }
-    .feature-copy h3 { margin: 0 0 8px; font-size: 2rem; line-height: 1; }
-    .feature-copy p { margin: 0; color: var(--muted); font-size: 1.15rem; line-height: 1.35; max-width: 60ch; }
-    .text-link { display: inline-block; margin-top: 16px; font-family: "IBM Plex Mono", monospace; text-transform: uppercase; letter-spacing: .14em; font-size: .8rem; }
-    .status-box { border: 1px solid rgba(255,255,255,.08); border-radius: var(--radius); background: rgba(255,255,255,.015); overflow: hidden; min-height: 100%; }
-    .status-row { display: flex; justify-content: space-between; gap: 16px; padding: 19px 20px; border-bottom: 1px solid rgba(255,255,255,.08); font-size: 1.05rem; }
-    .status-row:last-child { border-bottom: none; }
-    .transmission-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-    .transmission-card { text-decoration: none; color: inherit; transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease; }
-    .transmission-card:hover { transform: translateY(-4px); box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), 0 26px 60px rgba(0,0,0,.55); }
-    .transmission-card .screen {
-      min-height: 340px; margin: 14px 14px 10px; position: relative; background-color: #050505; background-position: center center; background-size: cover; background-repeat: no-repeat; animation: flicker 7s infinite;
-    }
-    .transmission-card .screen::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.18) 50%, rgba(0,0,0,.84) 100%); z-index: 1; }
-    .transmission-label {
-      position: absolute; top: 14px; left: 14px; z-index: 2;
-      font-family: "IBM Plex Mono", monospace; text-transform: uppercase; letter-spacing: .16em; font-size: .68rem; color: rgba(255,255,255,.84);
-      padding: 8px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,.18); background: rgba(0,0,0,.26); backdrop-filter: blur(6px);
-    }
-    .transmission-copy { padding: 8px 18px 20px; }
-    .transmission-copy h3 { margin: 0 0 8px; font-size: 1.75rem; line-height: .96; }
-    .transmission-copy p { margin: 0; color: var(--muted); font-size: 1.06rem; line-height: 1.34; }
-    .transmission-copy .status-line { margin-top: 12px; font-size: .68rem; color: rgba(255,255,255,.58); }
-    .entry { padding-bottom: 60px; }
-    .entry-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 20px; }
-    .entry-link {
-      display: flex; align-items: center; justify-content: center; min-height: 82px; border: 1px solid rgba(255,255,255,.1); border-radius: 999px; background: rgba(255,255,255,.02);
-      font-family: "IBM Plex Mono", monospace; text-transform: uppercase; letter-spacing: .16em; font-size: .84rem;
-    }
-    .footer-experience { margin-top: 18px; font-family: "IBM Plex Mono", monospace; font-size: .65rem; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.4); }
-    .cover-001 { background-image: url("./assets/sop/no-record-found.jpg"); }
-    .cover-002 { background-image: url("./assets/sop/allocation-notice.jpg"); }
-    .cover-003 { background-image: url("./assets/sop/dopamine-cafe.jpg"); }
-    .cover-004 { background-image: url("./assets/sop/containment-protocol.jpg"); }
-    .cover-005 { background-image: url("./assets/sop/entry-required.jpg"); }
-    .cover-006 { background-image: url("./assets/sop/last-exit.jpg"); }
-    .cover-007 { background-image: url("./assets/sop/the-inheritance.jpg"); }
-    @keyframes blink { 0%,48%,100% { opacity: 1; } 50%,54% { opacity: .3; } }
-    @keyframes drift { from { transform: translateY(-14px); } to { transform: translateY(14px); } }
-    @keyframes flicker {
-      0%,100% { opacity: .98; } 8% { opacity: .92; } 9% { opacity: .98; }
-      12% { opacity: .94; } 13% { opacity: .98; } 50% { opacity: .96; }
-      51% { opacity: .9; } 52% { opacity: .98; }
-    }
-    @media (max-width: 1080px) {
-      .transmission-grid { grid-template-columns: repeat(2, 1fr); }
-      .broadcast-grid { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 760px) {
-      .site-header { flex-direction: column; gap: 12px; align-items: flex-start; }
-      .nav { gap: 14px; }
-      .hero { padding-top: 46px; }
-      .hero h1 { max-width: none; }
-      .hero-screen { min-height: 280px; }
-      .feature-screen { min-height: 300px; }
-      .transmission-grid { grid-template-columns: 1fr; }
-      .entry-grid { grid-template-columns: 1fr; }
-      .transmission-card .screen { min-height: 300px; }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <div class="noise" aria-hidden="true"></div>
-  <div class="vignette" aria-hidden="true"></div>
-  <header class="site-header">
-    <a href="index.html" class="brand">SYSTEMA OBSCURA</a>
-    <nav class="nav">
-      <a href="#signal">Signal</a>
-      <a href="#featured">Featured</a>
-      <a href="#archive">Archive</a>
-      <a href="index.html">Return</a>
-    </nav>
-  </header>
-  <main class="wrap">
-    <section class="hero" id="signal">
-      <div class="eyebrow">Transmission Active</div>
-      <h1>SYSTEMA OBSCURA PRESENTS</h1>
-      <p class="experience-line">The Systema Obscura Experience</p>
-      <p class="hero-copy">Stand-alone transmissions from the American unknown. Seven recovered episodes. Seven controlled anomalies.</p>
-      <div class="hero-terminal crt">
-        <div class="terminal-topbar">
-          <span>✦</span><span>PRIMARY BROADCAST TERMINAL</span><span class="live-dot"></span>
-        </div>
-        <div class="screen hero-screen">
-          <div class="scanlines"></div>
-          <div class="screen-overlay">
-            <p>Signal Integrity: Stable</p>
-            <p>Archive Status: Verified</p>
+<body class="sop-page">
+
+  <main class="sop-archive">
+
+    <!-- HERO -->
+    <section class="sop-hero">
+      <div class="sop-hero__screen">
+        <div class="sop-hero__noise"></div>
+        <div class="sop-hero__content">
+          <p class="sop-kicker">Broadcast Transmission Archive</p>
+          <h1 class="sop-title">SYSTEMA OBSCURA PRESENTS</h1>
+          <p class="sop-subtitle">The Systema Obscura Experience</p>
+
+          <div class="sop-system-readout">
+            <span>Signal Integrity: Stable</span>
+            <span>Archive Status: Verified</span>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="broadcast" id="featured">
-      <div class="section-head">
-        <p class="section-kicker">Current Transmission</p>
-        <h2>Featured Broadcast</h2>
+    <!-- FEATURED TRANSMISSION -->
+    <section class="featured-transmission">
+      <div class="featured-transmission__media">
+        <img
+          src="assets/sop/no-record-found.jpg"
+          alt="No Record Found cover"
+          class="featured-transmission__cover"
+        />
       </div>
-      <div class="broadcast-grid">
-        <article class="broadcast-panel crt">
-          <div class="screen feature-screen"><div class="scanlines"></div></div>
-          <div class="feature-copy">
-            <p class="meta">Transmission 001</p>
-            <h3>No Record Found</h3>
-            <p>A bureaucratic impossibility becomes a private collapse when the system that once confirmed a woman’s existence abruptly denies she was ever there at all.</p>
-            <a href="https://www.amazon.com/dp/B0GQQMTXNN" target="_blank" class="text-link">Open Transmission</a>
-          </div>
-        </article>
-        <aside class="status-box">
-          <div class="status-row"><span>No Record Found</span><strong>Active</strong></div>
-          <div class="status-row"><span>The Allocation Notice</span><strong>Verified</strong></div>
-          <div class="status-row"><span>Dopamine Cafe</span><strong>Stable</strong></div>
-          <div class="status-row"><span>Containment Protocol</span><strong>Restricted</strong></div>
-          <div class="status-row"><span>Entry Required</span><strong>Access Locked</strong></div>
-          <div class="status-row"><span>Last Exit</span><strong>Terminal</strong></div>
-          <div class="status-row"><span>The Inheritance</span><strong>Unresolved</strong></div>
-        </aside>
-      </div>
-    </section>
 
-    <section class="channels" id="archive">
-      <div class="section-head">
-        <p class="section-kicker">Archive</p>
-        <h2>Transmission Log</h2>
-      </div>
-      <div class="transmission-grid">
-        <a href="https://www.amazon.com/dp/B0GQQMTXNN" target="_blank" class="transmission-card crt">
-          <div class="screen cover-001"><div class="transmission-label">Transmission 001</div><div class="scanlines"></div></div>
-          <div class="transmission-copy"><h3>No Record Found</h3><p>A system confirms your existence until it decides you were never entered at all.</p><p class="status-line">Status: Active</p></div>
-        </a>
-        <a href="#" target="_blank" class="transmission-card crt">
-          <div class="screen cover-002"><div class="transmission-label">Transmission 002</div><div class="scanlines"></div></div>
-          <div class="transmission-copy"><h3>The Allocation Notice</h3><p>A town learns that survival can be reassigned by policy, one household at a time.</p><p class="status-line">Status: Verified</p></div>
-        </a>
-        <a href="#" target="_blank" class="transmission-card crt">
-          <div class="screen cover-003"><div class="transmission-label">Transmission 003</div><div class="scanlines"></div></div>
-          <div class="transmission-copy"><h3>Dopamine Cafe</h3><p>An impossible service offers happiness on demand, but satisfaction is never the true commodity.</p><p class="status-line">Status: Stable</p></div>
-        </a>
-        <a href="#" target="_blank" class="transmission-card crt">
-          <div class="screen cover-004"><div class="transmission-label">Transmission 004</div><div class="scanlines"></div></div>
-          <div class="transmission-copy"><h3>Containment Protocol</h3><p>A sealed system fails at the exact moment its creators become dependent on its silence.</p><p class="status-line">Status: Restricted</p></div>
-        </a>
-        <a href="#" target="_blank" class="transmission-card crt">
-          <div class="screen cover-005"><div class="transmission-label">Transmission 005</div><div class="scanlines"></div></div>
-          <div class="transmission-copy"><h3>Entry Required</h3><p>The threshold is visible, the invitation is implied, and denial has already been logged.</p><p class="status-line">Status: Access Locked</p></div>
-        </a>
-        <a href="#" target="_blank" class="transmission-card crt">
-          <div class="screen cover-006"><div class="transmission-label">Transmission 006</div><div class="scanlines"></div></div>
-          <div class="transmission-copy"><h3>Last Exit</h3><p>There is always another road, until there isn’t, and the final turn is the only one left.</p><p class="status-line">Status: Terminal</p></div>
-        </a>
-        <a href="#" target="_blank" class="transmission-card crt">
-          <div class="screen cover-007"><div class="transmission-label">Transmission 007</div><div class="scanlines"></div></div>
-          <div class="transmission-copy"><h3>The Inheritance</h3><p>Some gifts arrive complete. Others arrive with instructions no one should be trusted to follow.</p><p class="status-line">Status: Unresolved</p></div>
+      <div class="featured-transmission__copy">
+        <p class="transmission-meta">Transmission 001 • LIVE</p>
+        <h2>No Record Found</h2>
+        <p class="featured-hook">
+          A woman attempts a routine renewal and discovers the system has no memory of her.
+          No file. No record. No proof she was ever here.
+        </p>
+        <a
+          href="https://www.amazon.com/No-Record-Found-Systema-Presents-ebook/dp/B0GQPYG7Q3"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="sop-button"
+        >
+          Open Transmission
         </a>
       </div>
     </section>
 
-    <section class="entry">
-      <h2>Continue Transmission?</h2>
-      <div class="entry-grid">
-        <a href="index.html" class="entry-link">Return to Main Signal</a>
-        <a href="https://www.amazon.com/author/davidmcneal" target="_blank" class="entry-link">Author Archive</a>
-      </div>
-      <p class="footer-experience">You are now within the Systema Obscura Experience.</p>
+    <!-- TRANSMISSION GRID -->
+    <section class="transmission-grid" aria-label="Transmission Archive">
+
+      <a
+        class="transmission-card transmission-card--featured"
+        href="https://www.amazon.com/No-Record-Found-Systema-Presents-ebook/dp/B0GQPYG7Q3"
+        target="_blank"
+        rel="noopener noreferrer"
+        style="background-image: url('assets/sop/no-record-found.jpg');"
+      >
+        <div class="transmission-card__overlay"></div>
+        <div class="transmission-card__content">
+          <p class="transmission-card__number">Transmission 001</p>
+          <h3 class="transmission-card__title">No Record Found</h3>
+          <p class="transmission-card__status">LIVE</p>
+        </div>
+      </a>
+
+      <a
+        class="transmission-card"
+        href="https://www.amazon.com/Allocation-Notice-Systema-Obscura-Presents-ebook/dp/B0GQQHLQF7"
+        target="_blank"
+        rel="noopener noreferrer"
+        style="background-image: url('assets/sop/allocation-notice.jpg');"
+      >
+        <div class="transmission-card__overlay"></div>
+        <div class="transmission-card__content">
+          <p class="transmission-card__number">Transmission 002</p>
+          <h3 class="transmission-card__title">The Allocation Notice</h3>
+          <p class="transmission-card__status">VERIFIED</p>
+        </div>
+      </a>
+
+      <a
+        class="transmission-card"
+        href="https://www.amazon.com/Dopamine-Cafe-Systema-Obscura-Presents-ebook/dp/B0GS6ZQMYW"
+        target="_blank"
+        rel="noopener noreferrer"
+        style="background-image: url('assets/sop/dopamine-cafe.jpg');"
+      >
+        <div class="transmission-card__overlay"></div>
+        <div class="transmission-card__content">
+          <p class="transmission-card__number">Transmission 003</p>
+          <h3 class="transmission-card__title">Dopamine Cafe</h3>
+          <p class="transmission-card__status">ACTIVE</p>
+        </div>
+      </a>
+
+      <a
+        class="transmission-card"
+        href="https://www.amazon.com/Containment-Protocol-Systema-Obscura-Presents-ebook/dp/B0GS7FSRRJ"
+        target="_blank"
+        rel="noopener noreferrer"
+        style="background-image: url('assets/sop/containment-protocol.jpg');"
+      >
+        <div class="transmission-card__overlay"></div>
+        <div class="transmission-card__content">
+          <p class="transmission-card__number">Transmission 004</p>
+          <h3 class="transmission-card__title">Containment Protocol</h3>
+          <p class="transmission-card__status">RESTRICTED</p>
+        </div>
+      </a>
+
+      <a
+        class="transmission-card"
+        href="https://www.amazon.com/Entry-Required-Systema-Obscura-Presents-ebook/dp/B0GS99WLFK"
+        target="_blank"
+        rel="noopener noreferrer"
+        style="background-image: url('assets/sop/entry-required.jpg');"
+      >
+        <div class="transmission-card__overlay"></div>
+        <div class="transmission-card__content">
+          <p class="transmission-card__number">Transmission 005</p>
+          <h3 class="transmission-card__title">Entry Required</h3>
+          <p class="transmission-card__status">AUTHORIZED</p>
+        </div>
+      </a>
+
+      <a
+        class="transmission-card"
+        href="https://www.amazon.com/Last-Exit-Systema-Obscura-Presents-ebook/dp/B0GS74RGW7"
+        target="_blank"
+        rel="noopener noreferrer"
+        style="background-image: url('assets/sop/last-exit.jpg');"
+      >
+        <div class="transmission-card__overlay"></div>
+        <div class="transmission-card__content">
+          <p class="transmission-card__number">Transmission 006</p>
+          <h3 class="transmission-card__title">Last Exit</h3>
+          <p class="transmission-card__status">OPEN</p>
+        </div>
+      </a>
+
+      <a
+        class="transmission-card"
+        href="https://www.amazon.com/Inheritance-Systema-Obscura-Presents-Episode-ebook/dp/B0GSC6V3Y4"
+        target="_blank"
+        rel="noopener noreferrer"
+        style="background-image: url('assets/sop/the-inheritance.jpg');"
+      >
+        <div class="transmission-card__overlay"></div>
+        <div class="transmission-card__content">
+          <p class="transmission-card__number">Transmission 007</p>
+          <h3 class="transmission-card__title">The Inheritance</h3>
+          <p class="transmission-card__status">ARCHIVED</p>
+        </div>
+      </a>
+
     </section>
+
+    <!-- RETURN -->
+    <section class="sop-return">
+      <a href="index.html" class="sop-return__link">Return to Main Signal</a>
+    </section>
+
   </main>
+
 </body>
 </html>
