@@ -1508,22 +1508,34 @@ nav a[href*="youtube"]::after {
   opacity: 0.55;
 }
 /* =========================
-   FLOAT HOST INTO HERO
+   HERO + HOST ALIGNMENT (REFINED)
    ========================= */
 
-.host-broadcast.wrap {
-  margin-top: -320px;
-}
-
 @media (min-width: 900px) {
+
   .host-broadcast.wrap {
     display: flex;
     justify-content: flex-end;
-    margin-top: -420px;
-    margin-bottom: 40px;
+    margin-top: -480px; /* move slightly higher */
+    margin-bottom: 20px;
   }
 
   .host-grid {
-    max-width: 420px;
+    max-width: 380px;
+    gap: 20px;
+  }
+
+  .host-visual {
+    max-width: 280px; /* slightly smaller image */
+  }
+
+  .host-copy h2 {
+    font-size: 1.6rem;
+    line-height: 1.2;
+  }
+
+  .host-copy p {
+    font-size: 0.9rem;
+    line-height: 1.45;
   }
 }
