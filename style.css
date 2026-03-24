@@ -1045,3 +1045,16 @@ body::before {
   color: #fff;
   border-color: #fff;
 }
+.transmission-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.transmission-card__overlay {
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.75) 0%,
+    rgba(0,0,0,0.45) 50%,
+    rgba(0,0,0,0.1) 100%
+  );
+}
