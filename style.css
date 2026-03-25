@@ -1520,13 +1520,15 @@ nav a[href*="youtube"]::after {
     margin-bottom: 20px;
   }
 
-  .host-grid {
-    max-width: 380px;
-    gap: 20px;
-  }
+.host-grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 40px;
+  max-width: 100%;
+}
 
   .host-visual {
-    max-width: 280px; /* slightly smaller image */
+    max-width: 340px; /* slightly smaller image */
   }
 
   .host-copy h2 {
@@ -1538,4 +1540,7 @@ nav a[href*="youtube"]::after {
     font-size: 0.9rem;
     line-height: 1.45;
   }
+  .host-copy {
+  max-width: 520px;
+}
 }
