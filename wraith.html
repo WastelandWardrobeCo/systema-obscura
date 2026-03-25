@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wasteland Wraith | Systema Obscura</title>
+  <style>
+    :root {
+      --bg: #050505;
+      --bg-2: #090909;
+      --panel: rgba(255,255,255,0.03);
+      --line: rgba(255,255,255,0.10);
+      --soft-line: rgba(255,255,255,0.06);
+      --text: #ece7df;
+      --muted: #aba295;
+      --accent: #ff8a1c;
+      --accent-soft: rgba(255,138,28,0.18);
+      --shadow: 0 24px 80px rgba(0,0,0,.55);
+      --radius: 28px;
+      --radius-lg: 34px;
+      --max: 1120px;
+      --serif: Georgia, "Times New Roman", serif;
+      --sans: Arial, Helvetica, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255,138,28,0.08), transparent 25%),
+        linear-gradient(180deg, #070707 0%, #040404 100%);
+      color: var(--text);
+      font-family: var(--serif);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+      -webkit-user-drag: none;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .wrap {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+      background: rgba(4,4,4,0.76);
+      border-bottom: 1px solid var(--soft-line);
+    }
+
+    .topbar-inner {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      padding: 16px 0;
+    }
+
+    .brand {
+      font-family: var(--sans);
+      font-size: .95rem;
+      letter-spacing: .38em;
+      text-transform: uppercase;
+      color: #f3f3f3;
+      white-space: nowrap;
+    }
+
+    .nav {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      font-family: var(--sans);
+      font-size: .77rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: #bbb2a7;
+    }
+
+    .nav a:hover,
+    .nav a:focus-visible,
+    .return-link:hover,
+    .return-link:focus-visible {
+      color: #fff;
+    }
+
+    .hero {
+      padding: 40px 0 28px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(280px, 420px) 1fr;
+      gap: 34px;
+      align-items: center;
+    }
+
+    .tile-frame {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: var(--shadow);
+      background: #0a0a0a;
+      isolation: isolate;
+    }
+
+    .tile-frame::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,.10), rgba(0,0,0,.34)),
+        radial-gradient(circle at 50% 50%, rgba(255,138,28,.10), transparent 25%);
+      z-index: 2;
+    }
+
+    .tile-frame::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.03);
+      z-index: 3;
+    }
+
+    .tile-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: contrast(1.05) saturate(.92);
+      transform: scale(1.01);
+    }
+
+    .eyebrow,
+    .section-label,
+    .artifact-kicker,
+    .record-label {
+      margin: 0 0 12px;
+      font-family: var(--sans);
+      font-size: .76rem;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(2.5rem, 5vw, 4.8rem);
+      line-height: .98;
+      font-weight: 500;
+      color: #f7f2ea;
+    }
+
+    .dek {
+      margin: 0 0 18px;
+      max-width: 44ch;
+      color: #d8d0c5;
+      font-size: 1.14rem;
+    }
+
+    .quote {
+      margin: 0 0 24px;
+      padding-left: 18px;
+      border-left: 1px solid rgba(255,138,28,.36);
+      color: #f3eadc;
+      max-width: 42ch;
+      font-size: 1.02rem;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 20px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.03);
+      color: #f7f2ea;
+      font-family: var(--sans);
+      font-size: .81rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .btn:hover,
+    .btn:focus-visible {
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,0.28);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .btn.primary {
+      background: linear-gradient(180deg, rgba(255,138,28,.18), rgba(255,138,28,.07));
+      border-color: rgba(255,138,28,.34);
+      box-shadow: 0 0 28px rgba(255,138,28,.08);
+    }
+
+    .section {
+      padding: 22px 0;
+    }
+
+    .panel {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .panel-inner {
+      position: relative;
+      z-index: 2;
+      padding: 28px;
+    }
+
+    .section-title {
+      margin: 0 0 8px;
+      font-size: clamp(1.65rem, 2vw, 2.3rem);
+      line-height: 1.05;
+      font-weight: 500;
+      color: #f7f2ea;
+    }
+
+    .section-copy,
+    .book-copy,
+    .record-copy,
+    .artifact-copy {
+      margin: 0;
+      color: #d4cbc0;
+      max-width: 70ch;
+    }
+
+    .lore-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255,138,28,.10), transparent 26%),
+        linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.18));
+      z-index: 0;
+    }
+
+    .lore-panel::after {
+      content: "";
+      position: absolute;
+      top: 18px;
+      right: 24px;
+      width: 52px;
+      height: 52px;
+      background: url('assets/wraith-fracture-symbol.png') center/contain no-repeat;
+      opacity: .14;
+      filter: drop-shadow(0 0 10px rgba(255,138,28,.10));
+      z-index: 1;
+    }
+
+    .book-panel {
+      min-height: 470px;
+    }
+
+    .book-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url('assets/wraith-distance.jpg') center center / cover no-repeat;
+      filter: blur(1.5px) brightness(.34) saturate(.78);
+      transform: scale(1.04);
+      opacity: .95;
+      z-index: 0;
+    }
+
+    .book-panel::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.78)),
+        radial-gradient(circle at 50% 38%, rgba(255,138,28,.10), transparent 16%);
+      z-index: 1;
+    }
+
+    .book-grid {
+      display: grid;
+      grid-template-columns: 1.15fr .95fr;
+      gap: 28px;
+      align-items: end;
+    }
+
+    .book-card {
+      backdrop-filter: blur(2px);
+      background: rgba(0,0,0,.22);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 22px;
+      padding: 24px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .chip {
+      padding: 7px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: #cbc2b7;
+      font-family: var(--sans);
+      font-size: .69rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .records-panel {
+      min-height: 460px;
+    }
+
+    .records-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url('assets/wraith-corridor.jpg') center center / cover no-repeat;
+      filter: blur(1px) brightness(.24) saturate(.75);
+      transform: scale(1.03);
+      opacity: .95;
+      z-index: 0;
+    }
+
+    .records-panel::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.50), rgba(0,0,0,.84)),
+        radial-gradient(circle at 50% 30%, rgba(255,255,255,.05), transparent 18%);
+      z-index: 1;
+    }
+
+    .records-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .record-card {
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.32);
+      border-radius: 22px;
+      padding: 22px;
+      backdrop-filter: blur(2px);
+    }
+
+    .record-card.featured {
+      grid-column: 1 / -1;
+    }
+
+    .artifact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .artifact-card {
+      position: relative;
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)), #090909;
+      box-shadow: var(--shadow);
+      isolation: isolate;
+      transition: transform .18s ease, border-color .18s ease;
+    }
+
+    .artifact-card:hover,
+    .artifact-card:focus-within {
+      transform: translateY(-2px);
+      border-color: rgba(255,138,28,.24);
+    }
+
+    .artifact-thumb {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .artifact-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: .30;
+      filter: blur(2.4px) grayscale(.18) brightness(.48) contrast(1.08);
+      transform: scale(1.12);
+      transition: transform .22s ease, opacity .22s ease;
+    }
+
+    .artifact-card:hover .artifact-thumb img,
+    .artifact-card:focus-within .artifact-thumb img {
+      transform: scale(1.16);
+      opacity: .36;
+    }
+
+    .artifact-thumb::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,.16), rgba(0,0,0,.80)),
+        radial-gradient(circle at 50% 24%, rgba(255,138,28,.14), transparent 16%);
+    }
+
+    .artifact-content {
+      position: relative;
+      z-index: 1;
+      padding: 22px;
+    }
+
+    .artifact-title {
+      margin: 0 0 10px;
+      font-size: 1.48rem;
+      line-height: 1.04;
+      color: #f7f2ea;
+      font-weight: 500;
+    }
+
+    .artifact-link,
+    .inline-link,
+    .return-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--sans);
+      font-size: .76rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: #f2ece3;
+    }
+
+    .artifact-link span:last-child,
+    .inline-link span:last-child {
+      color: var(--accent);
+    }
+
+    .footer {
+      padding: 34px 0 60px;
+      color: #9f978c;
+      text-align: center;
+      font-size: .95rem;
+    }
+
+    .footer-mark {
+      width: 28px;
+      height: 28px;
+      display: block;
+      margin: 0 auto 14px;
+      object-fit: contain;
+      opacity: .75;
+      filter: drop-shadow(0 0 10px rgba(255,138,28,.16));
+    }
+
+    .small-note {
+      margin-top: 16px;
+      color: #9d958a;
+      max-width: 68ch;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .book-grid,
+      .artifact-grid,
+      .records-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .record-card.featured {
+        grid-column: auto;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .topbar-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .hero {
+        padding-top: 24px;
+      }
+
+      .panel-inner {
+        padding: 22px;
+      }
+
+      .button-row {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .artifact-card {
+        min-height: 290px;
+      }
+
+      .lore-panel::after {
+        width: 40px;
+        height: 40px;
+        top: 16px;
+        right: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html">Systema Obscura</a>
+      <nav class="nav">
+        <a href="#book">Book</a>
+        <a href="#records">Records</a>
+        <a href="#artifacts">Artifacts</a>
+        <a href="index.html">Return</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="tile-frame">
+          <img src="assets/wraith-tile.png" alt="Wasteland Wraith" />
+        </div>
+
+        <div class="hero-copy">
+          <p class="eyebrow">Anomaly W-01</p>
+          <h1>Wasteland Wraith</h1>
+          <p class="dek">
+            A presence of inevitability moving through ruin, aftermath, and silence.
+          </p>
+          <p class="quote">
+            It does not arrive early. It does not arrive late.
+          </p>
+
+          <div class="button-row">
+            <a class="btn primary" href="https://www.amazon.com/Silence-Between-Thunder-Wasteland-Wraith/dp/B0GPJ8DP77" target="_blank" rel="noopener noreferrer">Read the Book</a>
+            <a class="btn" href="#artifacts">View Artifacts</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="panel lore-panel">
+        <div class="panel-inner">
+          <p class="section-label">Field Note</p>
+          <h2 class="section-title">Observed, not explained.</h2>
+          <p class="section-copy">
+            The Wraith does not hunt. It does not warn. It appears when the outcome is already decided.
+            This page is not a gallery. It is a controlled record: one novel, three artifacts, and a small amount of evidence left visible on purpose.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="book">
+      <div class="panel book-panel">
+        <div class="panel-inner">
+          <div class="book-grid">
+            <div>
+              <p class="section-label">Primary Record</p>
+              <h2 class="section-title">The Silence Between Thunder</h2>
+              <p class="book-copy">
+                The first Wasteland Wraith novel. A post-apocalyptic horror story built around a presence that never causes death, only arrives when death has already become inevitable.
+              </p>
+              <div class="meta">
+                <span class="chip">Wasteland Wraith Book 1</span>
+                <span class="chip">Post-Apocalyptic Horror</span>
+                <span class="chip">Amazon</span>
+              </div>
+              <div class="button-row" style="margin-top:18px;">
+                <a class="btn primary" href="https://www.amazon.com/Silence-Between-Thunder-Wasteland-Wraith/dp/B0GPJ8DP77" target="_blank" rel="noopener noreferrer">Open on Amazon</a>
+              </div>
+            </div>
+
+            <div class="book-card">
+              <p class="record-label">Summary</p>
+              <p class="record-copy">
+                A ruined world. A recurring presence. Witnesses who do not always agree on what they saw, only on what followed. The Wraith remains silent. The verdict does not.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="records">
+      <div class="panel records-panel">
+        <div class="panel-inner">
+          <p class="section-label">Observation Records</p>
+          <h2 class="section-title">Patterns survive where explanations fail.</h2>
+          <p class="section-copy">
+            Not every sighting looks the same. The environment shifts. The witnesses differ. The constant is the same narrow fracture of light and the same silence before outcome.
+          </p>
+
+          <div class="records-grid">
+            <div class="record-card featured">
+              <p class="record-label">Record A</p>
+              <p class="record-copy">
+                Distant manifestation in open ruin. Figure partially lost to fog, scale uncertain, movement unconfirmed. Chest fissure visible at range. Emotional response in witnesses typically described as dread rather than panic.
+              </p>
+            </div>
+
+            <div class="record-card">
+              <p class="record-label">Record B</p>
+              <p class="record-copy">
+                Facility or corridor manifestation. Reports suggest the Wraith can appear within enclosed industrial spaces without sound, warning, or visible point of entry.
+              </p>
+            </div>
+
+            <div class="record-card">
+              <p class="record-label">Record C</p>
+              <p class="record-copy">
+                Repeated symbol association: a vertical fracture motif, often used here as a mark of identity, not as proof of origin or cause.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="artifacts">
+      <div class="panel">
+        <div class="panel-inner">
+          <p class="section-label">Recovered Artifacts</p>
+          <h2 class="section-title">Objects associated with recorded sightings.</h2>
+          <p class="section-copy">
+            These are presented as fragments, not full display assets. Clean product photography lives on Etsy. Here, the page keeps only enough signal to guide the curious.
+          </p>
+
+          <div class="artifact-grid">
+            <article class="artifact-card">
+              <div class="artifact-thumb">
+                <img src="assets/wraith-corridor.jpg" alt="Close-Up Poster" />
+              </div>
+              <div class="artifact-content">
+                <p class="artifact-kicker">Artifact 01</p>
+                <h3 class="artifact-title">Close-Up Poster</h3>
+                <p class="artifact-copy">
+                  A near-range confrontation with the Wraith. All presence. No distance. No relief.
+                </p>
+                <a class="artifact-link" href="https://wastelandwardrobeco.etsy.com/listing/4461316669" target="_blank" rel="noopener noreferrer">
+                  <span>View on Etsy</span><span>↗</span>
+                </a>
+              </div>
+            </article>
+
+            <article class="artifact-card">
+              <div class="artifact-thumb">
+                <img src="assets/wraith-distance.jpg" alt="Landscape Poster" />
+              </div>
+              <div class="artifact-content">
+                <p class="artifact-kicker">Artifact 02</p>
+                <h3 class="artifact-title">Landscape Poster</h3>
+                <p class="artifact-copy">
+                  A wider record of ruin and inevitability. The figure is not pursuing. It is simply there.
+                </p>
+                <a class="artifact-link" href="https://wastelandwardrobeco.etsy.com/listing/4461292727" target="_blank" rel="noopener noreferrer">
+                  <span>View on Etsy</span><span>↗</span>
+                </a>
+              </div>
+            </article>
+
+            <article class="artifact-card">
+              <div class="artifact-thumb">
+                <img src="assets/wraith-fracture-line.png" alt="Fracture Emblem Sticker" />
+              </div>
+              <div class="artifact-content">
+                <p class="artifact-kicker">Artifact 03</p>
+                <h3 class="artifact-title">Fracture Emblem</h3>
+                <p class="artifact-copy">
+                  A minimal mark split by the same molten core seen in multiple recorded manifestations.
+                </p>
+                <a class="artifact-link" href="https://wastelandwardrobeco.etsy.com/listing/4461084813" target="_blank" rel="noopener noreferrer">
+                  <span>View on Etsy</span><span>↗</span>
+                </a>
+              </div>
+            </article>
+          </div>
+
+          <p class="small-note">
+            This page intentionally uses darkened overlays, cropped imagery, and repeated controlled assets instead of a public high-resolution gallery.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <img class="footer-mark" src="assets/wraith-fracture-symbol.png" alt="" />
+      <div>Systema Obscura Archive</div>
+      <div style="margin-top:14px;">
+        <a class="return-link" href="index.html">Return to Main Signal</a>
+      </div>
+    </footer>
+  </main>
+</body>
+</html>
