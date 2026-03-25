@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lady & Delilah | Systema Obscura</title>
+  <style>
+    :root {
+      --bg: #060606;
+      --bg-2: #0b0a09;
+      --panel: rgba(255,255,255,0.04);
+      --line: rgba(255,255,255,0.10);
+      --soft-line: rgba(255,255,255,0.06);
+      --text: #eee7de;
+      --muted: #b2a79a;
+      --accent: #d26a33;
+      --accent-soft: rgba(210,106,51,0.18);
+      --shadow: 0 24px 80px rgba(0,0,0,.58);
+      --radius: 28px;
+      --radius-lg: 36px;
+      --max: 1140px;
+      --serif: Georgia, "Times New Roman", serif;
+      --sans: Arial, Helvetica, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: var(--serif);
+      line-height: 1.6;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(210,106,51,0.10), transparent 24%),
+        linear-gradient(180deg, #080706 0%, #040404 100%);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+      -webkit-user-drag: none;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .wrap {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+      background: rgba(4,4,4,0.76);
+      border-bottom: 1px solid var(--soft-line);
+    }
+
+    .topbar-inner {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      padding: 16px 0;
+    }
+
+    .brand {
+      font-family: var(--sans);
+      font-size: .95rem;
+      letter-spacing: .38em;
+      text-transform: uppercase;
+      color: #f3f3f3;
+      white-space: nowrap;
+    }
+
+    .nav {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      font-family: var(--sans);
+      font-size: .77rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: #bbb2a7;
+    }
+
+    .nav a:hover,
+    .nav a:focus-visible,
+    .return-link:hover,
+    .return-link:focus-visible {
+      color: #fff;
+    }
+
+    .hero {
+      padding: 42px 0 30px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(300px, 420px) 1fr;
+      gap: 38px;
+      align-items: center;
+    }
+
+    .hero-frame {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: var(--shadow);
+      background: #0a0908;
+      isolation: isolate;
+      aspect-ratio: 1 / 1;
+    }
+
+    .hero-frame::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,.06), rgba(0,0,0,.32)),
+        radial-gradient(circle at 32% 32%, rgba(210,106,51,.18), transparent 24%);
+      z-index: 2;
+    }
+
+    .hero-frame::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.03);
+      z-index: 3;
+    }
+
+    .hero-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: contrast(1.04) saturate(.92);
+      transform: scale(1.01);
+    }
+
+    .eyebrow,
+    .section-label,
+    .card-kicker {
+      margin: 0 0 12px;
+      font-family: var(--sans);
+      font-size: .76rem;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(2.4rem, 5vw, 4.7rem);
+      line-height: .98;
+      font-weight: 500;
+      color: #f7f1e8;
+    }
+
+    .dek {
+      margin: 0 0 18px;
+      max-width: 44ch;
+      color: #d8cec2;
+      font-size: 1.14rem;
+    }
+
+    .quote {
+      margin: 0 0 24px;
+      padding-left: 18px;
+      border-left: 1px solid rgba(210,106,51,.38);
+      color: #f3eadf;
+      max-width: 42ch;
+      font-size: 1.02rem;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 20px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.03);
+      color: #f7f2ea;
+      font-family: var(--sans);
+      font-size: .81rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .btn:hover,
+    .btn:focus-visible {
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,0.28);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .btn.primary {
+      background: linear-gradient(180deg, rgba(210,106,51,.20), rgba(210,106,51,.08));
+      border-color: rgba(210,106,51,.34);
+      box-shadow: 0 0 28px rgba(210,106,51,.10);
+    }
+
+    .section {
+      padding: 22px 0;
+    }
+
+    .panel {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .panel-inner {
+      position: relative;
+      z-index: 2;
+      padding: 28px;
+    }
+
+    .section-title {
+      margin: 0 0 8px;
+      font-size: clamp(1.6rem, 2vw, 2.3rem);
+      line-height: 1.05;
+      font-weight: 500;
+      color: #f7f2ea;
+    }
+
+    .section-copy,
+    .card-copy {
+      margin: 0;
+      color: #d4cbc0;
+      max-width: 70ch;
+    }
+
+    .intro-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 30% 0%, rgba(210,106,51,.11), transparent 26%),
+        linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.20));
+      z-index: 0;
+    }
+
+    .story-panel {
+      min-height: 430px;
+    }
+
+    .story-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url('./assets/lady-tile.png') center center / cover no-repeat;
+      filter: blur(2px) brightness(.26) saturate(.85);
+      transform: scale(1.05);
+      opacity: .95;
+      z-index: 0;
+    }
+
+    .story-panel::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.46), rgba(0,0,0,.82)),
+        radial-gradient(circle at 28% 30%, rgba(210,106,51,.14), transparent 20%);
+      z-index: 1;
+    }
+
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .story-card,
+    .placeholder-card,
+    .signal-card {
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.28);
+      border-radius: 22px;
+      padding: 22px;
+      backdrop-filter: blur(2px);
+    }
+
+    .placeholder-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .signal-card {
+      min-height: 250px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .signal-card.placeholder {
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .signal-card.placeholder::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.00)),
+        radial-gradient(circle at 35% 30%, rgba(210,106,51,.14), transparent 18%);
+      z-index: 0;
+    }
+
+    .signal-card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .status-line {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--sans);
+      font-size: .74rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: #d9d0c5;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px rgba(210,106,51,.55);
+    }
+
+    .footer {
+      padding: 34px 0 60px;
+      color: #9f978c;
+      text-align: center;
+      font-size: .95rem;
+    }
+
+    .return-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--sans);
+      font-size: .76rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: #f2ece3;
+      margin-top: 14px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .story-grid,
+      .placeholder-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .topbar-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .hero {
+        padding-top: 24px;
+      }
+
+      .panel-inner {
+        padding: 22px;
+      }
+
+      .button-row {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html">Systema Obscura</a>
+      <nav class="nav">
+        <a href="#story">Story</a>
+        <a href="#signals">Signals</a>
+        <a href="index.html">Return</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="hero-frame">
+          <img src="./assets/lady-tile.png" alt="Lady and Delilah" />
+        </div>
+
+        <div class="hero-copy">
+          <p class="eyebrow">Channel Pending</p>
+          <h1>Lady &amp; Delilah</h1>
+          <p class="dek">
+            A harder mythology is forming here. For now, this page serves as the threshold: a signal, a face, and a promise of what is still coming.
+          </p>
+          <p class="quote">
+            Not every story enters quietly. Some arrive with teeth.
+          </p>
+
+          <div class="button-row">
+            <a class="btn primary" href="#story">Enter the Signal</a>
+            <a class="btn" href="#signals">View Development Notes</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="panel intro-panel">
+        <div class="panel-inner">
+          <p class="section-label">Placeholder Broadcast</p>
+          <h2 class="section-title">A channel under construction.</h2>
+          <p class="section-copy">
+            This page is intentionally spare for now. It gives Lady &amp; Delilah a dedicated place in the system before the full world, lore, and artifacts are ready to surface.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="story">
+      <div class="panel story-panel">
+        <div class="panel-inner">
+          <div class="story-grid">
+            <div class="story-card">
+              <p class="section-label">Current Framing</p>
+              <h2 class="section-title">A survivor. A wolf. A myth still taking shape.</h2>
+              <p class="card-copy">
+                Right now, this signal exists as a strong visual and a tonal promise. That is enough. It establishes presence without pretending the archive is complete.
+              </p>
+            </div>
+
+            <div class="placeholder-card">
+              <p class="section-label">Status</p>
+              <div class="status-line"><span class="status-dot"></span><span>Transmission forming</span></div>
+              <p class="card-copy" style="margin-top:14px;">
+                Future content can expand into lore, world rules, character notes, books, merch, or any hybrid path this channel becomes.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="signals">
+      <div class="panel">
+        <div class="panel-inner">
+          <p class="section-label">Development Notes</p>
+          <h2 class="section-title">Three directions this channel can grow.</h2>
+          <p class="section-copy">
+            Until you build the deeper canon, this page can hold clean placeholders that still feel intentional and on-brand.
+          </p>
+
+          <div class="placeholder-grid">
+            <article class="signal-card placeholder">
+              <p class="card-kicker">Path 01</p>
+              <h3 class="section-title" style="font-size:1.45rem;">Lore Archive</h3>
+              <p class="card-copy">
+                Character notes, world rules, threats, allies, and a proper mythology section once the story hardens.
+              </p>
+            </article>
+
+            <article class="signal-card placeholder">
+              <p class="card-kicker">Path 02</p>
+              <h3 class="section-title" style="font-size:1.45rem;">Book Signal</h3>
+              <p class="card-copy">
+                A launch point for novels, installments, or future episodes connected to this channel.
+              </p>
+            </article>
+
+            <article class="signal-card placeholder">
+              <p class="card-kicker">Path 03</p>
+              <h3 class="section-title" style="font-size:1.45rem;">Artifacts</h3>
+              <p class="card-copy">
+                Posters, symbols, relics, or future merch once the visual language is more fully locked.
+              </p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div>Systema Obscura Archive</div>
+      <a class="return-link" href="index.html">Return to Main Signal</a>
+    </footer>
+  </main>
+</body>
+</html>
