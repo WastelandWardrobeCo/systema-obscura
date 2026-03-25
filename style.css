@@ -1544,3 +1544,11 @@ nav a[href*="youtube"]::after {
   line-height: 1.55;
 }
 }
+@keyframes pulseGlow {
+  0%, 100% { filter: drop-shadow(0 0 6px rgba(255,138,28,0.15)); }
+  50% { filter: drop-shadow(0 0 16px rgba(255,138,28,0.35)); }
+}
+
+.artifact-card img[src*="fracture"] {
+  animation: pulseGlow 3.5s ease-in-out infinite;
+}
