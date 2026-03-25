@@ -1513,34 +1513,34 @@ nav a[href*="youtube"]::after {
 
 @media (min-width: 900px) {
 
-  .host-broadcast.wrap {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: -480px; /* move slightly higher */
-    margin-bottom: 20px;
-  }
+.host-broadcast.wrap {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
 
 .host-grid {
   display: grid;
   grid-template-columns: 340px 1fr;
   gap: 40px;
-  max-width: 100%;
+  max-width: 760px;
+  align-items: center;
 }
 
-  .host-visual {
-    max-width: 340px; /* slightly smaller image */
-  }
+.host-visual {
+  max-width: 340px;
+}
 
-  .host-copy h2 {
-    font-size: 1.6rem;
-    line-height: 1.2;
-  }
+.host-copy {
+  max-width: 360px;
+}
 
-  .host-copy p {
-    font-size: 0.9rem;
-    line-height: 1.45;
-  }
-  .host-copy {
-  max-width: 520px;
+.host-copy h2 {
+  line-height: 1.15;
+}
+
+.host-copy p {
+  line-height: 1.55;
 }
 }
