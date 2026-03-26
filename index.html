@@ -66,6 +66,96 @@
       background-position: center;
       background-repeat: no-repeat;
     }
+
+
+    /* Quick conversion upgrades */
+    .hero-scroll-note {
+      margin-top: 12px;
+      opacity: 0.72;
+      font-size: 0.86rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .featured-strip {
+      padding-top: 8px;
+      padding-bottom: 18px;
+    }
+
+    .featured-strip .section-kicker,
+    .featured-strip h2 {
+      text-align: center;
+    }
+
+    .featured-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .featured-item {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .featured-item:hover,
+    .channel-card:hover {
+      opacity: 0.9;
+      transform: translateY(-3px) scale(1.015);
+    }
+
+    .featured-visual {
+      aspect-ratio: 1 / 1;
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 10px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.04);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.22);
+    }
+
+    .featured-visual .screen {
+      height: 100%;
+    }
+
+    .featured-copy {
+      padding: 10px 6px 0;
+      text-align: center;
+    }
+
+    .featured-copy h3 {
+      margin: 0 0 4px;
+      font-size: 0.95rem;
+      letter-spacing: 0.06em;
+    }
+
+    .featured-copy p {
+      margin: 0;
+      opacity: 0.8;
+      font-size: 0.82rem;
+      line-height: 1.4;
+    }
+
+    .channel-card.priority-channel {
+      transform: scale(1.03);
+      border: 1px solid rgba(255,255,255,0.28);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.28);
+    }
+
+    @media (max-width: 900px) {
+      .featured-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 560px) {
+      .featured-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -98,6 +188,7 @@
         </a>
         <a href="sop.html" class="btn btn-secondary">READ A STORY</a>
       </div>
+      <p class="hero-scroll-note">Or jump straight into the featured picks and shops below.</p>
 
       <div class="main-terminal crt reveal">
         <div class="terminal-topbar">
@@ -115,6 +206,67 @@
             <p>Books to read. Designs to own. Worlds to explore.</p>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section class="featured-strip wrap reveal" id="featured-strip">
+      <div class="section-head reveal">
+        <p class="section-kicker">FEATURED DESIGNS</p>
+        <h2>Start with the good stuff.</h2>
+      </div>
+
+      <div class="featured-grid">
+        <a class="featured-item" href="https://wastelandwardrobeco.etsy.com" target="_blank">
+          <div class="featured-visual crt">
+            <div class="screen">
+              <div class="channel-scene scene-wwc"></div>
+              <div class="scanlines"></div>
+            </div>
+          </div>
+          <div class="featured-copy">
+            <h3>Shop Wasteland Gear</h3>
+            <p>Post-apocalyptic designs, rugs, posters, and collectibles.</p>
+          </div>
+        </a>
+
+        <a class="featured-item" href="https://atomicamericana.etsy.com" target="_blank">
+          <div class="featured-visual crt">
+            <div class="screen">
+              <div class="channel-scene scene-aa"></div>
+              <div class="scanlines"></div>
+            </div>
+          </div>
+          <div class="featured-copy">
+            <h3>Shop Retro Americana</h3>
+            <p>Roadside nostalgia, mid-century mood, and collectible travel-inspired goods.</p>
+          </div>
+        </a>
+
+        <a class="featured-item" href="sop.html">
+          <div class="featured-visual crt">
+            <div class="screen">
+              <div class="channel-scene scene-sop"></div>
+              <div class="scanlines"></div>
+            </div>
+          </div>
+          <div class="featured-copy">
+            <h3>Read Dark Stories</h3>
+            <p>Stand-alone episodes, psychological turns, and strange fiction worth opening.</p>
+          </div>
+        </a>
+
+        <a class="featured-item" href="wraith.html">
+          <div class="featured-visual crt">
+            <div class="screen">
+              <div class="channel-scene scene-wraith"></div>
+              <div class="scanlines"></div>
+            </div>
+          </div>
+          <div class="featured-copy">
+            <h3>Enter the Wraith</h3>
+            <p>Step into the story, the myth, and the growing Wraith world.</p>
+          </div>
+        </a>
       </div>
     </section>
 
@@ -194,7 +346,7 @@
           </div>
         </a>
 
-        <a class="channel-card crt reveal" href="https://wastelandwardrobeco.etsy.com" target="_blank">
+        <a class="channel-card crt reveal priority-channel" href="https://wastelandwardrobeco.etsy.com" target="_blank">
           <div class="screen">
             <div class="channel-scene scene-wwc"></div>
             <div class="scanlines"></div>
@@ -342,26 +494,5 @@
 
   <script src="script.js"></script>
   <div class="signal-lock" id="signalLock"></div>
-
-<a href="books.html" class="secret-books-link">?</a>
-
-<style>
-.secret-books-link {
-  position: fixed;
-  bottom: 12px;
-  right: 12px;
-  font-size: 12px;
-  color: rgba(255,255,255,0.25);
-  text-decoration: none;
-  z-index: 9999;
-  transition: all 0.2s ease;
-}
-
-.secret-books-link:hover {
-  color: rgba(255,255,255,0.6);
-  transform: scale(1.2);
-}
-</style>
-  
 </body>
 </html>
