@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Systema Obscura Agent Widget</title>
+  <style>
+    :root {
+      --so-bg: rgba(10, 12, 16, 0.94);
+      --so-panel: rgba(15, 18, 24, 0.98);
+      --so-border: rgba(255, 255, 255, 0.08);
+      --so-text: #e8edf5;
+      --so-muted: #9ca7ba;
+      --so-accent: #b81f2d;
+      --so-accent-soft: rgba(184, 31, 45, 0.18);
+      --so-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+      --so-radius: 18px;
+      --so-radius-sm: 12px;
+      --so-font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--so-font);
+      background:
+        radial-gradient(circle at top, rgba(184, 31, 45, 0.08), transparent 32%),
+        linear-gradient(180deg, #090b0f 0%, #0c1016 100%);
+      color: var(--so-text);
+      min-height: 100vh;
+      padding: 48px 20px;
+    }
+
+    .demo-copy {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px;
+      color: var(--so-muted);
+      line-height: 1.7;
+    }
+
+    .so-agent-launcher {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 9998;
+      width: 72px;
+      height: 72px;
+      border-radius: 999px;
+      border: 1px solid var(--so-border);
+      background: linear-gradient(180deg, rgba(27, 31, 40, 0.98), rgba(10, 12, 16, 0.98));
+      box-shadow: var(--so-shadow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .so-agent-launcher:hover,
+    .so-agent-launcher:focus-visible {
+      transform: translateY(-2px) scale(1.02);
+      border-color: rgba(184, 31, 45, 0.5);
+      box-shadow: 0 18px 55px rgba(0, 0, 0, 0.55);
+      outline: none;
+    }
+
+    .so-agent-launcher img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .so-agent-pulse {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      box-shadow: 0 0 0 0 rgba(184, 31, 45, 0.25);
+      animation: soPulse 2.8s infinite;
+      pointer-events: none;
+    }
+
+    @keyframes soPulse {
+      0% { box-shadow: 0 0 0 0 rgba(184, 31, 45, 0.28); }
+      70% { box-shadow: 0 0 0 16px rgba(184, 31, 45, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(184, 31, 45, 0); }
+    }
+
+    .so-agent {
+      position: fixed;
+      right: 20px;
+      bottom: 104px;
+      width: min(380px, calc(100vw - 24px));
+      max-height: min(680px, calc(100vh - 132px));
+      z-index: 9999;
+      border-radius: var(--so-radius);
+      border: 1px solid var(--so-border);
+      background:
+        repeating-linear-gradient(
+          180deg,
+          rgba(255,255,255,0.015) 0px,
+          rgba(255,255,255,0.015) 1px,
+          transparent 1px,
+          transparent 3px
+        ),
+        linear-gradient(180deg, rgba(16, 19, 26, 0.98), rgba(8, 10, 14, 0.98));
+      box-shadow: var(--so-shadow);
+      overflow: hidden;
+      transform: translateY(16px) scale(0.98);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      backdrop-filter: blur(8px);
+    }
+
+    .so-agent.is-open {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .so-agent-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 16px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0));
+    }
+
+    .so-agent-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      object-fit: cover;
+      border: 1px solid rgba(255,255,255,0.08);
+      flex-shrink: 0;
+      background: #0e1116;
+    }
+
+    .so-agent-title-wrap {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .so-agent-kicker {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--so-muted);
+      margin-bottom: 4px;
+    }
+
+    .so-agent-title {
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--so-text);
+      margin: 0;
+    }
+
+    .so-agent-subtitle {
+      font-size: 0.86rem;
+      color: var(--so-muted);
+      margin-top: 4px;
+      line-height: 1.35;
+    }
+
+    .so-agent-close {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      color: var(--so-text);
+      font-size: 1rem;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .so-agent-close:hover,
+    .so-agent-close:focus-visible {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(184, 31, 45, 0.45);
+      outline: none;
+    }
+
+    .so-agent-body {
+      padding: 16px;
+    }
+
+    .so-agent-message {
+      margin: 0 0 16px;
+      font-size: 0.98rem;
+      line-height: 1.5;
+      color: var(--so-text);
+    }
+
+    .so-agent-buttons {
+      display: grid;
+      gap: 10px;
+    }
+
+    .so-agent-btn {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      width: 100%;
+      text-decoration: none;
+      color: var(--so-text);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--so-radius-sm);
+      padding: 14px 14px;
+      min-height: 54px;
+      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    }
+
+    .so-agent-btn:hover,
+    .so-agent-btn:focus-visible {
+      transform: translateY(-1px);
+      border-color: rgba(184, 31, 45, 0.45);
+      background: linear-gradient(180deg, rgba(184, 31, 45, 0.14), rgba(255,255,255,0.02));
+      outline: none;
+    }
+
+    .so-agent-btn-text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+      gap: 3px;
+      min-width: 0;
+    }
+
+    .so-agent-btn-label {
+      font-size: 0.96rem;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .so-agent-btn-note {
+      font-size: 0.8rem;
+      color: var(--so-muted);
+      line-height: 1.3;
+    }
+
+    .so-agent-btn-primary {
+      border-color: rgba(184, 31, 45, 0.32);
+      background: linear-gradient(180deg, rgba(184, 31, 45, 0.18), rgba(255,255,255,0.02));
+    }
+
+    .so-agent-btn-primary::before {
+      content: "Recommended";
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      font-size: 0.64rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #f0c3c7;
+    }
+
+    .so-agent-btn-arrow {
+      font-size: 1.1rem;
+      color: var(--so-muted);
+      flex-shrink: 0;
+    }
+
+    .so-agent-footer {
+      padding: 0 16px 16px;
+      color: var(--so-muted);
+      font-size: 0.78rem;
+      line-height: 1.4;
+    }
+
+    .so-agent-minimize {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      color: var(--so-muted);
+      border: none;
+      padding: 0;
+      font: inherit;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+
+    .so-agent-minimize:hover,
+    .so-agent-minimize:focus-visible {
+      color: var(--so-text);
+      outline: none;
+    }
+
+    .so-agent-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--so-muted);
+    }
+
+    .so-agent-badge::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--so-accent);
+      box-shadow: 0 0 12px rgba(184, 31, 45, 0.75);
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 24px 14px;
+      }
+
+      .so-agent-launcher {
+        right: 14px;
+        bottom: 14px;
+        width: 64px;
+        height: 64px;
+      }
+
+      .so-agent {
+        right: 12px;
+        left: 12px;
+        bottom: 88px;
+        width: auto;
+        max-height: min(72vh, calc(100vh - 112px));
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-copy">
+    <h1>Systema Obscura Widget Demo</h1>
+    <p>
+      This file is a self-contained Version 1 website agent. Replace the placeholder links and avatar image,
+      then drop the widget markup, CSS, and script into your site.
+    </p>
+    <p>
+      It is built to stay compact, feel native to the site, and move visitors toward books, products, and featured content.
+    </p>
+  </div>
+
+  <button
+    class="so-agent-launcher"
+    id="soAgentLauncher"
+    aria-label="Open Systema Obscura guide"
+    aria-expanded="false"
+    aria-controls="soAgentPanel"
+    type="button"
+  >
+    <span class="so-agent-pulse" aria-hidden="true"></span>
+    <img src="so-host-master-bust.png" alt="Systema Obscura host avatar" />
+  </button>
+
+  <aside class="so-agent" id="soAgentPanel" aria-hidden="true">
+    <div class="so-agent-header">
+      <img class="so-agent-avatar" src="so-host-master-bust.png" alt="Systema Obscura host avatar" />
+      <div class="so-agent-title-wrap">
+        <div class="so-agent-kicker">Signal Guide</div>
+        <h2 class="so-agent-title">Systema Obscura</h2>
+        <div class="so-agent-subtitle">Start here. I can point you in the right direction.</div>
+      </div>
+      <button class="so-agent-close" id="soAgentClose" type="button" aria-label="Close guide">✕</button>
+    </div>
+
+    <div class="so-agent-body">
+      <div class="so-agent-badge">Active channel</div>
+      <p class="so-agent-message">Welcome to Systema Obscura. Where would you like to go?</p>
+
+      <div class="so-agent-buttons">
+        <a class="so-agent-btn so-agent-btn-primary" href="https://www.etsy.com/shop/WastelandWardrobeCo" target="_blank" rel="noopener" data-destination="Shop Products">
+          <span class="so-agent-btn-text">
+            <span class="so-agent-btn-label">Shop Products</span>
+            <span class="so-agent-btn-note">Best first stop for products and proven buying paths.</span>
+          </span>
+          <span class="so-agent-btn-arrow" aria-hidden="true">→</span>
+        </a>
+
+        <a class="so-agent-btn" href="https://systemaobscura.co/books" target="_blank" rel="noopener" data-destination="Browse Books">
+          <span class="so-agent-btn-text">
+            <span class="so-agent-btn-label">Browse Books</span>
+            <span class="so-agent-btn-note">Books, episodes, and story worlds in one place.</span>
+          </span>
+          <span class="so-agent-btn-arrow" aria-hidden="true">→</span>
+        </a>
+
+        <a class="so-agent-btn" href="https://www.etsy.com/shop/AtomicAmericana" target="_blank" rel="noopener" data-destination="Atomic Americana">
+          <span class="so-agent-btn-text">
+            <span class="so-agent-btn-label">Enter Atomic Americana</span>
+            <span class="so-agent-btn-note">Retro roadside worlds, travel nostalgia, and Americana.</span>
+          </span>
+          <span class="so-agent-btn-arrow" aria-hidden="true">→</span>
+        </a>
+
+        <a class="so-agent-btn" href="https://www.etsy.com/shop/WastelandWardrobeCo" target="_blank" rel="noopener" data-destination="Wasteland Wardrobe Co.">
+          <span class="so-agent-btn-text">
+            <span class="so-agent-btn-label">Visit Wasteland Wardrobe Co.</span>
+            <span class="so-agent-btn-note">Your established shop with the strongest trust signal.</span>
+          </span>
+          <span class="so-agent-btn-arrow" aria-hidden="true">→</span>
+        </a>
+
+        <a class="so-agent-btn" href="https://systemaobscura.co/sop" target="_blank" rel="noopener" data-destination="Featured Content">
+          <span class="so-agent-btn-text">
+            <span class="so-agent-btn-label">Start with Featured Content</span>
+            <span class="so-agent-btn-note">A guided entry point for first-time visitors.</span>
+          </span>
+          <span class="so-agent-btn-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="so-agent-footer">
+      <div>Compact by design. Built to guide visitors toward the strongest parts of the signal.</div>
+      <button class="so-agent-minimize" id="soAgentMinimize" type="button">Minimize guide</button>
+    </div>
+  </aside>
+
+  <script>
+    (function () {
+      const launcher = document.getElementById('soAgentLauncher');
+      const panel = document.getElementById('soAgentPanel');
+      const closeBtn = document.getElementById('soAgentClose');
+      const minimizeBtn = document.getElementById('soAgentMinimize');
+      const buttons = panel.querySelectorAll('[data-destination]');
+
+      const STORAGE_KEY = 'systema-obscura-agent-dismissed';
+      const CLICK_KEY = 'systema-obscura-agent-click-log';
+      const AUTO_OPEN_DELAY = 1600;
+
+      function openPanel() {
+        panel.classList.add('is-open');
+        panel.setAttribute('aria-hidden', 'false');
+        launcher.setAttribute('aria-expanded', 'true');
+      }
+
+      function closePanel(remember = false) {
+        panel.classList.remove('is-open');
+        panel.setAttribute('aria-hidden', 'true');
+        launcher.setAttribute('aria-expanded', 'false');
+        if (remember) {
+          localStorage.setItem(STORAGE_KEY, 'true');
+        }
+      }
+
+      function togglePanel() {
+        const isOpen = panel.classList.contains('is-open');
+        if (isOpen) {
+          closePanel();
+        } else {
+          openPanel();
+        }
+      }
+
+      launcher.addEventListener('click', togglePanel);
+      closeBtn.addEventListener('click', function () {
+        closePanel(true);
+      });
+      minimizeBtn.addEventListener('click', function () {
+        closePanel(true);
+      });
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+          closePanel();
+        }
+      });
+
+      buttons.forEach(function (button) {
+        button.addEventListener('click', function () {
+          const destination = button.getAttribute('data-destination');
+          const currentLog = JSON.parse(localStorage.getItem(CLICK_KEY) || '[]');
+          currentLog.push({ destination, time: new Date().toISOString() });
+          localStorage.setItem(CLICK_KEY, JSON.stringify(currentLog));
+          console.log('[Systema Obscura Agent] Routed to:', destination);
+        });
+      });
+
+      const dismissed = localStorage.getItem(STORAGE_KEY) === 'true';
+      if (!dismissed) {
+        window.setTimeout(openPanel, AUTO_OPEN_DELAY);
+      }
+    })();
+  </script>
+</body>
+</html>
