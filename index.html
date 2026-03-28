@@ -801,7 +801,7 @@
 
     <div class="so-agent-body">
       <div class="so-agent-badge">Active channel</div>
-<p class="so-agent-message" id="soAgentMessage">Welcome to Systema Obscura. Where would you like to go?</p>
+<p class="so-agent-message" id="soAgentMessage">Are you here for products or stories?</p>
 
       <div class="so-agent-buttons">
         <a class="so-agent-btn so-agent-btn-primary" href="https://www.etsy.com/shop/WastelandWardrobeCo" target="_blank" rel="noopener" data-destination="Shop Products">
@@ -862,14 +862,21 @@
     const CLICK_KEY = 'systema-obscura-agent-click-log';
     const AUTO_OPEN_DELAY = 1600;
 
-    function openPanel() {
-      if (message) {
-        window.clearTimeout(message._swapTimer);
-        message.textContent = 'Welcome to Systema Obscura. Where would you like to go?';
+function openPanel() {
+  if (message) {
+    window.clearTimeout(message._swapTimer);
 
-        message._swapTimer = window.setTimeout(function () {
-          message.textContent = 'Looking for something specific?';
-        }, 3000);
+    message.textContent = 'Are you here for products or stories?';
+
+    message._swapTimer = window.setTimeout(function () {
+      message.textContent = 'Most visitors start with products or books.';
+    }, 2800);
+  }
+
+  panel.classList.add('is-open');
+  panel.setAttribute('aria-hidden', 'false');
+  launcher.setAttribute('aria-expanded', 'true');
+}
       }
 
       panel.classList.add('is-open');
