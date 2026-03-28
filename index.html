@@ -803,7 +803,7 @@
 
     <div class="so-agent-body">
       <div class="so-agent-badge">Active channel</div>
-      <p class="so-agent-message" id="soAgentMessage">Products or stories? I can point you the right way.</p>
+      <p class="so-agent-message" id="soAgentMessage">Stories… or artifacts. Choose your entry point.</p>
 
       <div class="so-agent-buttons">
         <a class="so-agent-btn so-agent-btn-primary" href="https://www.etsy.com/shop/WastelandWardrobeCo" target="_blank" rel="noopener" data-destination="Shop Products">
@@ -877,18 +877,18 @@
 
   function getAdaptiveMessage() {
     if (visits > 2) {
-      return "Welcome back. Most visitors go straight to products or books.";
+      return "Signal guide online. You can start with the strongest path.";
     }
 
     if (hour >= 22 || hour < 5) {
-      return "Still awake? Let’s make this easy.";
+      return "The signal is still active. Choose your entry point.";
     }
 
     if (hour < 12) {
-      return "Looking for something specific?";
+      return "Not everything needs exploring. Start where it matters.";
     }
 
-    return "Products or stories? I can point you the right way.";
+    return "Stories… or artifacts. Choose your entry point.";
   }
 
   function openPanel() {
@@ -897,7 +897,7 @@
       message.textContent = getAdaptiveMessage();
 
       message._swapTimer = window.setTimeout(function () {
-        message.textContent = "Start with products or books. That’s where most people begin.";
+        message.textContent = "Most people start with the strongest signal. You can too.";
       }, 3000);
     }
 
