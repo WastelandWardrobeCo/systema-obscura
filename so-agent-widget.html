@@ -431,82 +431,72 @@
     </div>
   </aside>
 
-  <script>
-    (function () {
-      const launcher = document.getElementById('soAgentLauncher');
-      const panel = document.getElementById('soAgentPanel');
-      const closeBtn = document.getElementById('soAgentClose');
-      const minimizeBtn = document.getElementById('soAgentMinimize');
-      const message = document.getElementById('soAgentMessage');
-      const buttons = panel.querySelectorAll('[data-destination]');
+<script>
+(function () {
+  const launcher = document.getElementById('soAgentLauncher');
+  const panel = document.getElementById('soAgentPanel');
+  const closeBtn = document.getElementById('soAgentClose');
+  const minimizeBtn = document.getElementById('soAgentMinimize');
+  const message = document.getElementById('soAgentMessage');
+  const buttons = panel.querySelectorAll('[data-destination]');
 
-      const STORAGE_KEY = 'systema-obscura-agent-dismissed';
-      const CLICK_KEY = 'systema-obscura-agent-click-log';
-      const AUTO_OPEN_DELAY = 1600;
+  const STORAGE_KEY = 'systema-obscura-agent-dismissed';
+  const CLICK_KEY = 'systema-obscura-agent-click-log';
+  const AUTO_OPEN_DELAY = 1600;
 
-      function openPanel() {
-        if (message) {
-          window.clearTimeout(message._swapTimer);
-          message.textContent = 'Welcome to Systema Obscura. Where would you like to go?';
-          message._swapTimer = window.setTimeout(function () {
-            message.textContent = 'Looking for something specific?';
-          }, 3000);
-        }
-        panel.classList.add('is-open');
-        panel.setAttribute('aria-hidden', 'false');
-        launcher.setAttribute('aria-expanded', 'true');
-      }
+  function openPanel() {
+    if (message) {
+      window.clearTimeout(message._swapTimer);
+      message.textContent = 'Welcome to Systema Obscura. Where would you like to go?';
 
-      function closePanel(remember = false) {
-        if (message && message._swapTimer) {
-          window.clearTimeout(message._swapTimer);
-        }
-        panel.classList.remove('is-open');
-        panel.setAttribute('aria-hidden', 'true');
-        launcher.setAttribute('aria-expanded', 'false');
-        if (remember) {
-          localStorage.setItem(STORAGE_KEY, 'true');
-        }
-      }
+      message._swapTimer = setTimeout(function () {
+        message.textContent = 'Looking for something specific?';
+      }, 3000);
+    }
 
-      function togglePanel() {
-        const isOpen = panel.classList.contains('is-open');
-        if (isOpen) {
-          closePanel();
-        } else {
-          openPanel();
-        }
-      }
+    panel.classList.add('is-open');
+    panel.setAttribute('aria-hidden', 'false');
+    launcher.setAttribute('aria-expanded', 'true');
+  }
 
-      launcher.addEventListener('click', togglePanel);
-      closeBtn.addEventListener('click', function () {
-        closePanel(true);
-      });
-      minimizeBtn.addEventListener('click', function () {
-        closePanel(true);
-      });
+  function closePanel(remember = false) {
+    if (message && message._swapTimer) {
+      clearTimeout(message._swapTimer);
+    }
 
-      document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape') {
-          closePanel();
-        }
-      });
+    panel.classList.remove('is-open');
+    panel.setAttribute('aria-hidden', 'true');
+    launcher.setAttribute('aria-expanded', 'false');
 
-      buttons.forEach(function (button) {
-        button.addEventListener('click', function () {
-          const destination = button.getAttribute('data-destination');
-          const currentLog = JSON.parse(localStorage.getItem(CLICK_KEY) || '[]');
-          currentLog.push({ destination, time: new Date().toISOString() });
-          localStorage.setItem(CLICK_KEY, JSON.stringify(currentLog));
-          console.log('[Systema Obscura Agent] Routed to:', destination);
-        });
-      });
+    if (remember) {
+      localStorage.setItem(STORAGE_KEY, 'true');
+    }
+  }
 
-      const dismissed = localStorage.getItem(STORAGE_KEY) === 'true';
-      if (!dismissed) {
-        window.setTimeout(openPanel, AUTO_OPEN_DELAY);
-      }
-    })();
-  </script>
+  function togglePanel() {
+    panel.classList.toggle('is-open');
+  }
+
+  launcher.addEventListener('click', togglePanel);
+  closeBtn.addEventListener('click', () => closePanel(true));
+  minimizeBtn.addEventListener('click', () => closePanel(true));
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const destination = btn.getAttribute('data-destination');
+      const log = JSON.parse(localStorage.getItem(CLICK_KEY) || '[]');
+      log.push({ destination, time: new Date().toISOString() });
+      localStorage.setItem(CLICK_KEY, JSON.stringify(log));
+    });
+  });
+
+  if (!localStorage.getItem(STORAGE_KEY)) {
+    setTimeout(openPanel, AUTO_OPEN_DELAY);
+  }
+})();
+</script>
+  
+      closePanel(true);
+
 </body>
 </html>
