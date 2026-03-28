@@ -1550,7 +1550,7 @@ nav a[href*="youtube"]::after {
 }
 
 .artifact-card img[src*="fracture"] {
-  animation: pulseGlow 3.5s ease-in-out infinite;
+animation: soPulse 2.2s 1;
 }
 JSON.parse(localStorage.getItem('systema-obscura-agent-click-log'))
 object-position: center 30%;
