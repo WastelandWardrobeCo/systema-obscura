@@ -3,8 +3,160 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Systema Obscura Agent Widget</title>
+  <title>Systema Obscura</title>
+  <meta name="description" content="Stories, worlds, and designs you can own from Systema Obscura." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
   <style>
+    /* Channel tile image overrides */
+    .scene-books {
+      background-image: url("./assets/tiles/books-tile.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .scene-aa {
+      background-image: url("./assets/tiles/atomic-americana-tile.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .scene-wwc {
+      background-image: url("./assets/tiles/wwc-tile.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .scene-sop {
+      background-image: url("./assets/tiles/sop-tile.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .scene-wraith {
+      background-image: url("./assets/wraith-tile.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .scene-lady {
+      background-image: url("./assets/lady-tile.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .scene-audio {
+      background-image: url("./assets/audio-tile.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .scene-experiments {
+      background-image: url("./assets/experiments-tile.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+
+    /* Quick conversion upgrades */
+    .hero-scroll-note {
+      margin-top: 12px;
+      opacity: 0.72;
+      font-size: 0.86rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .featured-strip {
+      padding-top: 8px;
+      padding-bottom: 18px;
+    }
+
+    .featured-strip .section-kicker,
+    .featured-strip h2 {
+      text-align: center;
+    }
+
+    .featured-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .featured-item {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .featured-item:hover,
+    .channel-card:hover {
+      opacity: 0.9;
+      transform: translateY(-3px) scale(1.015);
+    }
+
+    .featured-visual {
+      aspect-ratio: 1 / 1;
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 10px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.04);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.22);
+    }
+
+    .featured-visual .screen {
+      height: 100%;
+    }
+
+    .featured-copy {
+      padding: 10px 6px 0;
+      text-align: center;
+    }
+
+    .featured-copy h3 {
+      margin: 0 0 4px;
+      font-size: 0.95rem;
+      letter-spacing: 0.06em;
+    }
+
+    .featured-copy p {
+      margin: 0;
+      opacity: 0.8;
+      font-size: 0.82rem;
+      line-height: 1.4;
+    }
+
+    .channel-card.priority-channel {
+      transform: scale(1.03);
+      border: 1px solid rgba(255,255,255,0.28);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.28);
+    }
+
+    @media (max-width: 900px) {
+      .featured-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 560px) {
+      .featured-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ===== Systema Obscura Agent ===== */
     :root {
       --so-bg: rgba(10, 12, 16, 0.94);
       --so-panel: rgba(15, 18, 24, 0.98);
@@ -17,29 +169,6 @@
       --so-radius: 18px;
       --so-radius-sm: 12px;
       --so-font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: var(--so-font);
-      background:
-        radial-gradient(circle at top, rgba(184, 31, 45, 0.08), transparent 32%),
-        linear-gradient(180deg, #090b0f 0%, #0c1016 100%);
-      color: var(--so-text);
-      min-height: 100vh;
-      padding: 48px 20px;
-    }
-
-    .demo-copy {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 24px;
-      color: var(--so-muted);
-      line-height: 1.7;
     }
 
     .so-agent-launcher {
@@ -81,7 +210,7 @@
       inset: 0;
       border-radius: inherit;
       box-shadow: 0 0 0 0 rgba(184, 31, 45, 0.25);
-      animation: soPulse 2.2s 1;
+      animation: soPulse 2.8s infinite;
       pointer-events: none;
     }
 
@@ -322,10 +451,6 @@
     }
 
     @media (max-width: 640px) {
-      body {
-        padding: 24px 14px;
-      }
-
       .so-agent-launcher {
         right: 14px;
         bottom: 14px;
@@ -341,19 +466,315 @@
         max-height: min(72vh, calc(100vh - 112px));
       }
     }
+
   </style>
 </head>
 <body>
-  <div class="demo-copy">
-    <h1>Systema Obscura Widget Demo</h1>
-    <p>
-      This file is a self-contained Version 1 website agent. Replace the placeholder links and avatar image,
-      then drop the widget markup, CSS, and script into your site.
-    </p>
-    <p>
-      It is built to stay compact, feel native to the site, and move visitors toward books, products, and featured content.
-    </p>
-  </div>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <a href="#" class="brand">SYSTEMA OBSCURA</a>
+    <nav class="nav">
+      <a href="#signal">Home</a>
+      <a href="#channels">Explore</a>
+      <a href="https://www.youtube.com/@TheSafeBunker" target="_blank">LIVE SIGNAL</a>
+      <a href="#artifacts">Featured</a>
+      <a href="#status">Status</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero wrap" id="signal">
+      <div class="eyebrow">SYSTEMA OBSCURA</div>
+      <h1>STORIES. WORLDS.<br />DESIGNS YOU CAN OWN.</h1>
+      <p class="hero-copy">
+        Explore dark fiction, collectible artwork, immersive shops, and strange worlds built for people who love the retro, the cinematic, and the unforgettable.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#channels" class="btn btn-primary">
+          <span>EXPLORE THE COLLECTION</span>
+          <small>BOOKS // SHOPS // WORLDS // SIGNALS</small>
+        </a>
+        <a href="sop.html" class="btn btn-secondary">READ A STORY</a>
+      </div>
+      <p class="hero-scroll-note">Or jump straight into the featured picks and shops below.</p>
+
+      <div class="main-terminal crt reveal">
+        <div class="terminal-topbar">
+          <span class="seal">✦</span>
+          <span class="terminal-label">PRIMARY ARCHIVE TERMINAL</span>
+          <span class="live-dot"></span>
+        </div>
+        <div class="screen hero-screen">
+          <div class="screen-image">
+            <div class="mountains"></div>
+            <div class="fog"></div>
+            <div class="scanlines"></div>
+          </div>
+          <div class="screen-overlay">
+            <p>Books to read. Designs to own. Worlds to explore.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="featured-strip wrap reveal" id="featured-strip">
+      <div class="section-head reveal">
+        <p class="section-kicker">FEATURED DESIGNS</p>
+        <h2>Start with the good stuff.</h2>
+      </div>
+
+      <div class="featured-grid">
+        <a class="featured-item" href="https://wastelandwardrobeco.etsy.com" target="_blank">
+          <div class="featured-visual crt">
+            <div class="screen">
+              <div class="channel-scene scene-wwc"></div>
+              <div class="scanlines"></div>
+            </div>
+          </div>
+          <div class="featured-copy">
+            <h3>Shop Wasteland Gear</h3>
+            <p>Post-apocalyptic designs, rugs, posters, and collectibles.</p>
+          </div>
+        </a>
+
+        <a class="featured-item" href="https://atomicamericana.etsy.com" target="_blank">
+          <div class="featured-visual crt">
+            <div class="screen">
+              <div class="channel-scene scene-aa"></div>
+              <div class="scanlines"></div>
+            </div>
+          </div>
+          <div class="featured-copy">
+            <h3>Shop Retro Americana</h3>
+            <p>Roadside nostalgia, mid-century mood, and collectible travel-inspired goods.</p>
+          </div>
+        </a>
+
+        <a class="featured-item" href="sop.html">
+          <div class="featured-visual crt">
+            <div class="screen">
+              <div class="channel-scene scene-sop"></div>
+              <div class="scanlines"></div>
+            </div>
+          </div>
+          <div class="featured-copy">
+            <h3>Read Dark Stories</h3>
+            <p>Stand-alone episodes, psychological turns, and strange fiction worth opening.</p>
+          </div>
+        </a>
+
+        <a class="featured-item" href="wraith.html">
+          <div class="featured-visual crt">
+            <div class="screen">
+              <div class="channel-scene scene-wraith"></div>
+              <div class="scanlines"></div>
+            </div>
+          </div>
+          <div class="featured-copy">
+            <h3>Enter the Wraith</h3>
+            <p>Step into the story, the myth, and the growing Wraith world.</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="statement wrap reveal">
+      <div class="statement-rule"></div>
+      <p>Original fiction, collectible design, and expanding worlds from Systema Obscura.</p>
+      <div class="statement-rule"></div>
+    </section>
+
+    <section class="channels wrap" id="channels">
+      <div class="section-head reveal">
+        <p class="section-kicker">COLLECTION DIRECTORY</p>
+        <h2>Choose where to begin.</h2>
+      </div>
+
+      <div class="channel-grid">
+        <a class="channel-card crt reveal active-channel" href="sop.html">
+          <div class="screen">
+            <div class="channel-scene scene-sop"></div>
+            <div class="scanlines"></div>
+          </div>
+          <div class="channel-copy">
+            <h3>READ DARK STORIES</h3>
+            <p>Psychological fiction, stand-alone episodes, and unsettling turns.</p>
+          </div>
+        </a>
+
+        <a class="channel-card crt reveal" href="https://www.amazon.com/author/davidmcneal" target="_blank">
+          <div class="screen">
+            <div class="channel-scene scene-books"></div>
+            <div class="scanlines"></div>
+          </div>
+          <div class="channel-copy">
+            <h3>BOOKS &amp; FICTION</h3>
+            <p>Novels, episodes, worlds, and narrative experiments.</p>
+          </div>
+        </a>
+
+        <a class="channel-card crt reveal" href="https://atomicamericana.etsy.com" target="_blank">
+          <div class="screen">
+            <div class="channel-scene scene-aa"></div>
+            <div class="scanlines"></div>
+          </div>
+          <div class="channel-copy">
+            <h3>SHOP RETRO AMERICANA</h3>
+            <p>Mid-century travel vibes, roadside nostalgia, and retro-inspired goods.</p>
+          </div>
+        </a>
+
+        <a class="channel-card crt reveal priority-channel" href="https://wastelandwardrobeco.etsy.com" target="_blank">
+          <div class="screen">
+            <div class="channel-scene scene-wwc"></div>
+            <div class="scanlines"></div>
+          </div>
+          <div class="channel-copy">
+            <h3>SHOP WASTELAND GEAR</h3>
+            <p>Post-apocalyptic designs, rugs, posters, and collectibles.</p>
+          </div>
+        </a>
+
+        <a class="channel-card crt reveal" href="wraith.html">
+          <div class="screen">
+            <div class="channel-scene scene-wraith"></div>
+            <div class="scanlines"></div>
+          </div>
+          <div class="channel-copy">
+            <h3>ENTER THE WRAITH</h3>
+            <p>Step into the world of the Wraith, the story, and the artifacts.</p>
+          </div>
+        </a>
+
+        <a class="channel-card crt reveal" href="lady-delilah.html">
+          <div class="screen">
+            <div class="channel-scene scene-lady"></div>
+            <div class="scanlines"></div>
+          </div>
+          <div class="channel-copy">
+            <h3>COMING SOON</h3>
+            <p>A new corner of the world is taking shape.</p>
+          </div>
+        </a>
+
+        <a class="channel-card crt reveal" href="#signal">
+          <div class="screen">
+            <div class="channel-scene scene-audio"></div>
+            <div class="scanlines"></div>
+          </div>
+          <div class="channel-copy">
+            <h3>COMING SOON</h3>
+            <p>Signals, sound, and strange transmissions are on the way.</p>
+          </div>
+        </a>
+
+        <a class="channel-card crt reveal" href="#signal">
+          <div class="screen">
+            <div class="channel-scene scene-experiments"></div>
+            <div class="scanlines"></div>
+          </div>
+          <div class="channel-copy">
+            <h3>COMING SOON</h3>
+            <p>Interactive ideas and future oddities in development.</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="broadcast wrap" id="broadcast">
+      <div class="section-head reveal">
+        <p class="section-kicker">PRIMARY FEATURE</p>
+        <h2>The signal of the moment.</h2>
+      </div>
+
+      <div class="broadcast-grid">
+        <article class="broadcast-panel feature crt reveal">
+          <div class="screen feature-screen">
+            <div class="feature-scene"></div>
+            <div class="scanlines"></div>
+          </div>
+          <div class="feature-copy">
+            <p class="meta">CURRENT FEATURE</p>
+            <h3>Build the myth. Sell the artifact. Keep the signal alive.</h3>
+            <p>
+              Use this space for your featured book, newest collection, best seller, or flagship release.
+            </p>
+            <a href="https://www.amazon.com/dp/B0GPJ8DP77" target="_blank" class="text-link">View feature</a>
+          </div>
+        </article>
+
+        <aside class="status-panel reveal" id="status">
+          <div class="status-box">
+            <div class="status-row"><span>Systema Obscura Presents</span><strong>Stories Live</strong></div>
+            <div class="status-row"><span>Wasteland Wardrobe Co.</span><strong>Shop Open</strong></div>
+            <div class="status-row"><span>Atomic Americana</span><strong>Shop Open</strong></div>
+            <div class="status-row"><span>Books, Worlds, Experiments</span><strong>Expanding</strong></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="artifacts wrap" id="artifacts">
+      <div class="section-head reveal">
+        <p class="section-kicker">FEATURED PICKS</p>
+        <h2>Objects from the collection.</h2>
+      </div>
+
+      <div class="artifact-grid">
+        <article class="artifact crt reveal">
+          <div class="screen"><div class="artifact-scene artifact-book"></div><div class="scanlines"></div></div>
+          <div class="artifact-copy">
+            <h3>Featured Book</h3>
+            <p>Spotlight a current release, episode, or flagship title.</p>
+          </div>
+        </article>
+
+        <article class="artifact crt reveal">
+          <div class="screen"><div class="artifact-scene artifact-keys"></div><div class="scanlines"></div></div>
+          <div class="artifact-copy">
+            <h3>Atomic Americana</h3>
+            <p>Roadside relics, travel goods, and mid-century mood.</p>
+          </div>
+        </article>
+
+        <article class="artifact crt reveal">
+          <div class="screen"><div class="artifact-scene artifact-wraith"></div><div class="scanlines"></div></div>
+          <div class="artifact-copy">
+            <h3>Wraith World</h3>
+            <p>Canon, imagery, story hooks, and future releases.</p>
+          </div>
+        </article>
+
+        <article class="artifact crt reveal">
+          <div class="screen"><div class="artifact-scene artifact-pin"></div><div class="scanlines"></div></div>
+          <div class="artifact-copy">
+            <h3>Collectible Design</h3>
+            <p>Objects, icons, and designs pulled from the archive.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="entry wrap reveal">
+      <h2>Where do you want to go next?</h2>
+      <div class="entry-grid">
+        <a href="https://www.amazon.com/author/davidmcneal" target="_blank" class="entry-link">Read</a>
+        <a href="https://wastelandwardrobeco.etsy.com" target="_blank" class="entry-link">Shop</a>
+        <a href="https://atomicamericana.etsy.com" target="_blank" class="entry-link">Browse</a>
+        <a href="#channels" class="entry-link">Explore</a>
+      </div>
+    </section>
+  </main>
+
+  <p style="text-align:center; opacity:0.6; margin-top:40px;">
+    Start with the story. Leave with the artifact.
+  </p>
+
+  <script src="script.js"></script>
+  <div class="signal-lock" id="signalLock"></div>
 
   <button
     class="so-agent-launcher"
@@ -364,12 +785,12 @@
     type="button"
   >
     <span class="so-agent-pulse" aria-hidden="true"></span>
-    <img src="so-host-master-bust.png" alt="Systema Obscura host avatar" />
+    <img src="/assets/so-host-master-bust.png" alt="Systema Obscura host avatar" />
   </button>
 
   <aside class="so-agent" id="soAgentPanel" aria-hidden="true">
     <div class="so-agent-header">
-      <img class="so-agent-avatar" src="so-host-master-bust.png" alt="Systema Obscura host avatar" />
+      <img class="so-agent-avatar" src="/assets/so-host-master-bust.png" alt="Systema Obscura host avatar" />
       <div class="so-agent-title-wrap">
         <div class="so-agent-kicker">Signal Guide</div>
         <h2 class="so-agent-title">Systema Obscura</h2>
@@ -380,7 +801,7 @@
 
     <div class="so-agent-body">
       <div class="so-agent-badge">Active channel</div>
-      <p class="so-agent-message" id="soAgentMessage">Welcome to Systema Obscura. Where would you like to go?</p>
+      <p class="so-agent-message">Welcome to Systema Obscura. Where would you like to go?</p>
 
       <div class="so-agent-buttons">
         <a class="so-agent-btn so-agent-btn-primary" href="https://www.etsy.com/shop/WastelandWardrobeCo" target="_blank" rel="noopener" data-destination="Shop Products">
@@ -391,18 +812,10 @@
           <span class="so-agent-btn-arrow" aria-hidden="true">→</span>
         </a>
 
-        <a class="so-agent-btn" href="https://www.amazon.com/author/davidmcneal" target="_blank" rel="noopener" data-destination="Browse Books">
+        <a class="so-agent-btn" href="https://systemaobscura.co/books" target="_blank" rel="noopener" data-destination="Browse Books">
           <span class="so-agent-btn-text">
             <span class="so-agent-btn-label">Read My Books</span>
             <span class="so-agent-btn-note">Start with the most read stories</span>
-          </span>
-          <span class="so-agent-btn-arrow" aria-hidden="true">→</span>
-        </a>
-
-        <a class="so-agent-btn" href="https://systemaobscura.co/sop" target="_blank" rel="noopener" data-destination="Featured Content">
-          <span class="so-agent-btn-text">
-            <span class="so-agent-btn-label">Start Here</span>
-            <span class="so-agent-btn-note">New? This is the best entry point</span>
           </span>
           <span class="so-agent-btn-arrow" aria-hidden="true">→</span>
         </a>
@@ -417,8 +830,16 @@
 
         <a class="so-agent-btn" href="https://www.etsy.com/shop/WastelandWardrobeCo" target="_blank" rel="noopener" data-destination="Wasteland Wardrobe Co.">
           <span class="so-agent-btn-text">
-            <span class="so-agent-btn-label">Explore the Wasteland</span>
-            <span class="so-agent-btn-note">Most popular products and customer favorites.</span>
+            <span class="so-agent-btn-label">Visit Wasteland Wardrobe Co.</span>
+            <span class="so-agent-btn-note">Your established shop with the strongest trust signal.</span>
+          </span>
+          <span class="so-agent-btn-arrow" aria-hidden="true">→</span>
+        </a>
+
+        <a class="so-agent-btn" href="https://systemaobscura.co/sop" target="_blank" rel="noopener" data-destination="Featured Content">
+          <span class="so-agent-btn-text">
+            <span class="so-agent-btn-label">Start with Featured Content</span>
+            <span class="so-agent-btn-note">A guided entry point for first-time visitors.</span>
           </span>
           <span class="so-agent-btn-arrow" aria-hidden="true">→</span>
         </a>
@@ -431,86 +852,82 @@
     </div>
   </aside>
 
-  <script>
-    (function () {
-      const launcher = document.getElementById('soAgentLauncher');
-      const panel = document.getElementById('soAgentPanel');
-      const closeBtn = document.getElementById('soAgentClose');
-      const minimizeBtn = document.getElementById('soAgentMinimize');
-      const message = document.getElementById('soAgentMessage');
-      const buttons = panel.querySelectorAll('[data-destination]');
+<script>
+  (function () {
+    const launcher = document.getElementById('soAgentLauncher');
+    const panel = document.getElementById('soAgentPanel');
+    const closeBtn = document.getElementById('soAgentClose');
+    const minimizeBtn = document.getElementById('soAgentMinimize');
+    const message = document.getElementById('soAgentMessage');
+    const buttons = panel.querySelectorAll('[data-destination]');
 
-      const STORAGE_KEY = 'systema-obscura-agent-dismissed';
-      const CLICK_KEY = 'systema-obscura-agent-click-log';
-      const AUTO_OPEN_DELAY = 1600;
+    const STORAGE_KEY = 'systema-obscura-agent-dismissed';
+    const CLICK_KEY = 'systema-obscura-agent-click-log';
+    const AUTO_OPEN_DELAY = 1600;
 
-      function openPanel() {
-        if (message) {
-          window.clearTimeout(message._swapTimer);
-          message.textContent = 'Welcome to Systema Obscura. Where would you like to go?';
+    function openPanel() {
+      if (message) {
+        window.clearTimeout(message._swapTimer);
+        message.textContent = 'Welcome to Systema Obscura. Where would you like to go?';
 
-          message._swapTimer = window.setTimeout(function () {
-            message.textContent = 'Looking for something specific?';
-          }, 3000);
-        }
-
-        panel.classList.add('is-open');
-        panel.setAttribute('aria-hidden', 'false');
-        launcher.setAttribute('aria-expanded', 'true');
+        message._swapTimer = window.setTimeout(function () {
+          message.textContent = 'Looking for something specific?';
+        }, 3000);
       }
 
-      function closePanel(remember = false) {
-        if (message && message._swapTimer) {
-          window.clearTimeout(message._swapTimer);
-        }
+      panel.classList.add('is-open');
+      panel.setAttribute('aria-hidden', 'false');
+      launcher.setAttribute('aria-expanded', 'true');
+    }
 
-        panel.classList.remove('is-open');
-        panel.setAttribute('aria-hidden', 'true');
-        launcher.setAttribute('aria-expanded', 'false');
-
-        if (remember) {
-          localStorage.setItem(STORAGE_KEY, 'true');
-        }
+    function closePanel(remember = false) {
+      if (message && message._swapTimer) {
+        window.clearTimeout(message._swapTimer);
       }
 
-      function togglePanel() {
-        const isOpen = panel.classList.contains('is-open');
-        if (isOpen) {
-          closePanel();
-        } else {
-          openPanel();
-        }
+      panel.classList.remove('is-open');
+      panel.setAttribute('aria-hidden', 'true');
+      launcher.setAttribute('aria-expanded', 'false');
+
+      if (remember) {
+        localStorage.setItem(STORAGE_KEY, 'true');
       }
+    }
 
-      launcher.addEventListener('click', togglePanel);
-      closeBtn.addEventListener('click', function () {
-        closePanel(true);
-      });
-      minimizeBtn.addEventListener('click', function () {
-        closePanel(true);
-      });
-
-      document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape') {
-          closePanel();
-        }
-      });
-
-      buttons.forEach(function (button) {
-        button.addEventListener('click', function () {
-          const destination = button.getAttribute('data-destination');
-          const currentLog = JSON.parse(localStorage.getItem(CLICK_KEY) || '[]');
-          currentLog.push({ destination, time: new Date().toISOString() });
-          localStorage.setItem(CLICK_KEY, JSON.stringify(currentLog));
-          console.log('[Systema Obscura Agent] Routed to:', destination);
-        });
-      });
-
-      const dismissed = localStorage.getItem(STORAGE_KEY) === 'true';
-      if (!dismissed) {
-        window.setTimeout(openPanel, AUTO_OPEN_DELAY);
+    function togglePanel() {
+      const isOpen = panel.classList.contains('is-open');
+      if (isOpen) {
+        closePanel();
+      } else {
+        openPanel();
       }
-    })();
-  </script>
+    }
+
+    launcher.addEventListener('click', togglePanel);
+    closeBtn.addEventListener('click', () => closePanel(true));
+    minimizeBtn.addEventListener('click', () => closePanel(true));
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') {
+        closePanel();
+      }
+    });
+
+    buttons.forEach(function (button) {
+      button.addEventListener('click', function () {
+        const destination = button.getAttribute('data-destination');
+        const currentLog = JSON.parse(localStorage.getItem(CLICK_KEY) || '[]');
+        currentLog.push({ destination, time: new Date().toISOString() });
+        localStorage.setItem(CLICK_KEY, JSON.stringify(currentLog));
+      });
+    });
+
+    const dismissed = localStorage.getItem(STORAGE_KEY) === 'true';
+    if (!dismissed) {
+      window.setTimeout(openPanel, AUTO_OPEN_DELAY);
+    }
+  })();
+</script>
+  
 </body>
 </html>
