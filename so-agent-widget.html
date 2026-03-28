@@ -81,7 +81,7 @@
       inset: 0;
       border-radius: inherit;
       box-shadow: 0 0 0 0 rgba(184, 31, 45, 0.25);
-      animation: soPulse 2.8s infinite;
+      animation: soPulse 2.2s 1;
       pointer-events: none;
     }
 
@@ -373,28 +373,36 @@
       <div class="so-agent-title-wrap">
         <div class="so-agent-kicker">Signal Guide</div>
         <h2 class="so-agent-title">Systema Obscura</h2>
-        <div class="so-agent-subtitle">Start here. I can point you in the right direction.</div>
+        <div class="so-agent-subtitle">Start here. Most visitors choose products or books first.</div>
       </div>
       <button class="so-agent-close" id="soAgentClose" type="button" aria-label="Close guide">✕</button>
     </div>
 
     <div class="so-agent-body">
       <div class="so-agent-badge">Active channel</div>
-      <p class="so-agent-message">Welcome to Systema Obscura. Where would you like to go?</p>
+      <p class="so-agent-message" id="soAgentMessage">Welcome to Systema Obscura. Where would you like to go?</p>
 
       <div class="so-agent-buttons">
         <a class="so-agent-btn so-agent-btn-primary" href="https://www.etsy.com/shop/WastelandWardrobeCo" target="_blank" rel="noopener" data-destination="Shop Products">
           <span class="so-agent-btn-text">
             <span class="so-agent-btn-label">Shop Products</span>
-            <span class="so-agent-btn-note">Best first stop for products and proven buying paths.</span>
+            <span class="so-agent-btn-note">Most popular starting point</span>
           </span>
           <span class="so-agent-btn-arrow" aria-hidden="true">→</span>
         </a>
 
         <a class="so-agent-btn" href="https://www.amazon.com/author/davidmcneal" target="_blank" rel="noopener" data-destination="Browse Books">
           <span class="so-agent-btn-text">
-            <span class="so-agent-btn-label">Browse Books</span>
-            <span class="so-agent-btn-note">Books, episodes, and story worlds in one place.</span>
+            <span class="so-agent-btn-label">Read My Books</span>
+            <span class="so-agent-btn-note">Start with the most read stories</span>
+          </span>
+          <span class="so-agent-btn-arrow" aria-hidden="true">→</span>
+        </a>
+
+        <a class="so-agent-btn" href="https://systemaobscura.co/sop" target="_blank" rel="noopener" data-destination="Featured Content">
+          <span class="so-agent-btn-text">
+            <span class="so-agent-btn-label">Start Here</span>
+            <span class="so-agent-btn-note">New? This is the best entry point</span>
           </span>
           <span class="so-agent-btn-arrow" aria-hidden="true">→</span>
         </a>
@@ -409,16 +417,8 @@
 
         <a class="so-agent-btn" href="https://www.etsy.com/shop/WastelandWardrobeCo" target="_blank" rel="noopener" data-destination="Wasteland Wardrobe Co.">
           <span class="so-agent-btn-text">
-            <span class="so-agent-btn-label">Visit Wasteland Wardrobe Co.</span>
-            <span class="so-agent-btn-note">Your established shop with the strongest trust signal.</span>
-          </span>
-          <span class="so-agent-btn-arrow" aria-hidden="true">→</span>
-        </a>
-
-        <a class="so-agent-btn" href="https://systemaobscura.co/sop" target="_blank" rel="noopener" data-destination="Featured Content">
-          <span class="so-agent-btn-text">
-            <span class="so-agent-btn-label">Start with Featured Content</span>
-            <span class="so-agent-btn-note">A guided entry point for first-time visitors.</span>
+            <span class="so-agent-btn-label">Explore the Wasteland</span>
+            <span class="so-agent-btn-note">Most popular products and customer favorites.</span>
           </span>
           <span class="so-agent-btn-arrow" aria-hidden="true">→</span>
         </a>
@@ -437,6 +437,7 @@
       const panel = document.getElementById('soAgentPanel');
       const closeBtn = document.getElementById('soAgentClose');
       const minimizeBtn = document.getElementById('soAgentMinimize');
+      const message = document.getElementById('soAgentMessage');
       const buttons = panel.querySelectorAll('[data-destination]');
 
       const STORAGE_KEY = 'systema-obscura-agent-dismissed';
@@ -444,12 +445,22 @@
       const AUTO_OPEN_DELAY = 1600;
 
       function openPanel() {
+        if (message) {
+          window.clearTimeout(message._swapTimer);
+          message.textContent = 'Welcome to Systema Obscura. Where would you like to go?';
+          message._swapTimer = window.setTimeout(function () {
+            message.textContent = 'Looking for something specific?';
+          }, 3000);
+        }
         panel.classList.add('is-open');
         panel.setAttribute('aria-hidden', 'false');
         launcher.setAttribute('aria-expanded', 'true');
       }
 
       function closePanel(remember = false) {
+        if (message && message._swapTimer) {
+          window.clearTimeout(message._swapTimer);
+        }
         panel.classList.remove('is-open');
         panel.setAttribute('aria-hidden', 'true');
         launcher.setAttribute('aria-expanded', 'false');
