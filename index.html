@@ -855,80 +855,100 @@
   </aside>
 
   <script>
-    (function () {
-      const launcher = document.getElementById('soAgentLauncher');
-      const panel = document.getElementById('soAgentPanel');
-      const closeBtn = document.getElementById('soAgentClose');
-      const minimizeBtn = document.getElementById('soAgentMinimize');
-      const message = document.getElementById('soAgentMessage');
-      const buttons = panel.querySelectorAll('[data-destination]');
+(function () {
+  const launcher = document.getElementById('soAgentLauncher');
+  const panel = document.getElementById('soAgentPanel');
+  const closeBtn = document.getElementById('soAgentClose');
+  const minimizeBtn = document.getElementById('soAgentMinimize');
+  const message = document.getElementById('soAgentMessage');
+  const buttons = panel.querySelectorAll('[data-destination]');
 
-      const STORAGE_KEY = 'systema-obscura-agent-dismissed';
-      const CLICK_KEY = 'systema-obscura-agent-click-log';
-      const AUTO_OPEN_DELAY = 1600;
+  const STORAGE_KEY = 'so-dismissed';
+  const CLICK_KEY = 'so-click-log';
+  const VISIT_KEY = 'so-visit-count';
 
-      function openPanel() {
-        if (message) {
-          window.clearTimeout(message._swapTimer);
-          message.textContent = 'Products or stories? I can point you the right way.';
-          message._swapTimer = window.setTimeout(function () {
-            message.textContent = 'Most visitors start with products or books.';
-          }, 2800);
-        }
+  const AUTO_OPEN_DELAY = 1600;
 
-        panel.classList.add('is-open');
-        panel.setAttribute('aria-hidden', 'false');
-        launcher.setAttribute('aria-expanded', 'true');
-      }
+  let visits = parseInt(localStorage.getItem(VISIT_KEY) || '0', 10);
+  visits++;
+  localStorage.setItem(VISIT_KEY, visits);
 
-      function closePanel(remember = false) {
-        if (message && message._swapTimer) {
-          window.clearTimeout(message._swapTimer);
-        }
+  const hour = new Date().getHours();
 
-        panel.classList.remove('is-open');
-        panel.setAttribute('aria-hidden', 'true');
-        launcher.setAttribute('aria-expanded', 'false');
+  function getAdaptiveMessage() {
+    if (visits > 2) {
+      return "Welcome back. Most visitors go straight to products or books.";
+    }
 
-        if (remember) {
-          localStorage.setItem(STORAGE_KEY, 'true');
-        }
-      }
+    if (hour >= 22 || hour < 5) {
+      return "Still awake? Let’s make this easy.";
+    }
 
-      function togglePanel() {
-        const isOpen = panel.classList.contains('is-open');
-        if (isOpen) {
-          closePanel();
-        } else {
-          openPanel();
-        }
-      }
+    if (hour < 12) {
+      return "Looking for something specific?";
+    }
 
-      launcher.addEventListener('click', togglePanel);
-      closeBtn.addEventListener('click', () => closePanel(true));
-      minimizeBtn.addEventListener('click', () => closePanel(true));
+    return "Products or stories? I can point you the right way.";
+  }
 
-      document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape') {
-          closePanel();
-        }
-      });
+  function openPanel() {
+    if (message) {
+      window.clearTimeout(message._swapTimer);
+      message.textContent = getAdaptiveMessage();
 
-      buttons.forEach(function (button) {
-        button.addEventListener('click', function () {
-          const destination = button.getAttribute('data-destination');
-          const currentLog = JSON.parse(localStorage.getItem(CLICK_KEY) || '[]');
-          currentLog.push({ destination, time: new Date().toISOString() });
-          localStorage.setItem(CLICK_KEY, JSON.stringify(currentLog));
-        });
-      });
+      message._swapTimer = window.setTimeout(function () {
+        message.textContent = "Start with products or books. That’s where most people begin.";
+      }, 3000);
+    }
 
-      const dismissed = localStorage.getItem(STORAGE_KEY) === 'true';
-      if (!dismissed) {
-        window.setTimeout(openPanel, AUTO_OPEN_DELAY);
-      }
-    })();
-  </script>
+    panel.classList.add('is-open');
+    panel.setAttribute('aria-hidden', 'false');
+    launcher.setAttribute('aria-expanded', 'true');
+  }
+
+  function closePanel(remember = false) {
+    if (message && message._swapTimer) {
+      window.clearTimeout(message._swapTimer);
+    }
+
+    panel.classList.remove('is-open');
+    panel.setAttribute('aria-hidden', 'true');
+    launcher.setAttribute('aria-expanded', 'false');
+
+    if (remember) {
+      localStorage.setItem(STORAGE_KEY, 'true');
+    }
+  }
+
+  function togglePanel() {
+    const isOpen = panel.classList.contains('is-open');
+    isOpen ? closePanel() : openPanel();
+  }
+
+  launcher.addEventListener('click', togglePanel);
+  closeBtn.addEventListener('click', () => closePanel(true));
+  minimizeBtn.addEventListener('click', () => closePanel(true));
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') closePanel();
+  });
+
+  buttons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      const destination = button.getAttribute('data-destination');
+      const log = JSON.parse(localStorage.getItem(CLICK_KEY) || '[]');
+      log.push({ destination, time: new Date().toISOString() });
+      localStorage.setItem(CLICK_KEY, JSON.stringify(log));
+    });
+  });
+
+  const dismissed = localStorage.getItem(STORAGE_KEY) === 'true';
+  if (!dismissed) {
+    window.setTimeout(openPanel, AUTO_OPEN_DELAY);
+  }
+
+})();
+</script>
 
 </body>
 </html>
