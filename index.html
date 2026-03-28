@@ -202,6 +202,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: center 42%;
       display: block;
     }
 
@@ -210,7 +211,7 @@
       inset: 0;
       border-radius: inherit;
       box-shadow: 0 0 0 0 rgba(184, 31, 45, 0.25);
-      animation: soPulse 2.8s infinite;
+      animation: soPulse 2.2s 1;
       pointer-events: none;
     }
 
@@ -267,6 +268,7 @@
       height: 56px;
       border-radius: 14px;
       object-fit: cover;
+      object-position: center 42%;
       border: 1px solid rgba(255,255,255,0.08);
       flex-shrink: 0;
       background: #0e1116;
@@ -801,7 +803,7 @@
 
     <div class="so-agent-body">
       <div class="so-agent-badge">Active channel</div>
-<p class="so-agent-message" id="soAgentMessage">Products or stories? I can point you the right way.</p>
+      <p class="so-agent-message" id="soAgentMessage">Products or stories? I can point you the right way.</p>
 
       <div class="so-agent-buttons">
         <a class="so-agent-btn so-agent-btn-primary" href="https://www.etsy.com/shop/WastelandWardrobeCo" target="_blank" rel="noopener" data-destination="Shop Products">
@@ -812,7 +814,7 @@
           <span class="so-agent-btn-arrow" aria-hidden="true">→</span>
         </a>
 
-        <a class="so-agent-btn" href="https://www.amazon.com/author/davidmcneal" target="_blank" rel="noopener" data-destination="Browse Books">
+        <a class="so-agent-btn" href="https://www.amazon.com/author/davidmcneal" target="_blank" rel="noopener" data-destination="Read My Books">
           <span class="so-agent-btn-text">
             <span class="so-agent-btn-label">Read My Books</span>
             <span class="so-agent-btn-note">Start with the most read stories</span>
@@ -820,26 +822,29 @@
           <span class="so-agent-btn-arrow" aria-hidden="true">→</span>
         </a>
 
-<a class="so-agent-btn" href="https://systemaobscura.co/sop" target="_blank">
-  <span class="so-agent-btn-text">
-    <span class="so-agent-btn-label">Start Here</span>
-    <span class="so-agent-btn-note">New? This is the best entry point</span>
-  </span>
-</a>
+        <a class="so-agent-btn" href="https://systemaobscura.co/sop" target="_blank" rel="noopener" data-destination="Start Here">
+          <span class="so-agent-btn-text">
+            <span class="so-agent-btn-label">Start Here</span>
+            <span class="so-agent-btn-note">New? This is the best entry point</span>
+          </span>
+          <span class="so-agent-btn-arrow" aria-hidden="true">→</span>
+        </a>
 
-<a class="so-agent-btn" href="https://www.etsy.com/shop/AtomicAmericana" target="_blank">
-  <span class="so-agent-btn-text">
-    <span class="so-agent-btn-label">Enter Atomic Americana</span>
-    <span class="so-agent-btn-note">Retro roadside worlds, travel nostalgia, and Americana.</span>
-  </span>
-</a>
+        <a class="so-agent-btn" href="https://www.etsy.com/shop/AtomicAmericana" target="_blank" rel="noopener" data-destination="Atomic Americana">
+          <span class="so-agent-btn-text">
+            <span class="so-agent-btn-label">Enter Atomic Americana</span>
+            <span class="so-agent-btn-note">Retro roadside worlds, travel nostalgia, and Americana.</span>
+          </span>
+          <span class="so-agent-btn-arrow" aria-hidden="true">→</span>
+        </a>
 
-<a class="so-agent-btn" href="https://www.etsy.com/shop/WastelandWardrobeCo" target="_blank">
-  <span class="so-agent-btn-text">
-    <span class="so-agent-btn-label">Explore the Wasteland</span>
-    <span class="so-agent-btn-note">Most popular products and customer favorites.</span>
-  </span>
-</a>
+        <a class="so-agent-btn" href="https://www.etsy.com/shop/WastelandWardrobeCo" target="_blank" rel="noopener" data-destination="Explore the Wasteland">
+          <span class="so-agent-btn-text">
+            <span class="so-agent-btn-label">Explore the Wasteland</span>
+            <span class="so-agent-btn-note">Most popular products and customer favorites.</span>
+          </span>
+          <span class="so-agent-btn-arrow" aria-hidden="true">→</span>
+        </a>
       </div>
     </div>
 
@@ -849,89 +854,81 @@
     </div>
   </aside>
 
-<script>
-  (function () {
-    const launcher = document.getElementById('soAgentLauncher');
-    const panel = document.getElementById('soAgentPanel');
-    const closeBtn = document.getElementById('soAgentClose');
-    const minimizeBtn = document.getElementById('soAgentMinimize');
-    const message = document.getElementById('soAgentMessage');
-    const buttons = panel.querySelectorAll('[data-destination]');
+  <script>
+    (function () {
+      const launcher = document.getElementById('soAgentLauncher');
+      const panel = document.getElementById('soAgentPanel');
+      const closeBtn = document.getElementById('soAgentClose');
+      const minimizeBtn = document.getElementById('soAgentMinimize');
+      const message = document.getElementById('soAgentMessage');
+      const buttons = panel.querySelectorAll('[data-destination]');
 
-    const STORAGE_KEY = 'systema-obscura-agent-dismissed';
-    const CLICK_KEY = 'systema-obscura-agent-click-log';
-    const AUTO_OPEN_DELAY = 1600;
+      const STORAGE_KEY = 'systema-obscura-agent-dismissed';
+      const CLICK_KEY = 'systema-obscura-agent-click-log';
+      const AUTO_OPEN_DELAY = 1600;
 
-function openPanel() {
-  if (message) {
-    window.clearTimeout(message._swapTimer);
+      function openPanel() {
+        if (message) {
+          window.clearTimeout(message._swapTimer);
+          message.textContent = 'Products or stories? I can point you the right way.';
+          message._swapTimer = window.setTimeout(function () {
+            message.textContent = 'Most visitors start with products or books.';
+          }, 2800);
+        }
 
-message.textContent = 'Most visitors start with products or books.';
-
-    message._swapTimer = window.setTimeout(function () {
-      message.textContent = 'Most visitors start with products or books.';
-    }, 2800);
-  }
-
-  panel.classList.add('is-open');
-  panel.setAttribute('aria-hidden', 'false');
-  launcher.setAttribute('aria-expanded', 'true');
-}
+        panel.classList.add('is-open');
+        panel.setAttribute('aria-hidden', 'false');
+        launcher.setAttribute('aria-expanded', 'true');
       }
 
-      panel.classList.add('is-open');
-      panel.setAttribute('aria-hidden', 'false');
-      launcher.setAttribute('aria-expanded', 'true');
-    }
+      function closePanel(remember = false) {
+        if (message && message._swapTimer) {
+          window.clearTimeout(message._swapTimer);
+        }
 
-    function closePanel(remember = false) {
-      if (message && message._swapTimer) {
-        window.clearTimeout(message._swapTimer);
+        panel.classList.remove('is-open');
+        panel.setAttribute('aria-hidden', 'true');
+        launcher.setAttribute('aria-expanded', 'false');
+
+        if (remember) {
+          localStorage.setItem(STORAGE_KEY, 'true');
+        }
       }
 
-      panel.classList.remove('is-open');
-      panel.setAttribute('aria-hidden', 'true');
-      launcher.setAttribute('aria-expanded', 'false');
-
-      if (remember) {
-        localStorage.setItem(STORAGE_KEY, 'true');
+      function togglePanel() {
+        const isOpen = panel.classList.contains('is-open');
+        if (isOpen) {
+          closePanel();
+        } else {
+          openPanel();
+        }
       }
-    }
 
-    function togglePanel() {
-      const isOpen = panel.classList.contains('is-open');
-      if (isOpen) {
-        closePanel();
-      } else {
-        openPanel();
-      }
-    }
+      launcher.addEventListener('click', togglePanel);
+      closeBtn.addEventListener('click', () => closePanel(true));
+      minimizeBtn.addEventListener('click', () => closePanel(true));
 
-    launcher.addEventListener('click', togglePanel);
-    closeBtn.addEventListener('click', () => closePanel(true));
-    minimizeBtn.addEventListener('click', () => closePanel(true));
-
-    document.addEventListener('keydown', function (event) {
-      if (event.key === 'Escape') {
-        closePanel();
-      }
-    });
-
-    buttons.forEach(function (button) {
-      button.addEventListener('click', function () {
-        const destination = button.getAttribute('data-destination');
-        const currentLog = JSON.parse(localStorage.getItem(CLICK_KEY) || '[]');
-        currentLog.push({ destination, time: new Date().toISOString() });
-        localStorage.setItem(CLICK_KEY, JSON.stringify(currentLog));
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+          closePanel();
+        }
       });
-    });
 
-    const dismissed = localStorage.getItem(STORAGE_KEY) === 'true';
-    if (!dismissed) {
-      window.setTimeout(openPanel, AUTO_OPEN_DELAY);
-    }
-  })();
-</script>
-  
+      buttons.forEach(function (button) {
+        button.addEventListener('click', function () {
+          const destination = button.getAttribute('data-destination');
+          const currentLog = JSON.parse(localStorage.getItem(CLICK_KEY) || '[]');
+          currentLog.push({ destination, time: new Date().toISOString() });
+          localStorage.setItem(CLICK_KEY, JSON.stringify(currentLog));
+        });
+      });
+
+      const dismissed = localStorage.getItem(STORAGE_KEY) === 'true';
+      if (!dismissed) {
+        window.setTimeout(openPanel, AUTO_OPEN_DELAY);
+      }
+    })();
+  </script>
+
 </body>
 </html>
