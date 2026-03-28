@@ -1553,3 +1553,4 @@ nav a[href*="youtube"]::after {
   animation: pulseGlow 3.5s ease-in-out infinite;
 }
 JSON.parse(localStorage.getItem('systema-obscura-agent-click-log'))
+object-position: center 30%;
