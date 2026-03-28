@@ -539,5 +539,17 @@
     </a>
   </div>
 </aside>
+  <script>
+  const launcher = document.getElementById('soAgentLauncher');
+  const panel = document.getElementById('soAgentPanel');
+
+  launcher.onclick = () => {
+    panel.classList.toggle('is-open');
+  };
+
+  setTimeout(() => {
+    panel.classList.add('is-open');
+  }, 1500);
+</script>
 </body>
 </html>
