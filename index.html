@@ -804,6 +804,7 @@
     <div class="so-agent-body">
       <div class="so-agent-badge">Active channel</div>
       <p class="so-agent-message" id="soAgentMessage">Stories… or artifacts. Choose your entry point.</p>
+<div style="margin-bottom:12px;"><input id="soAgentInput" placeholder="Ask the guide…" style="width:100%; padding:10px; border-radius:10px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.3); color:#fff;" /></div><div id="soAgentResponse" style="font-size:0.9rem; color:#9ca7ba; min-height:20px;"></div>
 
       <div class="so-agent-buttons">
         <a class="so-agent-btn so-agent-btn-primary" href="https://www.etsy.com/shop/WastelandWardrobeCo" target="_blank" rel="noopener" data-destination="Shop Products">
@@ -947,8 +948,36 @@
     window.setTimeout(openPanel, AUTO_OPEN_DELAY);
   }
 
+
+  // ===== SIMPLE AI GUIDE =====
+  const input = document.getElementById('soAgentInput');
+  const response = document.getElementById('soAgentResponse');
+
+  if (input) {
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        const q = input.value.toLowerCase();
+
+        if (q.includes('buy') || q.includes('shop')) {
+          response.textContent = "Start with products. The Wasteland and Atomic Americana are both active.";
+        } else if (q.includes('book') || q.includes('read')) {
+          response.textContent = "Begin with the stories. That’s where most people enter the signal.";
+        } else if (q.includes('start') || q.includes('new')) {
+          response.textContent = "Open the transmission. It’s the strongest entry point.";
+        } else if (q.includes('what is this')) {
+          response.textContent = "A collection of stories, artifacts, and signals. You can explore… or take something with you.";
+        } else {
+          response.textContent = "You don’t need everything. Start with products… or the stories.";
+        }
+
+        input.value = "";
+      }
+    });
+  }
+
 })();
 </script>
+
 
 </body>
 </html>
