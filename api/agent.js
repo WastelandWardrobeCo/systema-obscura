@@ -1,3 +1,3 @@
 export default function handler(req, res) {
-  res.status(200).json({ message: "Agent is running" });
+  res.status(200).json({ message: "Agent is alive" });
 }
