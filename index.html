@@ -966,31 +966,44 @@
   }
 
 
-  // ===== SIMPLE AI GUIDE =====
-  const input = document.getElementById('soAgentInput');
-  const response = document.getElementById('soAgentResponse');
+// ===== SYSTEMA OBSCURA LIVE AGENT =====
 
-  if (input) {
-    input.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') {
-        const q = input.value.toLowerCase();
-
-        if (q.includes('buy') || q.includes('shop')) {
-          response.textContent = "Start with products. The Wasteland and Atomic Americana are both active.";
-        } else if (q.includes('book') || q.includes('read')) {
-          response.textContent = "Begin with the stories. That’s where most people enter the signal.";
-        } else if (q.includes('start') || q.includes('new')) {
-          response.textContent = "Open the transmission. It’s the strongest entry point.";
-        } else if (q.includes('what is this')) {
-          response.textContent = "A collection of stories, artifacts, and signals. You can explore… or take something with you.";
-        } else {
-          response.textContent = "You don’t need everything. Start with products… or the stories.";
-        }
-
-        input.value = "";
-      }
+async function askSystemaObscura(message) {
+  try {
+    const response = await fetch('https://project-656dj.vercel.app/api/agent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message })
     });
+
+    const data = await response.json();
+
+    if (data.reply) return data.reply;
+    if (data.error) return `Signal error: ${data.error}`;
+
+    return "Signal unclear.";
+  } catch (error) {
+    return "Signal lost. Try again.";
   }
+}
+
+const input = document.getElementById('soAgentInput');
+const responseBox = document.getElementById('soAgentResponse');
+
+if (input) {
+  input.addEventListener('keydown', async function(e) {
+    if (e.key === 'Enter') {
+      const message = input.value.trim();
+      if (!message) return;
+
+      responseBox.textContent = "Reading the signal...";
+      input.value = "";
+
+      const reply = await askSystemaObscura(message);
+      responseBox.textContent = reply;
+    }
+  });
+}
 
 })();
 </script>
