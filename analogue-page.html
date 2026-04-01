@@ -1,0 +1,190 @@
+export default function AnalogHorrorPosterLandingPage() {
+  const posters = [
+    { id: '01', title: 'DEVICE ILLUMINATION', file: 'FILE 01', status: 'Observed', note: 'Phone glow increased visibility.' },
+    { id: '02', title: 'YOU LOOKED AGAIN', file: 'FILE 02', status: 'Flagged', note: 'Subject re-engaged with the signal.' },
+    { id: '03', title: 'IT NOTICED', file: 'FILE 03', status: 'Restricted', note: 'Presence acknowledged visual return.' },
+    { id: '04', title: 'WINDOW PROTOCOL', file: 'FILE 04', status: 'Archived', note: 'Do not verify exterior movement.' },
+    { id: '05', title: 'HALLWAY EVENT', file: 'FILE 05', status: 'Observed', note: 'Darkness exceeded mapped depth.' },
+    { id: '06', title: 'SLEEP INSTRUCTION', file: 'FILE 06', status: 'Flagged', note: 'Remain still if the room changes.' },
+    { id: '07', title: 'MIRROR RESPONSE', file: 'FILE 07', status: 'Observed', note: 'Reflections may continue independently.' },
+    { id: '08', title: 'PARKED VEHICLE', file: 'FILE 08', status: 'Archived', note: 'Do not check the rear seat twice.' },
+    { id: '09', title: 'SILENCE REPORT', file: 'FILE 09', status: 'Restricted', note: 'Audio absence is not clearance.' },
+  ];
+
+  const stickers = [
+    'System Interpretation',
+    'Do Not Look Back',
+    'Signal Archive',
+    'Observed Presence',
+  ];
+
+  return (
+    <div className="min-h-screen bg-black text-zinc-200 selection:bg-zinc-200 selection:text-black">
+      <div className="pointer-events-none fixed inset-0 opacity-20 [background-image:radial-gradient(circle_at_center,rgba(255,255,255,0.08),transparent_45%),linear-gradient(to_bottom,transparent,rgba(255,255,255,0.03),transparent)]" />
+      <div className="pointer-events-none fixed inset-0 opacity-[0.07] bg-[linear-gradient(to_bottom,transparent_50%,rgba(255,255,255,0.15)_50%)] bg-[length:100%_4px]" />
+
+      <header className="relative border-b border-zinc-800">
+        <div className="mx-auto max-w-7xl px-6 py-5 flex items-center justify-between">
+          <div>
+            <div className="text-[10px] uppercase tracking-[0.35em] text-zinc-500">Systema Obscura</div>
+            <div className="text-sm uppercase tracking-[0.25em] text-zinc-300">Signal Archive</div>
+          </div>
+          <nav className="hidden md:flex items-center gap-6 text-xs uppercase tracking-[0.25em] text-zinc-500">
+            <a href="#archive" className="hover:text-zinc-200 transition-colors">Posters</a>
+            <a href="#stickers" className="hover:text-zinc-200 transition-colors">Stickers</a>
+            <a href="#protocol" className="hover:text-zinc-200 transition-colors">Protocol</a>
+          </nav>
+        </div>
+      </header>
+
+      <main className="relative">
+        <section className="mx-auto max-w-7xl px-6 py-16 md:py-24">
+          <div className="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+            <div>
+              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-950/70 px-3 py-1 text-[11px] uppercase tracking-[0.3em] text-zinc-500">
+                <span className="h-2 w-2 rounded-full bg-zinc-500 animate-pulse" />
+                Transmission Stable
+              </div>
+              <h1 className="max-w-4xl text-4xl font-semibold leading-none tracking-tight text-zinc-100 sm:text-6xl md:text-7xl">
+                Eerie analog horror posters recovered from the signal.
+              </h1>
+              <p className="mt-6 max-w-2xl text-base leading-7 text-zinc-400 md:text-lg">
+                A curated grid of observed presences, instruction fragments, and distorted domestic moments. Built for collectors who want the wall to feel like it knows something.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <a
+                  href="#archive"
+                  className="rounded-2xl border border-zinc-700 bg-zinc-100 px-5 py-3 text-sm font-medium uppercase tracking-[0.2em] text-black transition hover:scale-[1.02]"
+                >
+                  Enter Archive
+                </a>
+                <a
+                  href="#stickers"
+                  className="rounded-2xl border border-zinc-800 bg-zinc-950/80 px-5 py-3 text-sm font-medium uppercase tracking-[0.2em] text-zinc-200 transition hover:border-zinc-600"
+                >
+                  View Stickers
+                </a>
+              </div>
+            </div>
+
+            <div className="rounded-[2rem] border border-zinc-800 bg-zinc-950/70 p-4 shadow-2xl shadow-black/40">
+              <div className="aspect-[4/5] overflow-hidden rounded-[1.5rem] border border-zinc-800 bg-zinc-900 relative">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(255,255,255,0.12),transparent_30%),linear-gradient(to_bottom,rgba(255,255,255,0.02),rgba(0,0,0,0.6))]" />
+                <div className="absolute inset-y-0 left-1/2 w-px bg-zinc-700/50" />
+                <div className="absolute inset-x-8 top-8 h-px bg-zinc-700/50" />
+                <div className="absolute left-8 top-12 text-[10px] uppercase tracking-[0.35em] text-zinc-500">Featured Artifact</div>
+                <div className="absolute inset-x-8 bottom-8 rounded-[1.25rem] border border-zinc-800 bg-black/70 p-5 backdrop-blur-sm">
+                  <div className="text-[10px] uppercase tracking-[0.35em] text-zinc-500">File 03</div>
+                  <div className="mt-2 text-2xl font-semibold uppercase tracking-[0.15em] text-zinc-100">IT NOTICED</div>
+                  <p className="mt-3 text-sm leading-6 text-zinc-400">A domestic light source reveals a presence that was waiting for recognition. Best displayed where visitors will glance twice.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="archive" className="mx-auto max-w-7xl px-6 py-8 md:py-12">
+          <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+            <div>
+              <div className="text-[10px] uppercase tracking-[0.35em] text-zinc-500">Archive Index</div>
+              <h2 className="mt-2 text-2xl font-semibold uppercase tracking-[0.15em] text-zinc-100 md:text-3xl">Recovered Posters</h2>
+            </div>
+            <p className="max-w-xl text-sm leading-6 text-zinc-500">Nine placeholders are staged for your initial drop. Swap each panel with real product art and route the buttons to your popup shop or product pages.</p>
+          </div>
+
+          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+            {posters.map((poster) => (
+              <article
+                key={poster.id}
+                className="group rounded-[1.75rem] border border-zinc-800 bg-zinc-950/80 p-4 transition duration-300 hover:-translate-y-1 hover:border-zinc-600 hover:bg-zinc-900/80"
+              >
+                <div className="relative overflow-hidden rounded-[1.25rem] border border-zinc-800 bg-zinc-900 aspect-[4/5]">
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(255,255,255,0.08),transparent_28%),linear-gradient(to_bottom,rgba(255,255,255,0.02),rgba(0,0,0,0.75))] transition duration-300 group-hover:scale-[1.03]" />
+                  <div className="absolute inset-0 opacity-25 bg-[linear-gradient(to_bottom,transparent,rgba(255,255,255,0.05),transparent)]" />
+                  <div className="absolute left-4 top-4 rounded-full border border-zinc-700 bg-black/60 px-2.5 py-1 text-[10px] uppercase tracking-[0.25em] text-zinc-400">
+                    {poster.file}
+                  </div>
+                  <div className="absolute inset-x-4 bottom-4 rounded-2xl border border-zinc-800 bg-black/65 p-4 backdrop-blur-sm">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="text-sm font-semibold uppercase tracking-[0.18em] text-zinc-100">{poster.title}</div>
+                      <div className="text-[10px] uppercase tracking-[0.25em] text-zinc-500">{poster.status}</div>
+                    </div>
+                    <p className="mt-2 text-sm leading-6 text-zinc-400">{poster.note}</p>
+                  </div>
+                </div>
+
+                <div className="mt-4 flex items-center justify-between gap-3">
+                  <div>
+                    <div className="text-xs uppercase tracking-[0.25em] text-zinc-500">Poster Artifact</div>
+                    <div className="mt-1 text-sm text-zinc-300">Matte print available</div>
+                  </div>
+                  <a
+                    href="#"
+                    className="rounded-xl border border-zinc-700 px-4 py-2 text-xs font-medium uppercase tracking-[0.2em] text-zinc-200 transition hover:border-zinc-500 hover:bg-zinc-100 hover:text-black"
+                  >
+                    View File
+                  </a>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section id="stickers" className="mx-auto max-w-7xl px-6 py-12 md:py-16">
+          <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+            <div className="rounded-[2rem] border border-zinc-800 bg-zinc-950/70 p-6">
+              <div className="text-[10px] uppercase tracking-[0.35em] text-zinc-500">Add-On Category</div>
+              <h3 className="mt-3 text-2xl font-semibold uppercase tracking-[0.15em] text-zinc-100">Signal Stickers</h3>
+              <p className="mt-4 max-w-lg text-sm leading-6 text-zinc-400">
+                Built for laptop lids, notebooks, road cases, and bunker doors. Use these as entry-price items beneath the poster grid for impulse pickup.
+              </p>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              {stickers.map((sticker, index) => (
+                <div
+                  key={sticker}
+                  className="rounded-[1.5rem] border border-zinc-800 bg-zinc-950/80 p-5 transition hover:border-zinc-600 hover:bg-zinc-900/80"
+                >
+                  <div className="mb-8 inline-flex rounded-full border border-zinc-700 px-3 py-1 text-[10px] uppercase tracking-[0.3em] text-zinc-500">
+                    Decal 0{index + 1}
+                  </div>
+                  <div className="text-lg font-medium uppercase tracking-[0.12em] text-zinc-100">{sticker}</div>
+                  <div className="mt-2 text-sm text-zinc-500">Kiss-cut sticker placeholder</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="protocol" className="mx-auto max-w-7xl px-6 pb-16 pt-6 md:pb-24">
+          <div className="rounded-[2rem] border border-zinc-800 bg-zinc-950/80 p-8 md:p-10">
+            <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+              <div>
+                <div className="text-[10px] uppercase tracking-[0.35em] text-zinc-500">Acquisition Protocol</div>
+                <h3 className="mt-3 text-2xl font-semibold uppercase tracking-[0.12em] text-zinc-100 md:text-3xl">Collect the signal before it changes shape.</h3>
+              </div>
+              <div className="grid gap-4 text-sm leading-6 text-zinc-400 md:grid-cols-3">
+                <div className="rounded-[1.25rem] border border-zinc-800 bg-black/40 p-4">
+                  <div className="text-[10px] uppercase tracking-[0.3em] text-zinc-500">01</div>
+                  <div className="mt-2 font-medium uppercase tracking-[0.15em] text-zinc-100">Choose a file</div>
+                  <p className="mt-2">Select from nine poster slots built for your first analog horror drop.</p>
+                </div>
+                <div className="rounded-[1.25rem] border border-zinc-800 bg-black/40 p-4">
+                  <div className="text-[10px] uppercase tracking-[0.3em] text-zinc-500">02</div>
+                  <div className="mt-2 font-medium uppercase tracking-[0.15em] text-zinc-100">Enter the archive</div>
+                  <p className="mt-2">Route each artifact to your popup shop, product detail page, or external checkout.</p>
+                </div>
+                <div className="rounded-[1.25rem] border border-zinc-800 bg-black/40 p-4">
+                  <div className="text-[10px] uppercase tracking-[0.3em] text-zinc-500">03</div>
+                  <div className="mt-2 font-medium uppercase tracking-[0.15em] text-zinc-100">Display conspicuously</div>
+                  <p className="mt-2">Let each piece feel like evidence recovered from a compromised signal.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  );
+}
