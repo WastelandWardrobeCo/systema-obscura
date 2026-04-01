@@ -1,14 +1,40 @@
 export default async function handler(req, res) {
+  const message =
+    req.method === "GET"
+      ? "What is the Wraith?"
+      : req.body?.message;
+
+  if (!message) {
+    return res.status(400).json({ error: "No message provided" });
+  }
+
+  const knowledgeBase = `
+You are the Systema Obscura Signal Guide.
+
+Tone:
+- calm
+- controlled
+- brief
+- slightly mysterious
+- never cheesy
+- never generic customer support
+
+Rules:
+- answer in 1 to 3 sentences
+- stay inside the Systema Obscura world
+- guide users when relevant
+
+Knowledge:
+- Systema Obscura is a connected world of stories, shops, and creative projects.
+- Systema Obscura Presents is a strong entry point for fiction.
+- Wasteland Wraith is a post-apocalyptic world tied to inevitability.
+- The Wraith represents inevitability, not direct violence.
+- Atomic Americana = retro / mid-century / travel nostalgia.
+- Wasteland Wardrobe Co. = post-apocalyptic / industrial / dystopian.
+`;
+
   try {
-    const message = req.method === "GET"
-  ? "What is the Wraith?"
-  : req.body?.message;
-
-    if (!message) {
-      return res.status(400).json({ error: "No message provided" });
-    }
-
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    const openaiRes = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
@@ -16,28 +42,48 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: "gpt-4o-mini",
-        messages: [
+        input: [
           {
             role: "system",
-            content: "You are the Systema Obscura host. Speak clearly, intelligently, and slightly mysterious. Help users explore stories, products, and ideas."
+            content: [
+              {
+                type: "input_text",
+                text: knowledgeBase
+              }
+            ]
           },
           {
             role: "user",
-            content: message
+            content: [
+              {
+                type: "input_text",
+                text: message
+              }
+            ]
           }
         ]
       })
     });
 
-    const data = await response.json();
+    const data = await openaiRes.json();
+
+    if (!openaiRes.ok) {
+      return res.status(openaiRes.status).json({
+        error: data?.error?.message || "OpenAI request failed",
+        debug: data
+      });
+    }
 
     const reply =
-      data.choices?.[0]?.message?.content ||
+      data.output_text ||
+      data.output?.flatMap(item => item.content || [])
+        ?.map(part => part.text)
+        ?.filter(Boolean)
+        ?.join(" ") ||
       "No response from agent.";
 
-    res.status(200).json({ reply });
-
+    return res.status(200).json({ reply });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message || "Signal lost." });
   }
 }
