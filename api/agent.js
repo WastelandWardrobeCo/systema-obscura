@@ -1,6 +1,8 @@
 export default async function handler(req, res) {
   try {
-    const { message } = req.body || {};
+    const message = req.method === "GET"
+  ? "What is the Wraith?"
+  : req.body?.message;
 
     if (!message) {
       return res.status(400).json({ error: "No message provided" });
