@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Signal Archive</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background: black; }
+  </style>
+</head>
+<body class="text-zinc-200">
+
+<!-- BACKGROUND FX -->
+<div class="fixed inset-0 opacity-20 pointer-events-none"
+style="background: radial-gradient(circle at center, rgba(255,255,255,0.08), transparent 45%);"></div>
+
+<div class="fixed inset-0 opacity-10 pointer-events-none"
+style="background: repeating-linear-gradient(to bottom, transparent, transparent 3px, rgba(255,255,255,0.1) 4px);"></div>
+
+<!-- HEADER -->
+<header class="border-b border-zinc-800 p-6">
+  <div class="max-w-6xl mx-auto flex justify-between">
+    <div>
+      <div class="text-xs tracking-widest text-zinc-500">SYSTEMA OBSCURA</div>
+      <div class="text-sm tracking-widest text-zinc-300">SIGNAL ARCHIVE</div>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="max-w-6xl mx-auto px-6 py-16">
+  <h1 class="text-4xl md:text-6xl font-semibold leading-tight text-zinc-100">
+    Recovered analog horror artifacts.
+  </h1>
+  <p class="mt-6 text-zinc-400 max-w-xl">
+    A collection of observed anomalies, instruction fragments, and distorted domestic events.
+  </p>
+</section>
+
+<!-- GRID -->
+<section class="max-w-6xl mx-auto px-6 pb-16">
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+
+    <!-- REPEAT THIS BLOCK FOR POSTERS -->
+    <div class="border border-zinc-800 p-4 bg-zinc-950 hover:border-zinc-600 transition">
+      <div class="aspect-[4/5] bg-zinc-900 flex items-end p-4">
+        <div>
+          <div class="text-xs text-zinc-500">FILE 01</div>
+          <div class="text-lg tracking-widest text-zinc-100">DEVICE ILLUMINATION</div>
+          <div class="text-sm text-zinc-400 mt-2">Phone glow increased visibility.</div>
+        </div>
+      </div>
+      <div class="mt-4 text-xs text-zinc-500">MATTE POSTER</div>
+    </div>
+
+    <div class="border border-zinc-800 p-4 bg-zinc-950 hover:border-zinc-600 transition">
+      <div class="aspect-[4/5] bg-zinc-900 flex items-end p-4">
+        <div>
+          <div class="text-xs text-zinc-500">FILE 02</div>
+          <div class="text-lg tracking-widest text-zinc-100">YOU LOOKED AGAIN</div>
+          <div class="text-sm text-zinc-400 mt-2">Subject re-engaged.</div>
+        </div>
+      </div>
+      <div class="mt-4 text-xs text-zinc-500">MATTE POSTER</div>
+    </div>
+
+    <div class="border border-zinc-800 p-4 bg-zinc-950 hover:border-zinc-600 transition">
+      <div class="aspect-[4/5] bg-zinc-900 flex items-end p-4">
+        <div>
+          <div class="text-xs text-zinc-500">FILE 03</div>
+          <div class="text-lg tracking-widest text-zinc-100">IT NOTICED</div>
+          <div class="text-sm text-zinc-400 mt-2">Presence acknowledged.</div>
+        </div>
+      </div>
+      <div class="mt-4 text-xs text-zinc-500">MATTE POSTER</div>
+    </div>
+
+    <!-- DUPLICATE ABOVE BLOCK UNTIL YOU HAVE 9 -->
+
+  </div>
+</section>
+
+<!-- STICKERS -->
+<section class="max-w-6xl mx-auto px-6 pb-20">
+  <h2 class="text-2xl text-zinc-100 mb-6 tracking-widest">STICKERS</h2>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+    <div class="border border-zinc-800 p-4 bg-zinc-950">System Interpretation</div>
+    <div class="border border-zinc-800 p-4 bg-zinc-950">Do Not Look Back</div>
+    <div class="border border-zinc-800 p-4 bg-zinc-950">Signal Archive</div>
+    <div class="border border-zinc-800 p-4 bg-zinc-950">Observed Presence</div>
+
+  </div>
+</section>
+
+</body>
+</html>
