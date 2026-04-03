@@ -2,96 +2,242 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Signal Archive</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Signal Archive | Systema Obscura</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body { background: black; }
+    :root {
+      color-scheme: dark;
+    }
+    body {
+      background:
+        radial-gradient(circle at top center, rgba(255,255,255,0.08), transparent 38%),
+        linear-gradient(to bottom, #060606, #000000 28%, #030303 70%, #000000 100%);
+      min-height: 100vh;
+    }
+    .scanlines::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.08;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 3px,
+        rgba(255,255,255,0.09) 4px
+      );
+      z-index: 40;
+    }
+    .noise::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.05;
+      background-image:
+        radial-gradient(rgba(255,255,255,0.45) 0.6px, transparent 0.8px);
+      background-size: 8px 8px;
+      mix-blend-mode: screen;
+      z-index: 39;
+    }
+    .artifact-card {
+      position: relative;
+      overflow: hidden;
+    }
+    .artifact-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0));
+      pointer-events: none;
+    }
+    .artifact-card:hover {
+      transform: translateY(-2px);
+    }
+    .signal-frame {
+      position: relative;
+      border: 1px solid rgba(255,255,255,0.09);
+      background:
+        radial-gradient(circle at center, rgba(255,255,255,0.08), transparent 45%),
+        linear-gradient(180deg, rgba(25,25,25,0.9), rgba(7,7,7,0.96));
+    }
+    .signal-frame::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 3px,
+        rgba(255,255,255,0.05) 4px
+      );
+      opacity: 0.22;
+      pointer-events: none;
+    }
+    .glow-text {
+      text-shadow: 0 0 14px rgba(152, 255, 193, 0.18);
+    }
   </style>
 </head>
-<body class="text-zinc-200">
+<body class="text-zinc-200 scanlines noise antialiased">
 
-<!-- BACKGROUND FX -->
-<div class="fixed inset-0 opacity-20 pointer-events-none"
-style="background: radial-gradient(circle at center, rgba(255,255,255,0.08), transparent 45%);"></div>
-
-<div class="fixed inset-0 opacity-10 pointer-events-none"
-style="background: repeating-linear-gradient(to bottom, transparent, transparent 3px, rgba(255,255,255,0.1) 4px);"></div>
-
-<!-- HEADER -->
-<header class="border-b border-zinc-800 p-6">
-  <div class="max-w-6xl mx-auto flex justify-between">
-    <div>
-      <div class="text-xs tracking-widest text-zinc-500">SYSTEMA OBSCURA</div>
-      <div class="text-sm tracking-widest text-zinc-300">SIGNAL ARCHIVE</div>
+  <header class="border-b border-zinc-800/80 backdrop-blur-sm">
+    <div class="max-w-6xl mx-auto px-6 py-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div>
+        <div class="text-[11px] tracking-[0.35em] text-zinc-500">SYSTEMA OBSCURA</div>
+        <div class="text-sm tracking-[0.32em] text-zinc-200">SIGNAL ARCHIVE</div>
+      </div>
+      <div class="flex flex-wrap gap-3 text-xs tracking-[0.24em] uppercase">
+        <a href="https://dont-look-twice.printify.me/" class="border border-zinc-700 px-4 py-2 text-zinc-200 hover:border-zinc-400 hover:text-white transition">Access Storefront</a>
+        <a href="#artifacts" class="border border-zinc-800 px-4 py-2 text-zinc-400 hover:border-zinc-600 hover:text-zinc-200 transition">Review Files</a>
+      </div>
     </div>
-  </div>
-</header>
+  </header>
 
-<!-- HERO -->
-<section class="max-w-6xl mx-auto px-6 py-16">
-  <h1 class="text-4xl md:text-6xl font-semibold leading-tight text-zinc-100">
-    Recovered analog horror artifacts.
-  </h1>
-  <p class="mt-6 text-zinc-400 max-w-xl">
-    A collection of observed anomalies, instruction fragments, and distorted domestic events.
-  </p>
-</section>
+  <main>
+    <section class="max-w-6xl mx-auto px-6 pt-16 pb-14">
+      <div class="max-w-3xl">
+        <div class="text-xs tracking-[0.38em] text-zinc-500 uppercase">Recovered Visual Materials</div>
+        <h1 class="mt-5 text-4xl md:text-6xl font-semibold leading-tight text-zinc-100">
+          Observed analog horror artifacts, now retrievable.
+        </h1>
+        <p class="mt-6 text-zinc-400 text-base md:text-lg max-w-2xl leading-8">
+          A direct-access archive for viewers arriving from signal fragments, interrupted broadcasts, and short-form anomaly footage. Select a file below to retrieve the corresponding print or sticker.
+        </p>
+      </div>
 
-<!-- GRID -->
-<section class="max-w-6xl mx-auto px-6 pb-16">
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-
-    <!-- REPEAT THIS BLOCK FOR POSTERS -->
-    <div class="border border-zinc-800 p-4 bg-zinc-950 hover:border-zinc-600 transition">
-      <div class="aspect-[4/5] bg-zinc-900 flex items-end p-4">
-        <div>
-          <div class="text-xs text-zinc-500">FILE 01</div>
-          <div class="text-lg tracking-widest text-zinc-100">DEVICE ILLUMINATION</div>
-          <div class="text-sm text-zinc-400 mt-2">Phone glow increased visibility.</div>
+      <div class="mt-10 grid gap-4 md:grid-cols-3">
+        <div class="signal-frame p-5">
+          <div class="text-[11px] tracking-[0.32em] text-zinc-500 uppercase">Status</div>
+          <div class="mt-3 text-zinc-100 text-xl glow-text">Live Retrieval Enabled</div>
+          <div class="mt-3 text-sm text-zinc-400 leading-7">Each archive tile below routes directly to its product page to keep TikTok traffic moving with minimal friction.</div>
+        </div>
+        <div class="signal-frame p-5">
+          <div class="text-[11px] tracking-[0.32em] text-zinc-500 uppercase">Format Types</div>
+          <div class="mt-3 text-zinc-100 text-xl">Posters + Stickers</div>
+          <div class="mt-3 text-sm text-zinc-400 leading-7">Short-form buyers can enter at sticker level or move up to the full wall-art version without leaving the archive.</div>
+        </div>
+        <div class="signal-frame p-5">
+          <div class="text-[11px] tracking-[0.32em] text-zinc-500 uppercase">Store Link</div>
+          <div class="mt-3 text-zinc-100 text-xl">Don’t Look Twice</div>
+          <div class="mt-3 text-sm text-zinc-400 leading-7">A dedicated path for creepy-image traffic, separate from your broader Systema Obscura world.</div>
         </div>
       </div>
-      <div class="mt-4 text-xs text-zinc-500">MATTE POSTER</div>
-    </div>
+    </section>
 
-    <div class="border border-zinc-800 p-4 bg-zinc-950 hover:border-zinc-600 transition">
-      <div class="aspect-[4/5] bg-zinc-900 flex items-end p-4">
+    <section id="artifacts" class="max-w-6xl mx-auto px-6 pb-8">
+      <div class="flex items-end justify-between gap-4 border-b border-zinc-800 pb-4 mb-8">
         <div>
-          <div class="text-xs text-zinc-500">FILE 02</div>
-          <div class="text-lg tracking-widest text-zinc-100">YOU LOOKED AGAIN</div>
-          <div class="text-sm text-zinc-400 mt-2">Subject re-engaged.</div>
+          <div class="text-[11px] tracking-[0.34em] text-zinc-500 uppercase">Artifact Set</div>
+          <h2 class="text-2xl md:text-3xl text-zinc-100 tracking-[0.08em]">Wall Files</h2>
+        </div>
+        <a href="https://dont-look-twice.printify.me/" class="text-xs tracking-[0.26em] uppercase text-zinc-400 hover:text-zinc-100 transition">View All Products</a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <a href="https://dont-look-twice.printify.me/product/27744587/dont-look-twice-poster-analog-horror-star-figure-wall-art" class="artifact-card block border border-zinc-800 bg-zinc-950/90 p-4 transition duration-200 hover:border-zinc-500">
+          <div class="aspect-[4/5] border border-zinc-800 bg-gradient-to-b from-zinc-800 to-zinc-950 p-5 flex flex-col justify-between">
+            <div class="text-xs tracking-[0.3em] text-zinc-500">FILE 01</div>
+            <div>
+              <div class="text-2xl tracking-[0.14em] text-zinc-100 uppercase">Don’t Look Twice</div>
+              <div class="mt-3 text-sm text-zinc-400 leading-7">Star-faced presence detected near a domestic structure. Subject posture remained fixed.</div>
+            </div>
+          </div>
+          <div class="mt-4 flex items-center justify-between text-xs tracking-[0.22em] uppercase">
+            <span class="text-zinc-500">Matte Poster</span>
+            <span class="text-zinc-200">$12.99</span>
+          </div>
+          <div class="mt-3 text-sm text-zinc-400">Access file →</div>
+        </a>
+
+        <a href="https://dont-look-twice.printify.me/product/27745297/this-was-not-meant-for-you-analog-horror-signal-poster" class="artifact-card block border border-zinc-800 bg-zinc-950/90 p-4 transition duration-200 hover:border-zinc-500">
+          <div class="aspect-[4/5] border border-zinc-800 bg-gradient-to-b from-zinc-800 to-zinc-950 p-5 flex flex-col justify-between">
+            <div class="text-xs tracking-[0.3em] text-zinc-500">FILE 02</div>
+            <div>
+              <div class="text-2xl tracking-[0.14em] text-zinc-100 uppercase">This Was Not Meant For You</div>
+              <div class="mt-3 text-sm text-zinc-400 leading-7">Stacked CRT interference, signal spill, and destination language recovered from a contaminated broadcast chain.</div>
+            </div>
+          </div>
+          <div class="mt-4 flex items-center justify-between text-xs tracking-[0.22em] uppercase">
+            <span class="text-zinc-500">Matte Poster</span>
+            <span class="text-zinc-200">$12.99</span>
+          </div>
+          <div class="mt-3 text-sm text-zinc-400">Access file →</div>
+        </a>
+
+        <a href="https://dont-look-twice.printify.me/product/27745284/the-listener-poster-analog-horror-wall-art" class="artifact-card block border border-zinc-800 bg-zinc-950/90 p-4 transition duration-200 hover:border-zinc-500">
+          <div class="aspect-[4/5] border border-zinc-800 bg-gradient-to-b from-zinc-800 to-zinc-950 p-5 flex flex-col justify-between">
+            <div class="text-xs tracking-[0.3em] text-zinc-500">FILE 03</div>
+            <div>
+              <div class="text-2xl tracking-[0.14em] text-zinc-100 uppercase">The Listener</div>
+              <div class="mt-3 text-sm text-zinc-400 leading-7">Playground-adjacent entity observed with exaggerated auditory morphology and formal dress presentation.</div>
+            </div>
+          </div>
+          <div class="mt-4 flex items-center justify-between text-xs tracking-[0.22em] uppercase">
+            <span class="text-zinc-500">Matte Poster</span>
+            <span class="text-zinc-200">$12.99</span>
+          </div>
+          <div class="mt-3 text-sm text-zinc-400">Access file →</div>
+        </a>
+      </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto px-6 py-14">
+      <div class="flex items-end justify-between gap-4 border-b border-zinc-800 pb-4 mb-8">
+        <div>
+          <div class="text-[11px] tracking-[0.34em] text-zinc-500 uppercase">Portable Files</div>
+          <h2 class="text-2xl md:text-3xl text-zinc-100 tracking-[0.08em]">Sticker Retrieval</h2>
         </div>
       </div>
-      <div class="mt-4 text-xs text-zinc-500">MATTE POSTER</div>
-    </div>
 
-    <div class="border border-zinc-800 p-4 bg-zinc-950 hover:border-zinc-600 transition">
-      <div class="aspect-[4/5] bg-zinc-900 flex items-end p-4">
-        <div>
-          <div class="text-xs text-zinc-500">FILE 03</div>
-          <div class="text-lg tracking-widest text-zinc-100">IT NOTICED</div>
-          <div class="text-sm text-zinc-400 mt-2">Presence acknowledged.</div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <a href="https://dont-look-twice.printify.me/product/27762621/dont-look-now-sticker-star-face" class="artifact-card block border border-zinc-800 bg-zinc-950/90 p-4 transition duration-200 hover:border-zinc-500">
+          <div class="aspect-[5/4] border border-zinc-800 bg-gradient-to-b from-zinc-800 to-zinc-950 p-5 flex flex-col justify-between">
+            <div class="text-xs tracking-[0.3em] text-zinc-500">PORTABLE 01</div>
+            <div>
+              <div class="text-2xl tracking-[0.14em] text-zinc-100 uppercase">Don’t Look Now</div>
+              <div class="mt-3 text-sm text-zinc-400 leading-7">Star-face manifestation isolated for laptop, bottle, notebook, and smooth-surface deployment.</div>
+            </div>
+          </div>
+          <div class="mt-4 flex items-center justify-between text-xs tracking-[0.22em] uppercase">
+            <span class="text-zinc-500">Kiss-Cut Sticker</span>
+            <span class="text-zinc-200">$9.99</span>
+          </div>
+          <div class="mt-3 text-sm text-zinc-400">Retrieve portable file →</div>
+        </a>
+
+        <a href="https://dont-look-twice.printify.me/product/27762640/this-was-not-meant-for-you-poster" class="artifact-card block border border-zinc-800 bg-zinc-950/90 p-4 transition duration-200 hover:border-zinc-500">
+          <div class="aspect-[5/4] border border-zinc-800 bg-gradient-to-b from-zinc-800 to-zinc-950 p-5 flex flex-col justify-between">
+            <div class="text-xs tracking-[0.3em] text-zinc-500">PORTABLE 02</div>
+            <div>
+              <div class="text-2xl tracking-[0.14em] text-zinc-100 uppercase">This Was Not Meant For You</div>
+              <div class="mt-3 text-sm text-zinc-400 leading-7">Compact signal artifact for viewers who want a smaller entry point into the contaminated broadcast set.</div>
+            </div>
+          </div>
+          <div class="mt-4 flex items-center justify-between text-xs tracking-[0.22em] uppercase">
+            <span class="text-zinc-500">Kiss-Cut Sticker</span>
+            <span class="text-zinc-200">$9.99</span>
+          </div>
+          <div class="mt-3 text-sm text-zinc-400">Retrieve portable file →</div>
+        </a>
+      </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto px-6 pb-20">
+      <div class="border border-zinc-800 bg-zinc-950/90 p-6 md:p-8">
+        <div class="text-[11px] tracking-[0.34em] text-zinc-500 uppercase">Exit Path</div>
+        <div class="mt-4 grid gap-6 md:grid-cols-[1.7fr,auto] md:items-center">
+          <div>
+            <h3 class="text-2xl md:text-3xl text-zinc-100">Keep the TikTok path fast.</h3>
+            <p class="mt-4 text-zinc-400 leading-8 max-w-3xl">Use the direct store link in bio for impulse traffic. Use this archive page on Systema Obscura as the deeper world-building layer for viewers who want to browse, linger, and collect more than one piece.</p>
+          </div>
+          <div>
+            <a href="https://dont-look-twice.printify.me/" class="inline-flex items-center border border-zinc-700 px-5 py-3 text-xs tracking-[0.28em] uppercase text-zinc-100 hover:border-zinc-400 transition">Enter Storefront</a>
+          </div>
         </div>
       </div>
-      <div class="mt-4 text-xs text-zinc-500">MATTE POSTER</div>
-    </div>
-
-    <!-- DUPLICATE ABOVE BLOCK UNTIL YOU HAVE 9 -->
-
-  </div>
-</section>
-
-<!-- STICKERS -->
-<section class="max-w-6xl mx-auto px-6 pb-20">
-  <h2 class="text-2xl text-zinc-100 mb-6 tracking-widest">STICKERS</h2>
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-
-    <div class="border border-zinc-800 p-4 bg-zinc-950">System Interpretation</div>
-    <div class="border border-zinc-800 p-4 bg-zinc-950">Do Not Look Back</div>
-    <div class="border border-zinc-800 p-4 bg-zinc-950">Signal Archive</div>
-    <div class="border border-zinc-800 p-4 bg-zinc-950">Observed Presence</div>
-
-  </div>
-</section>
-
+    </section>
+  </main>
 </body>
 </html>
