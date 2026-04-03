@@ -77,6 +77,51 @@
     }
 
 
+    .scene-dontlook {
+      background:
+        radial-gradient(circle at 50% 38%, rgba(255, 236, 120, 0.18), transparent 12%),
+        radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.06), transparent 22%),
+        linear-gradient(180deg, rgba(12, 16, 20, 0.08), rgba(0, 0, 0, 0.52)),
+        linear-gradient(135deg, #0b1014 0%, #17232b 45%, #090c10 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scene-dontlook::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(0deg, rgba(255,255,255,0.03), rgba(255,255,255,0.00)),
+        repeating-linear-gradient(
+          180deg,
+          rgba(255,255,255,0.03) 0px,
+          rgba(255,255,255,0.03) 1px,
+          transparent 1px,
+          transparent 4px
+        );
+      opacity: 0.7;
+    }
+
+    .scene-dontlook::after {
+      content: "DON'T\A LOOK\A TWICE";
+      white-space: pre;
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: rgba(230, 245, 230, 0.92);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: clamp(0.95rem, 2vw, 1.15rem);
+      line-height: 1.2;
+      letter-spacing: 0.18em;
+      text-shadow: 0 0 18px rgba(170, 255, 210, 0.18);
+      z-index: 1;
+    }
+
+
     /* Quick conversion upgrades */
     .hero-scroll-note {
       margin-top: 12px;
@@ -591,6 +636,20 @@
             <p>Step into the story, the myth, and the growing Wraith world.</p>
           </div>
         </a>
+
+
+        <a class="featured-item" href="https://dont-look-twice.printify.me" target="_blank" rel="noopener">
+          <div class="featured-visual crt">
+            <div class="screen">
+              <div class="channel-scene scene-dontlook"></div>
+              <div class="scanlines"></div>
+            </div>
+          </div>
+          <div class="featured-copy">
+            <h3>Shop Creepy Drops</h3>
+            <p>Analog horror posters, stickers, and signal-bad images pulled from the feed.</p>
+          </div>
+        </a>
       </div>
     </section>
 
@@ -673,14 +732,14 @@
           </div>
         </a>
 
-        <a class="channel-card crt reveal" href="#signal">
+        <a class="channel-card crt reveal priority-channel" href="https://dont-look-twice.printify.me" target="_blank" rel="noopener">
           <div class="screen">
-            <div class="channel-scene scene-audio"></div>
+            <div class="channel-scene scene-dontlook"></div>
             <div class="scanlines"></div>
           </div>
           <div class="channel-copy">
-            <h3>COMING SOON</h3>
-            <p>Signals, sound, and strange transmissions are on the way.</p>
+            <h3>DON'T LOOK TWICE</h3>
+            <p>Analog horror posters, stickers, and unsettling images pulled straight from the signal.</p>
           </div>
         </a>
 
@@ -724,6 +783,7 @@
             <div class="status-row"><span>Systema Obscura Presents</span><strong>Stories Live</strong></div>
             <div class="status-row"><span>Wasteland Wardrobe Co.</span><strong>Shop Open</strong></div>
             <div class="status-row"><span>Atomic Americana</span><strong>Shop Open</strong></div>
+            <div class="status-row"><span>Don't Look Twice</span><strong>Popup Shop Live</strong></div>
             <div class="status-row"><span>Books, Worlds, Experiments</span><strong>Expanding</strong></div>
           </div>
         </aside>
@@ -822,6 +882,15 @@
           <span class="so-agent-btn-text">
             <span class="so-agent-btn-label">Shop Products</span>
             <span class="so-agent-btn-note">Most popular starting point</span>
+          </span>
+          <span class="so-agent-btn-arrow" aria-hidden="true">→</span>
+        </a>
+
+
+        <a class="so-agent-btn" href="https://dont-look-twice.printify.me" target="_blank" rel="noopener" data-destination="Don't Look Twice">
+          <span class="so-agent-btn-text">
+            <span class="so-agent-btn-label">Enter Don't Look Twice</span>
+            <span class="so-agent-btn-note">Creepy posters and stickers from the analog signal feed</span>
           </span>
           <span class="so-agent-btn-arrow" aria-hidden="true">→</span>
         </a>
