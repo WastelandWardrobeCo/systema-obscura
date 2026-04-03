@@ -75,42 +75,11 @@
       background-position: center;
       background-repeat: no-repeat;
     }
-
-
-.scene-dontlook {
-  background-image: url("./assets/tiles/dont-look-twice-tile.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  position: relative;
-  overflow: hidden;
-}
-
-    .scene-dontlook::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(0,0,0,0.06), rgba(0,0,0,0.12));
-      pointer-events: none;
+    .scene-dontlook {
+      background: #111 url("./assets/tiles/dont-look-twice-tile.png?v=2") center / cover no-repeat;
     }
 
-    .scene-dontlook::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        repeating-linear-gradient(
-          to bottom,
-          transparent,
-          transparent 3px,
-          rgba(255,255,255,0.08) 4px
-        );
-      opacity: 0.22;
-      pointer-events: none;
-    }
-
-
-    /* Quick conversion upgrades */
+/* Quick conversion upgrades */
     .hero-scroll-note {
       margin-top: 12px;
       opacity: 0.72;
