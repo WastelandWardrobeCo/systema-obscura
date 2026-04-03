@@ -960,10 +960,12 @@
     });
   });
 
-  const dismissed = localStorage.getItem(STORAGE_KEY) === 'true';
-  if (!dismissed) {
-    window.setTimeout(openPanel, AUTO_OPEN_DELAY);
-  }
+ const dismissed = localStorage.getItem(STORAGE_KEY) === 'true';
+const isMobile = window.innerWidth <= 768;
+
+if (!dismissed && !isMobile) {
+  window.setTimeout(openPanel, AUTO_OPEN_DELAY);
+}
 
 
 // ===== SYSTEMA OBSCURA LIVE AGENT =====
