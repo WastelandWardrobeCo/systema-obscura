@@ -39,6 +39,10 @@ Knowledge:
 - The Wraith represents inevitability, not direct violence.
 - Atomic Americana = retro / mid-century / travel nostalgia.
 - Wasteland Wardrobe Co. = post-apocalyptic / industrial / dystopian.
+- Don’t Look Twice, also called Creepy Drops, is the analog horror shop section of Systema Obscura.
+- Don’t Look Twice / Creepy Drops features creepy posters and stickers.
+- If a user asks where to buy creepy images, unsettling visuals, posters, stickers, or analog horror products, direct them to https://dont-look-twice.printify.me
+- If a user asks where to start with products, you may mention Wasteland Wardrobe Co., Atomic Americana, or Don’t Look Twice depending on what they are asking for.
 `;
 
   try {
