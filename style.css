@@ -690,6 +690,17 @@ body::before {
 }
 
 @media (max-width: 760px) {
+  .nav-icon {
+    width: 36px;
+    height: 36px;
+    margin-left: 6px;
+  }
+
+  .nav-icon img {
+    width: 20px;
+    height: 20px;
+  }
+
   .site-header {
     flex-direction: column;
     gap: 12px;
@@ -1355,27 +1366,7 @@ body::before {
   background: rgba(255,255,255,0.06);
   text-shadow: 0 0 6px rgba(255,255,255,0.15);
 }
-nav a[href*="youtube"]::after {
-  content: " ●";
-  color: #ff3b3b;
-  font-size: 0.7rem;
-  margin-left: 4px;
-}
-/* LIVE SIGNAL dot pulse */
-nav a[href*="youtube"]::after {
-  content: " ●";
-  color: #ff3b3b;
-  font-size: 0.7rem;
-  margin-left: 4px;
-  animation: livePulse 2.2s ease-in-out infinite;
-}
-
-@keyframes livePulse {
-  0%, 100% {
-    opacity: 0.35;
-    text-shadow: 0 0 0 rgba(255, 59, 59, 0);
-  }
-  50% {
+50% {
     opacity: 1;
     text-shadow: 0 0 6px rgba(255, 59, 59, 0.6);
   }
@@ -1552,24 +1543,64 @@ nav a[href*="youtube"]::after {
 .artifact-card img[src*="fracture"] {
 animation: soPulse 2.2s 1;
 }
-JSON.parse(localStorage.getItem('systema-obscura-agent-click-log'))
-object-position: center 30%;
+
+
 .nav-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-left: 8px;
+  width: 40px;
+  height: 40px;
+  margin-left: 10px;
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.03);
+  box-shadow: 0 0 0 0 rgba(255,255,255,0);
+  transition: transform 0.2s ease, opacity 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  animation: socialPulse 2.8s ease-in-out infinite;
 }
 
 .nav-icon img {
   width: 22px;
   height: 22px;
   object-fit: contain;
-  opacity: 0.85;
+  display: block;
+  opacity: 0.92;
+  filter: brightness(1.04);
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-.nav-icon:hover img {
+.nav-icon:hover,
+.nav-icon:focus-visible {
+  transform: translateY(-1px) scale(1.08);
   opacity: 1;
-  transform: scale(1.1);
+  border-color: rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.08);
+  box-shadow: 0 0 12px rgba(255,255,255,0.12);
+  outline: none;
+}
+
+.nav-icon:hover img,
+.nav-icon:focus-visible img {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.nav-icon-youtube {
+  animation-delay: 0s;
+}
+
+.nav-icon-tiktok {
+  animation-delay: 1.2s;
+}
+
+@keyframes socialPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(255,255,255,0);
+    border-color: rgba(255,255,255,0.18);
+  }
+  50% {
+    box-shadow: 0 0 14px rgba(255,255,255,0.14);
+    border-color: rgba(255,255,255,0.32);
+  }
 }
