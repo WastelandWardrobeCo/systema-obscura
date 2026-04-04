@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact — Systema Obscura</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body style="background:black;color:white;font-family:Arial, sans-serif;">
+
+  <header class="site-header">
+    <a href="index.html" class="brand">SYSTEMA OBSCURA</a>
+  </header>
+
+  <main style="max-width:600px;margin:80px auto;padding:20px;">
+
+    <h1 style="text-align:center;letter-spacing:2px;">CONTACT</h1>
+    <p style="text-align:center;opacity:0.7;margin-bottom:30px;">
+      Questions, custom requests, or support? Send a message below.
+    </p>
+
+    <form action="https://formspree.io/f/xzdkjlng" method="POST">
+      
+      <label>Name</label>
+      <input type="text" name="name" required 
+        style="width:100%;padding:10px;margin:10px 0;background:black;border:1px solid white;color:white;">
+
+      <label>Email</label>
+      <input type="email" name="email" required 
+        style="width:100%;padding:10px;margin:10px 0;background:black;border:1px solid white;color:white;">
+
+      <label>Message</label>
+      <textarea name="message" rows="5" required 
+        style="width:100%;padding:10px;margin:10px 0;background:black;border:1px solid white;color:white;"></textarea>
+
+      <button type="submit" 
+        style="width:100%;padding:12px;background:white;color:black;border:none;cursor:pointer;letter-spacing:1px;">
+        SEND TRANSMISSION
+      </button>
+
+    </form>
+
+    <div style="text-align:center;margin-top:30px;">
+      <a href="index.html" style="color:white;opacity:0.6;">← Back to main signal</a>
+    </div>
+
+  </main>
+
+</body>
+</html>
