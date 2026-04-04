@@ -79,6 +79,82 @@
       background: #111 url("./assets/tiles/dont-look-twice-tile.png?v=2") center / cover no-repeat;
     }
 
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .nav-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      padding: 0;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.03);
+      box-shadow: 0 0 0 0 rgba(255,255,255,0.0);
+      transition: transform 0.2s ease, opacity 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      animation: socialPulse 2.8s ease-in-out infinite;
+    }
+
+    .nav-icon img {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+      display: block;
+      opacity: 0.9;
+      filter: brightness(1.05);
+    }
+
+    .nav-icon:hover,
+    .nav-icon:focus-visible {
+      transform: translateY(-1px) scale(1.08);
+      opacity: 1;
+      border-color: rgba(255,255,255,0.45);
+      background: rgba(255,255,255,0.08);
+      box-shadow: 0 0 14px rgba(255,255,255,0.14);
+      outline: none;
+    }
+
+    .nav-icon-youtube {
+      animation-delay: 0s;
+    }
+
+    .nav-icon-tiktok {
+      animation-delay: 1.2s;
+    }
+
+    @keyframes socialPulse {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(255,255,255,0.0);
+        border-color: rgba(255,255,255,0.18);
+      }
+      50% {
+        box-shadow: 0 0 12px rgba(255,255,255,0.12);
+        border-color: rgba(255,255,255,0.34);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav {
+        gap: 12px;
+      }
+
+      .nav-icon {
+        width: 32px;
+        height: 32px;
+      }
+
+      .nav-icon img {
+        width: 17px;
+        height: 17px;
+      }
+    }
+
 /* Quick conversion upgrades */
     .hero-scroll-note {
       margin-top: 12px;
@@ -493,13 +569,12 @@
     <nav class="nav">
       <a href="#signal">Home</a>
       <a href="#channels">Explore</a>
-<a href="https://www.youtube.com/@TheSafeBunker" target="_blank" class="nav-icon">
-  <img src="./assets/youtube.png" alt="YouTube" />
-</a>
-
-<a href="https://www.tiktok.com/@systema.obscura" target="_blank" class="nav-icon">
-  <img src="./assets/tiktok.png" alt="TikTok" />
-</a>
+      <a href="https://www.youtube.com/@TheSafeBunker" target="_blank" rel="noopener" class="nav-icon nav-icon-youtube" aria-label="YouTube">
+        <img src="./assets/youtube.png" alt="YouTube" />
+      </a>
+      <a href="https://www.tiktok.com/@systema.obscura" target="_blank" rel="noopener" class="nav-icon nav-icon-tiktok" aria-label="TikTok">
+        <img src="./assets/tiktok.png" alt="TikTok" />
+      </a>
       <a href="#artifacts">Featured</a>
       <a href="#status">Status</a>
     </nav>
