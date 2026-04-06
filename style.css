@@ -1638,3 +1638,8 @@ animation: soPulse 2.2s 1;
   background-position: center;
   background-repeat: no-repeat;
 }
+.return-link,
+.return-link:visited,
+.return-link:active {
+  color: #fff;
+}
