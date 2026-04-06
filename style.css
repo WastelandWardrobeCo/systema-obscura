@@ -1632,3 +1632,9 @@ animation: soPulse 2.2s 1;
   border-color: rgba(255,255,255,0.4);
   background: rgba(255,255,255,0.05);
 }
+.scene-zone13 {
+  background-image: url("./assets/tiles/zone13-tile.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
