@@ -1643,3 +1643,4 @@ animation: soPulse 2.2s 1;
 .return-link:active {
   color: #fff;
 }
+grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
