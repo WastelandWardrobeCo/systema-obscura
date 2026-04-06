@@ -116,12 +116,10 @@
       object-fit:cover;
       display:block;
       background:#0b0b0c;
-      filter:saturate(.95) contrast(1.02);
     }
     .card-body{
-      padding:18px 18px 20px;
+      padding:18px;
       border-top:1px solid var(--line);
-      background:linear-gradient(180deg, rgba(255,255,255,.02), transparent);
     }
     .card h2{
       margin:0 0 6px;
@@ -149,107 +147,101 @@
       letter-spacing:.08em;
       text-transform:uppercase;
     }
-    .note{
-      font-size:13px;
-      color:var(--muted);
-      margin-top:10px;
-    }
   </style>
 </head>
 <body>
-  <header class="hero">
-    <div class="wrap hero-inner">
-      <div class="eyebrow">Systema Obscura | Zone 13 Access Node</div>
-      <h1>Zone 13</h1>
-      <p class="lede">
-        Zone 13 is a contained human ecosystem under pressure. Survival is not random here. It is engineered,
-        traded, enforced, harvested, and sometimes erased.
-      </p>
-      <div class="mantra">
-        <div>Nothing is wasted.</div>
-        <div>Survival is engineered.</div>
-        <div>Everything has a price.</div>
-        <div>Every action has consequence.</div>
-        <div>Some things escape all of it.</div>
-      </div>
+
+<header class="hero">
+  <div class="wrap hero-inner">
+    <div class="eyebrow">Systema Obscura | Zone 13 Access Node</div>
+    <h1>Zone 13</h1>
+    <p class="lede">
+      Zone 13 is a contained human ecosystem under pressure. Survival is engineered,
+      traded, enforced, harvested, and sometimes erased.
+    </p>
+    <div class="mantra">
+      <div>Nothing is wasted.</div>
+      <div>Survival is engineered.</div>
+      <div>Everything has a price.</div>
+      <div>Every action has consequence.</div>
+      <div>Some things escape all of it.</div>
     </div>
-  </header>
+  </div>
+</header>
 
-  <main class="wrap">
-    <section class="section">
-      <div class="section-title">Canonized Factions</div>
-      <div class="grid">
-        <article class="card">
-          <img class="tile" src="a_digital_painting_in_a_dark_and_atmospheric_scien.png" alt="Hemoglyph faction tile" />
-          <div class="card-body">
-            <h2>Hemoglyphs</h2>
-            <p class="tagline">Survival Is Engineered</p>
-            <p class="blurb">
-              The Hemoglyphs are Zone 13’s chemists, medics, and compound engineers. Using blood-based chemistry,
-              they create cures, poisons, explosives, synthetic blood, and even drinkable water from paired dry compounds.
-              They are practical, feared, and functionally independent from the system around them.
-            </p>
-          </div>
-        </article>
+<main class="wrap">
+  <section class="section">
+    <div class="section-title">Canonized Factions</div>
 
-        <article class="card">
-          <img class="tile" src="a_digital_painting_features_a_hooded_figure_repres.png" alt="Cloak and Coin faction tile" />
-          <div class="card-body">
-            <h2>Cloak &amp; Coin</h2>
-            <p class="tagline">Everything Has A Price</p>
-            <p class="blurb">
-              Cloak &amp; Coin are the black-market authority of Zone 13. They trade in anything that holds value:
-              goods, favors, access, information, body parts, and leverage. Their one unbroken rule is simple:
-              they never lose a transaction. If someone is desperate enough to find them, the cost has already begun.
-            </p>
-          </div>
-        </article>
+    <div class="grid">
 
-        <article class="card">
-          <img class="tile" src="a_digital_photograph_depicts_a_figure_known_as_a_h.png" alt="Harvester faction tile" />
-          <div class="card-body">
-            <h2>Harvesters</h2>
-            <p class="tagline">Nothing Is Wasted</p>
-            <p class="blurb">
-              The Harvesters are Zone 13’s extraction and conversion faction. They reclaim components from machines,
-              salvage biological material from the dead, and control the electrical infrastructure by rebuilding systems
-              from stripped parts. If something exists, they see it as usable. If something stops functioning, it becomes theirs.
-            </p>
-          </div>
-        </article>
+      <!-- Hemoglyphs -->
+      <article class="card">
+        <img class="tile" src="assets/tiles/hemoglyphs.png">
+        <div class="card-body">
+          <h2>Hemoglyphs</h2>
+          <p class="tagline">Survival Is Engineered</p>
+          <p class="blurb">
+            Blood-based chemists who create cures, poisons, explosives, and water. Independent and precise.
+          </p>
+        </div>
+      </article>
 
-        <article class="card">
-          <img class="tile" src="a_digital_photograph_features_a_figure_clad_in_dar.png" alt="Axiom faction tile" />
-          <div class="card-body">
-            <h2>Axiom</h2>
-            <p class="tagline">Every Action Has Consequence</p>
-            <p class="blurb">
-              The Axiom are the enforcement authority of Zone 13. They do not negotiate, posture, or improvise.
-              They arrive when consequence has already been decided and deliver punishment with exact proportion.
-              Not cruelty, not chaos, not mercy. Finality.
-            </p>
-          </div>
-        </article>
+      <!-- Cloak & Coin -->
+      <article class="card">
+        <img class="tile" src="assets/tiles/cloak_coin.png">
+        <div class="card-body">
+          <h2>Cloak & Coin</h2>
+          <p class="tagline">Everything Has A Price</p>
+          <p class="blurb">
+            Black-market traders dealing in anything of value. They never lose a transaction.
+          </p>
+        </div>
+      </article>
 
-        <article class="card">
-          <img class="tile" src="a_digital_painting_in_a_dark_and_atmospheric_style.png" alt="Null faction tile" />
-          <div class="card-body">
-            <h2>Null</h2>
-            <p class="tagline">No Record Exists</p>
-            <p class="blurb">
-              The Null are not understood so much as noticed by their absence. When the Null touches a person,
-              object, or event, it no longer belongs to the system. No record remains. No transaction survives.
-              No recovery is possible. They are the fracture in Zone 13 that every other faction fails to explain.
-            </p>
-          </div>
-        </article>
-      </div>
-      <p class="note">Tiles are displayed as static visual panels for now and are ready to become clickable later.</p>
-    </section>
-  </main>
+      <!-- Harvesters -->
+      <article class="card">
+        <img class="tile" src="assets/tiles/harvesters.png">
+        <div class="card-body">
+          <h2>Harvesters</h2>
+          <p class="tagline">Nothing Is Wasted</p>
+          <p class="blurb">
+            Engineers and extractors who reclaim all materials, biological and mechanical.
+          </p>
+        </div>
+      </article>
 
-  <footer class="wrap footer">
-    Zone 13 access remains active
-  </footer>
+      <!-- Axiom -->
+      <article class="card">
+        <img class="tile" src="assets/tiles/axiom.png">
+        <div class="card-body">
+          <h2>Axiom</h2>
+          <p class="tagline">Every Action Has Consequence</p>
+          <p class="blurb">
+            Enforcement authority delivering precise, final judgment without deviation.
+          </p>
+        </div>
+      </article>
+
+      <!-- Null -->
+      <article class="card">
+        <img class="tile" src="assets/tiles/null.png">
+        <div class="card-body">
+          <h2>Null</h2>
+          <p class="tagline">No Record Exists</p>
+          <p class="blurb">
+            Untraceable absence that removes things from system recognition entirely.
+          </p>
+        </div>
+      </article>
+
+    </div>
+  </section>
+</main>
+
+<footer class="wrap footer">
+  Zone 13 access remains active
+</footer>
+
 </body>
 </html>
