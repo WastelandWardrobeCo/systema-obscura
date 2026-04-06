@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zone 13</title>
+  <style>
+    :root{
+      --bg:#060606;
+      --panel:#0f0f10;
+      --panel-2:#141416;
+      --text:#f2f2f2;
+      --muted:#a6a6ad;
+      --line:#242428;
+      --accent:#d7d7db;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,0.05), transparent 35%),
+        linear-gradient(180deg, #0a0a0a 0%, #050505 100%);
+      color:var(--text);
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      line-height:1.5;
+    }
+    .wrap{
+      width:min(1200px, calc(100% - 32px));
+      margin:0 auto;
+    }
+    .hero{
+      min-height:68vh;
+      display:flex;
+      align-items:center;
+      border-bottom:1px solid var(--line);
+      position:relative;
+      overflow:hidden;
+    }
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.04), transparent 30%),
+        repeating-linear-gradient(180deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 3px);
+      pointer-events:none;
+      opacity:.25;
+    }
+    .hero-inner{
+      position:relative;
+      z-index:1;
+      padding:72px 0;
+      max-width:850px;
+    }
+    .eyebrow{
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:var(--muted);
+      font-size:12px;
+      margin-bottom:14px;
+    }
+    h1{
+      font-size:clamp(40px, 8vw, 86px);
+      line-height:.95;
+      margin:0 0 18px;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      font-weight:800;
+    }
+    .lede{
+      max-width:780px;
+      color:#d0d0d5;
+      font-size:clamp(17px, 2.5vw, 22px);
+      margin:0 0 28px;
+    }
+    .mantra{
+      display:grid;
+      gap:10px;
+      margin-top:26px;
+      padding:18px 20px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.02);
+      width:min(100%, 760px);
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      font-size:clamp(12px,2vw,15px);
+    }
+    .section{
+      padding:42px 0 20px;
+    }
+    .section-title{
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      color:var(--muted);
+      margin-bottom:18px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(12,1fr);
+      gap:18px;
+      padding-bottom:56px;
+    }
+    .card{
+      grid-column:span 6;
+      background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
+      border:1px solid var(--line);
+      overflow:hidden;
+    }
+    @media (min-width:900px){
+      .card{grid-column:span 4;}
+    }
+    .tile{
+      aspect-ratio:1/1;
+      width:100%;
+      object-fit:cover;
+      display:block;
+      background:#0b0b0c;
+      filter:saturate(.95) contrast(1.02);
+    }
+    .card-body{
+      padding:18px 18px 20px;
+      border-top:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.02), transparent);
+    }
+    .card h2{
+      margin:0 0 6px;
+      font-size:24px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+    .tagline{
+      color:#d8d8dc;
+      margin:0 0 12px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      font-size:12px;
+    }
+    .blurb{
+      margin:0;
+      color:#bebec6;
+      font-size:15px;
+    }
+    .footer{
+      border-top:1px solid var(--line);
+      padding:26px 0 60px;
+      color:var(--muted);
+      font-size:13px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+    .note{
+      font-size:13px;
+      color:var(--muted);
+      margin-top:10px;
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap hero-inner">
+      <div class="eyebrow">Systema Obscura | Zone 13 Access Node</div>
+      <h1>Zone 13</h1>
+      <p class="lede">
+        Zone 13 is a contained human ecosystem under pressure. Survival is not random here. It is engineered,
+        traded, enforced, harvested, and sometimes erased.
+      </p>
+      <div class="mantra">
+        <div>Nothing is wasted.</div>
+        <div>Survival is engineered.</div>
+        <div>Everything has a price.</div>
+        <div>Every action has consequence.</div>
+        <div>Some things escape all of it.</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="section">
+      <div class="section-title">Canonized Factions</div>
+      <div class="grid">
+        <article class="card">
+          <img class="tile" src="a_digital_painting_in_a_dark_and_atmospheric_scien.png" alt="Hemoglyph faction tile" />
+          <div class="card-body">
+            <h2>Hemoglyphs</h2>
+            <p class="tagline">Survival Is Engineered</p>
+            <p class="blurb">
+              The Hemoglyphs are Zone 13’s chemists, medics, and compound engineers. Using blood-based chemistry,
+              they create cures, poisons, explosives, synthetic blood, and even drinkable water from paired dry compounds.
+              They are practical, feared, and functionally independent from the system around them.
+            </p>
+          </div>
+        </article>
+
+        <article class="card">
+          <img class="tile" src="a_digital_painting_features_a_hooded_figure_repres.png" alt="Cloak and Coin faction tile" />
+          <div class="card-body">
+            <h2>Cloak &amp; Coin</h2>
+            <p class="tagline">Everything Has A Price</p>
+            <p class="blurb">
+              Cloak &amp; Coin are the black-market authority of Zone 13. They trade in anything that holds value:
+              goods, favors, access, information, body parts, and leverage. Their one unbroken rule is simple:
+              they never lose a transaction. If someone is desperate enough to find them, the cost has already begun.
+            </p>
+          </div>
+        </article>
+
+        <article class="card">
+          <img class="tile" src="a_digital_photograph_depicts_a_figure_known_as_a_h.png" alt="Harvester faction tile" />
+          <div class="card-body">
+            <h2>Harvesters</h2>
+            <p class="tagline">Nothing Is Wasted</p>
+            <p class="blurb">
+              The Harvesters are Zone 13’s extraction and conversion faction. They reclaim components from machines,
+              salvage biological material from the dead, and control the electrical infrastructure by rebuilding systems
+              from stripped parts. If something exists, they see it as usable. If something stops functioning, it becomes theirs.
+            </p>
+          </div>
+        </article>
+
+        <article class="card">
+          <img class="tile" src="a_digital_photograph_features_a_figure_clad_in_dar.png" alt="Axiom faction tile" />
+          <div class="card-body">
+            <h2>Axiom</h2>
+            <p class="tagline">Every Action Has Consequence</p>
+            <p class="blurb">
+              The Axiom are the enforcement authority of Zone 13. They do not negotiate, posture, or improvise.
+              They arrive when consequence has already been decided and deliver punishment with exact proportion.
+              Not cruelty, not chaos, not mercy. Finality.
+            </p>
+          </div>
+        </article>
+
+        <article class="card">
+          <img class="tile" src="a_digital_painting_in_a_dark_and_atmospheric_style.png" alt="Null faction tile" />
+          <div class="card-body">
+            <h2>Null</h2>
+            <p class="tagline">No Record Exists</p>
+            <p class="blurb">
+              The Null are not understood so much as noticed by their absence. When the Null touches a person,
+              object, or event, it no longer belongs to the system. No record remains. No transaction survives.
+              No recovery is possible. They are the fracture in Zone 13 that every other faction fails to explain.
+            </p>
+          </div>
+        </article>
+      </div>
+      <p class="note">Tiles are displayed as static visual panels for now and are ready to become clickable later.</p>
+    </section>
+  </main>
+
+  <footer class="wrap footer">
+    Zone 13 access remains active
+  </footer>
+</body>
+</html>
