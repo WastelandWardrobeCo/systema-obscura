@@ -1721,3 +1721,6 @@ grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 .crt-tv-featured {
   animation: crtFlicker 5s infinite;
 }
+.crt-tv-featured img {
+  transition: opacity 0.3s ease;
+}
