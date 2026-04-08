@@ -1801,3 +1801,8 @@ animation: soPulse 2.2s 1;
 .feature-screen {
   background: #0d0d0d !important;
 }
+.channel-scene,
+.feature-scene,
+.artifact-scene {
+  filter: contrast(1.05) brightness(1.02);
+}
