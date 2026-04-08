@@ -1748,3 +1748,7 @@ animation: soPulse 2.2s 1;
   display: none !important;
   content: none !important;
 }
+.tile,
+.feature-tile {
+  background-image: none !important;
+}
