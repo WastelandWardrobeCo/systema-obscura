@@ -1644,3 +1644,80 @@ animation: soPulse 2.2s 1;
   color: #fff;
 }
 grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+/* ===== CRT FEATURED BROADCAST ===== */
+
+.crt-featured {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.crt-broadcast-label {
+  font-size: 11px;
+  letter-spacing: 3px;
+  opacity: 0.6;
+  margin-bottom: 10px;
+}
+
+.crt-tv-featured {
+  width: 360px;
+  max-width: 90vw;
+  padding: 14px;
+  background: #0a0a0a;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.15);
+  box-shadow:
+    0 0 40px rgba(255,255,255,0.04),
+    inset 0 0 20px rgba(255,255,255,0.03);
+}
+
+.crt-tv-featured a {
+  display: block;
+  width: 100%;
+}
+
+.crt-tv-featured img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+}
+
+/* overlay text */
+.crt-overlay-featured {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 8px;
+  background: rgba(0,0,0,0.65);
+  font-size: 11px;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+/* scanlines */
+.crt-tv-featured::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.02) 0px,
+    rgba(255,255,255,0.02) 1px,
+    transparent 2px,
+    transparent 4px
+  );
+}
+
+/* subtle flicker */
+@keyframes crtFlicker {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0.97; }
+}
+
+.crt-tv-featured {
+  animation: crtFlicker 5s infinite;
+}
