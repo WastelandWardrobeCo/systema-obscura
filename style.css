@@ -1724,3 +1724,6 @@ grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 .crt-tv-featured img {
   transition: opacity 0.3s ease;
 }
+.crt-tv-featured img {
+  transition: opacity 0.3s ease;
+}
