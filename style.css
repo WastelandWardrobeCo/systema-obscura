@@ -1781,3 +1781,23 @@ animation: soPulse 2.2s 1;
 .feature-screen {
   background: #0d0d0d !important;
 }
+/* =========================
+   REMOVE TILE FOG (TARGETED)
+   ========================= */
+
+/* kill the fog overlay layer */
+.channel-scene::before,
+.feature-scene::before,
+.artifact-scene::before,
+.screen-image::before {
+  display: none !important;
+  content: none !important;
+}
+
+/* remove internal screen glow ONLY for tiles */
+.channel-card .screen,
+.artifact .screen,
+.featured-visual .screen,
+.feature-screen {
+  background: #0d0d0d !important;
+}
