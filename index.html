@@ -1060,6 +1060,47 @@ if (input) {
 })();
 </script>
 
+<script>
+const crtItems = [
+  {
+    image: "assets/crt/rug1.jpg",
+    link: "https://wastelandwardrobeco.etsy.com/listing/4446251223",
+    title: "OPTICAL ILLUSION RUG"
+  },
+  {
+    image: "assets/crt/aa1.jpg",
+    link: "https://atomicamericana.etsy.com",
+    title: "ATOMIC AMERICANA"
+  },
+  {
+    image: "assets/crt/sop1.jpg",
+    link: "https://www.amazon.com/author/davidmcneal",
+    title: "SYSTEMA OBSCURA PRESENTS"
+  }
+];
 
+let currentCRT = 0;
+
+const crtImage = document.getElementById("crtImage");
+const crtLink = document.getElementById("crtLink");
+const crtTitle = document.getElementById("crtTitle");
+
+function rotateCRT() {
+  currentCRT = (currentCRT + 1) % crtItems.length;
+
+  crtImage.style.opacity = 0;
+
+  setTimeout(() => {
+    crtImage.src = crtItems[currentCRT].image;
+    crtLink.href = crtItems[currentCRT].link;
+    crtTitle.textContent = crtItems[currentCRT].title;
+
+    crtImage.style.opacity = 1;
+  }, 200);
+}
+
+setInterval(rotateCRT, 5000);
+</script>
+  
 </body>
 </html>
