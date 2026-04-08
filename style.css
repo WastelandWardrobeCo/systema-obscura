@@ -1876,3 +1876,11 @@ animation: soPulse 2.2s 1;
   transform: translateY(-6px);
   filter: brightness(1.1);
 }
+.sop-blurb {
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+  margin-top: 8px;
+  line-height: 1.4;
+  text-align: center;
+  max-width: 220px;
+}
