@@ -1857,3 +1857,22 @@ animation: soPulse 2.2s 1;
   opacity: 0.34;
   transition: opacity 0.28s ease;
 }
+.sop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 40px;
+  padding: 40px 20px;
+}
+
+.sop-tile {
+  max-width: 260px;
+  margin: 0 auto;
+}
+.sop-tile {
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.sop-tile:hover {
+  transform: translateY(-6px);
+  filter: brightness(1.1);
+}
