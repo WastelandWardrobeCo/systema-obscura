@@ -1741,3 +1741,10 @@ animation: soPulse 2.2s 1;
     margin-bottom: 8px;
   }
 }
+.tile::before,
+.tile::after,
+.feature-tile::before,
+.feature-tile::after {
+  display: none !important;
+  content: none !important;
+}
