@@ -1767,3 +1767,17 @@ animation: soPulse 2.2s 1;
 .feature-screen {
   background: #0d0d0d !important;
 }
+/* REMOVE TILE FOG */
+.channel-scene::before,
+.feature-scene::before,
+.artifact-scene::before,
+.screen-image::before {
+  display: none !important;
+  content: none !important;
+}
+
+.channel-card .screen,
+.artifact .screen,
+.feature-screen {
+  background: #0d0d0d !important;
+}
