@@ -1988,3 +1988,12 @@ animation: soPulse 2.2s 1;
     min-height: auto;
   }
 }
+.transmission-item__hook {
+  color: rgba(255,255,255,0.6);
+}
+.transmission-grid {
+  gap: 50px 34px;
+}
+.transmission-item:hover {
+  transform: translateY(-4px);
+}
