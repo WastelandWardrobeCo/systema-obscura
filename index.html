@@ -604,11 +604,11 @@
   <div class="crt-broadcast-label">NOW BROADCASTING</div>
 
   <div class="crt-tv-featured">
-    <a id="crtLink" href="#" target="_blank">
-      <img id="crtImage" src="assets/crt/placeholder.jpg" alt="Featured product">
+    <a id="crtLink" href="https://wastelandwardrobeco.etsy.com/listing/4446251223" target="_blank" rel="noopener">
+      <img id="crtImage" src="assets/crt/crt-rug-collapse.png" alt="IS THAT A HOLE?">
 
       <div class="crt-overlay-featured">
-        <span id="crtTitle">LOADING SIGNAL...</span>
+        <span id="crtTitle">IS THAT A HOLE?</span>
       </div>
     </a>
   </div>
@@ -1086,19 +1086,49 @@ if (input) {
 <script>
 const crtItems = [
   {
-    image: "assets/crt/rug1.png",
+    image: "assets/crt/crt-rug-collapse.png",
     link: "https://wastelandwardrobeco.etsy.com/listing/4446251223",
     title: "IS THAT A HOLE?"
   },
   {
-    image: "assets/crt/aa1.png",
+    image: "assets/crt/crt-aa-drivein.png",
     link: "https://atomicamericana.etsy.com/listing/4471276737",
     title: "ATOMIC DRIVE-IN"
   },
   {
-    image: "assets/crt/sop1.png",
+    image: "assets/crt/crt-sop-dopamine.png",
     link: "https://www.amazon.com/dp/B0GS6ZQMYW",
     title: "DOPAMINE CAFE"
+  },
+  {
+    image: "assets/crt/crt-wwc-blood-suckers.png",
+    link: "https://wastelandwardrobeco.etsy.com/listing/4327613334/blood-suckers-from-the-swamp",
+    title: "BLOOD SUCKERS"
+  },
+  {
+    image: "assets/crt/crt-wwc-wasteland.png",
+    link: "https://wastelandwardrobeco.etsy.com/listing/4331172686/post-apocalyptic-wall-art-poster-welcome",
+    title: "POPULATION: YOU"
+  },
+  {
+    image: "assets/crt/crt-aa-boomerang-rug.png",
+    link: "https://atomicamericana.etsy.com/listing/4471808084/atomic-boomerang-rug-mid-century-modern",
+    title: "ATOMIC BOOMERANG"
+  },
+  {
+    image: "assets/crt/crt-aa-starburst.png",
+    link: "https://atomicamericana.etsy.com/listing/4468757230/mid-century-starburst-shower-curtain",
+    title: "ATOMIC STARBURST"
+  },
+  {
+    image: "assets/crt/crt-dlt-watcher.png",
+    link: "https://dont-look-twice.printify.me/product/27779797",
+    title: "DO NOT LOOK"
+  },
+  {
+    image: "assets/crt/crt-dlt-road.png",
+    link: "https://dont-look-twice.printify.me/product/27873562",
+    title: "STAY ON THE ROAD"
   }
 ];
 
@@ -1108,20 +1138,25 @@ const crtImage = document.getElementById("crtImage");
 const crtLink = document.getElementById("crtLink");
 const crtTitle = document.getElementById("crtTitle");
 
+function setCRTItem(index) {
+  const item = crtItems[index];
+  crtImage.src = item.image;
+  crtImage.alt = item.title;
+  crtLink.href = item.link;
+  crtTitle.textContent = item.title;
+}
+
 function rotateCRT() {
   currentCRT = (currentCRT + 1) % crtItems.length;
-
   crtImage.style.opacity = 0;
 
   setTimeout(() => {
-    crtImage.src = crtItems[currentCRT].image;
-    crtLink.href = crtItems[currentCRT].link;
-    crtTitle.textContent = crtItems[currentCRT].title;
-
+    setCRTItem(currentCRT);
     crtImage.style.opacity = 1;
   }, 200);
 }
 
+setCRTItem(currentCRT);
 setInterval(rotateCRT, 6500);
 </script>
   
