@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Signal Console v2 Stable</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --panel: #171a20;
+      --panel-2: #1e232c;
+      --line: #2a3140;
+      --text: #e8ecf1;
+      --muted: #98a3b5;
+      --accent: #5aa6ff;
+      --danger: #e26d6d;
+      --radius: 16px;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, sans-serif;
+      background: linear-gradient(180deg, #0b0d11 0%, #10141b 100%);
+      color: var(--text);
+    }
+    .app {
+      display: grid;
+      grid-template-columns: 260px 1fr 340px;
+      grid-template-rows: 1fr 80px;
+      grid-template-areas:
+        "sidebar main controls"
+        "export export export";
+      gap: 12px;
+      padding: 12px;
+      height: 100vh;
+    }
+    .panel {
+      background: rgba(23,26,32,.96);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      min-height: 0;
+    }
+    .sidebar { grid-area: sidebar; display:flex; flex-direction:column; }
+    .main { grid-area: main; display:flex; flex-direction:column; min-width:0; }
+    .controls { grid-area: controls; display:flex; flex-direction:column; }
+    .export { grid-area: export; display:grid; grid-template-columns:1fr 150px 180px auto; gap:12px; align-items:center; padding:12px 16px; }
+    .panel-head {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,.02);
+      display:flex; justify-content:space-between; align-items:center; gap:12px;
+    }
+    .brand { font-size:18px; font-weight:800; }
+    .subtle { color: var(--muted); font-size:12px; }
+    .sidebar-body, .controls-body { padding:12px; overflow:auto; }
+    .menu-group { margin-bottom: 14px; }
+    .menu-title {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin: 0 0 8px;
+    }
+    .menu-list { display:grid; gap:8px; }
+    button, input, select, textarea { font: inherit; }
+    .tool-btn, .ghost-btn, .action-btn, .danger-btn {
+      appearance:none;
+      border:1px solid var(--line);
+      background:#12161d;
+      color:var(--text);
+      padding:11px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:600;
+      width:100%;
+      text-align:left;
+    }
+    .tool-btn.active { border-color: var(--accent); background: rgba(90,166,255,.12); }
+    .action-btn { background: linear-gradient(180deg, #2c7de7 0%, #1e63bc 100%); border-color:#2c7de7; text-align:center; }
+    .danger-btn { background:#231617; border-color:#603435; color:#f3c3c3; }
+    .preview-wrap {
+      position:relative; flex:1; min-height:0; overflow:auto; display:grid; place-items:center; padding:16px;
+      background:
+        linear-gradient(45deg, rgba(255,255,255,0.03) 25%, transparent 25%) 0 0 / 24px 24px,
+        linear-gradient(-45deg, rgba(255,255,255,0.03) 25%, transparent 25%) 0 0 / 24px 24px,
+        linear-gradient(45deg, transparent 75%, rgba(255,255,255,0.03) 75%) 0 0 / 24px 24px,
+        linear-gradient(-45deg, transparent 75%, rgba(255,255,255,0.03) 75%) 0 0 / 24px 24px,
+        #11151c;
+    }
+    #dropZone {
+      width:100%; height:100%; min-height:320px; border:2px dashed rgba(255,255,255,.14); border-radius:18px;
+      display:grid; place-items:center; text-align:center; padding:24px; color:var(--muted);
+    }
+    #dropZone.dragover { border-color: var(--accent); background: rgba(90,166,255,.06); }
+    .preview-stack { display:none; width:100%; height:100%; position:relative; place-items:center; }
+    .preview-toolbar { position:absolute; top:14px; right:14px; display:flex; gap:8px; z-index:3; }
+    .preview-toolbar button { width:auto; text-align:center; }
+    .info-chip {
+      position:absolute; top:14px; left:14px; z-index:3; background:rgba(0,0,0,.45); border:1px solid rgba(255,255,255,.12);
+      border-radius:999px; padding:8px 12px; font-size:12px; color:#d9e1ec;
+    }
+    .canvas-stage { position:relative; display:inline-block; max-width:100%; }
+    canvas {
+      display:block; max-width:min(100%, 1100px); max-height:calc(100vh - 190px); border-radius:14px;
+      box-shadow:0 18px 50px rgba(0,0,0,.45); background:transparent;
+    }
+    .crop-overlay { position:absolute; inset:0; display:none; pointer-events:none; }
+    .crop-box {
+      position:absolute; border:2px solid var(--accent); box-shadow:0 0 0 9999px rgba(0,0,0,.45);
+      border-radius:8px; pointer-events:auto; cursor:move;
+    }
+    .crop-box.round { border-radius:999px; }
+    .handle {
+      position:absolute; width:12px; height:12px; background:var(--accent); border:2px solid #fff;
+      border-radius:999px; transform:translate(-50%, -50%); pointer-events:auto;
+    }
+    .handle.nw { left:0; top:0; cursor:nwse-resize; }
+    .handle.ne { left:100%; top:0; cursor:nesw-resize; }
+    .handle.sw { left:0; top:100%; cursor:nesw-resize; }
+    .handle.se { left:100%; top:100%; cursor:nwse-resize; }
+    .controls-section { display:none; gap:12px; }
+    .controls-section.active { display:grid; }
+    .field { display:grid; gap:6px; }
+    .field label { font-size:12px; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:.04em; }
+    input[type="text"], input[type="number"], select, input[type="file"], textarea {
+      width:100%; background:#10141b; color:var(--text); border:1px solid var(--line); border-radius:12px; padding:11px 12px; outline:none;
+    }
+    input[type="file"] { border-style:dashed; }
+    .row-2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .row-3 { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; }
+    .status { margin-top:auto; padding:12px; border-top:1px solid var(--line); font-size:12px; color:var(--muted); }
+    .status strong { color:var(--text); }
+    .hidden { display:none !important; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    @media (max-width: 1180px) {
+      .app {
+        grid-template-columns:260px 1fr;
+        grid-template-rows:1fr auto 80px;
+        grid-template-areas:
+          "sidebar main"
+          "controls controls"
+          "export export";
+      }
+      .controls { max-height:40vh; }
+    }
+    @media (max-width: 780px) {
+      .app {
+        grid-template-columns:1fr;
+        grid-template-rows:auto auto auto auto;
+        grid-template-areas:"sidebar" "main" "controls" "export";
+        height:auto; min-height:100vh;
+      }
+      .export { grid-template-columns:1fr; }
+      canvas { max-height:55vh; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="panel sidebar">
+      <div class="panel-head">
+        <div>
+          <div class="brand">Signal Console</div>
+          <div class="subtle">Local image workstation stable</div>
+        </div>
+      </div>
+      <div class="sidebar-body">
+        <div class="menu-group">
+          <div class="menu-title">Quick Actions</div>
+          <div class="menu-list">
+            <button class="tool-btn" data-tool="removeBg">Remove Background</button>
+            <button class="tool-btn" data-tool="resize">Resize</button>
+            <button class="tool-btn" data-tool="roundCrop">Round Crop</button>
+            <button class="tool-btn" data-tool="convert">Convert Format</button>
+          </div>
+        </div>
+
+        <div class="menu-group">
+          <div class="menu-title">Image Tools</div>
+          <div class="menu-list">
+            <button class="tool-btn" data-tool="crop">Crop</button>
+            <button class="tool-btn" data-tool="upscale">Upscale</button>
+            <button class="tool-btn" data-tool="sharpen">Sharpen</button>
+            <button class="tool-btn" data-tool="fillBg">Background Color</button>
+            <button class="tool-btn" data-tool="watermark">Watermark</button>
+            <button class="tool-btn" data-tool="compress">Compress</button>
+            <button class="tool-btn" id="rotateLeftBtn" type="button">Rotate Left</button>
+            <button class="tool-btn" id="rotateRightBtn" type="button">Rotate Right</button>
+            <button class="tool-btn" id="flipHBtn" type="button">Flip Horizontal</button>
+            <button class="tool-btn" id="flipVBtn" type="button">Flip Vertical</button>
+          </div>
+        </div>
+
+        <div class="menu-group">
+          <div class="menu-title">Text Tools</div>
+          <div class="menu-list">
+            <button class="tool-btn" data-tool="textTools">Raw Text Converter</button>
+          </div>
+        </div>
+
+        <div class="menu-group">
+          <div class="menu-title">Session</div>
+          <div class="menu-list">
+            <button class="ghost-btn" id="undoBtn" type="button">Undo</button>
+            <button class="ghost-btn" id="resetBtn" type="button">Reset to Original</button>
+            <button class="danger-btn" id="clearBtn" type="button">Clear File</button>
+          </div>
+        </div>
+      </div>
+      <div class="status" id="statusBar"><strong>Status:</strong> Waiting for file</div>
+    </aside>
+
+    <main class="panel main">
+      <div class="panel-head">
+        <h2>Workbench</h2>
+        <div class="subtle">Drop an image anywhere in the preview area</div>
+      </div>
+      <div class="preview-wrap" id="previewWrap">
+        <div id="dropZone">
+          <div>
+            <div style="font-size:22px;font-weight:800;color:#e8ecf1;margin-bottom:10px;">Drop image here</div>
+            <div class="subtle">PNG, JPG, WebP supported</div>
+            <div style="margin-top:14px;"><button class="action-btn" id="browseBtn" type="button" style="width:auto;">Choose File</button></div>
+            <input class="hidden" type="file" id="fileInput" accept="image/png,image/jpeg,image/webp" />
+          </div>
+        </div>
+
+        <div class="preview-stack" id="previewStack">
+          <div class="info-chip mono" id="infoChip">-</div>
+          <div class="preview-toolbar">
+            <button class="ghost-btn" id="toggleBeforeAfterBtn" type="button" style="width:auto;">Show Original</button>
+            <button class="ghost-btn" id="fitBtn" type="button" style="width:auto;">Fit</button>
+          </div>
+          <div class="canvas-stage" id="canvasStage">
+            <canvas id="editorCanvas"></canvas>
+            <div class="crop-overlay" id="cropOverlay">
+              <div class="crop-box" id="cropBox">
+                <div class="handle nw" data-handle="nw"></div>
+                <div class="handle ne" data-handle="ne"></div>
+                <div class="handle sw" data-handle="sw"></div>
+                <div class="handle se" data-handle="se"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <aside class="panel controls">
+      <div class="panel-head">
+        <h3>Tool Settings</h3>
+        <div class="subtle" id="controlsTitle">Choose a tool</div>
+      </div>
+      <div class="controls-body">
+        <div class="controls-section active" id="tool-home">
+          <div class="subtle">Load an image, then pick an image tool. Text conversion works without loading any image.</div>
+        </div>
+
+        <div class="controls-section" id="tool-resize">
+          <div class="field"><label>Width</label><input type="number" id="resizeWidth" min="1" /></div>
+          <div class="field"><label>Height</label><input type="number" id="resizeHeight" min="1" /></div>
+          <label><input type="checkbox" id="resizeLock" checked /> Lock aspect ratio</label>
+          <div class="row-2">
+            <button class="ghost-btn" type="button" data-size="1024">1024 px</button>
+            <button class="ghost-btn" type="button" data-size="2000">2000 px</button>
+          </div>
+          <button class="action-btn" type="button" id="applyResizeBtn">Apply Resize</button>
+        </div>
+
+        <div class="controls-section" id="tool-crop">
+          <div class="field"><label>Aspect Ratio</label>
+            <div class="row-2">
+              <button class="tool-btn active" type="button" data-ratio="free">Free</button>
+              <button class="tool-btn" type="button" data-ratio="1:1">1:1</button>
+              <button class="tool-btn" type="button" data-ratio="4:5">4:5</button>
+              <button class="tool-btn" type="button" data-ratio="9:16">9:16</button>
+            </div>
+          </div>
+          <button class="action-btn" type="button" id="startCropBtn">Start Crop</button>
+          <button class="action-btn hidden" type="button" id="applyCropBtn">Apply Crop</button>
+          <button class="ghost-btn hidden" type="button" id="cancelCropBtn">Cancel Crop</button>
+        </div>
+
+        <div class="controls-section" id="tool-roundCrop">
+          <div class="subtle">Start round crop, drag the circle and resize with the corner handles.</div>
+          <button class="action-btn" type="button" id="startRoundCropBtn">Start Round Crop</button>
+          <button class="action-btn hidden" type="button" id="applyRoundCropBtn">Apply Round Crop</button>
+          <button class="ghost-btn hidden" type="button" id="cancelRoundCropBtn">Cancel Crop</button>
+        </div>
+
+        <div class="controls-section" id="tool-upscale">
+          <div class="field"><label>Scale</label>
+            <div class="row-2">
+              <button class="tool-btn active" type="button" data-upscale="2">2x</button>
+              <button class="tool-btn" type="button" data-upscale="4">4x</button>
+            </div>
+          </div>
+          <button class="action-btn" type="button" id="applyUpscaleBtn">Apply Upscale</button>
+        </div>
+
+        <div class="controls-section" id="tool-sharpen">
+          <div class="field"><label>Amount</label><input type="range" id="sharpenAmount" min="0" max="100" value="35" /></div>
+          <button class="action-btn" type="button" id="applySharpenBtn">Apply Sharpen</button>
+        </div>
+
+        <div class="controls-section" id="tool-removeBg">
+          <div class="subtle">Best on simple backgrounds. Samples the top-left corner color.</div>
+          <div class="field"><label>Tolerance</label><input type="range" id="bgTolerance" min="0" max="160" value="38" /></div>
+          <div class="field"><label>Feather</label><input type="range" id="bgFeather" min="0" max="40" value="8" /></div>
+          <button class="action-btn" type="button" id="applyRemoveBgBtn">Remove Background</button>
+        </div>
+
+        <div class="controls-section" id="tool-fillBg">
+          <div class="field"><label>Background Color</label><input type="color" id="fillColor" value="#ffffff" /></div>
+          <button class="action-btn" type="button" id="applyFillBgBtn">Apply Color</button>
+        </div>
+
+        <div class="controls-section" id="tool-watermark">
+          <div class="field"><label>Watermark Image</label><input type="file" id="watermarkInput" accept="image/png,image/jpeg,image/webp" /></div>
+          <div class="field"><label>Watermark Mode</label>
+            <select id="watermarkMode">
+              <option value="signature">Signature</option>
+              <option value="pattern">Pattern / Tiled</option>
+              <option value="ghost">Ghost Overlay</option>
+              <option value="manual">Manual</option>
+            </select>
+          </div>
+          <div class="field"><label>Position</label>
+            <select id="watermarkPosition">
+              <option value="bottom-right">Bottom Right</option>
+              <option value="bottom-left">Bottom Left</option>
+              <option value="top-right">Top Right</option>
+              <option value="top-left">Top Left</option>
+              <option value="center">Center</option>
+            </select>
+          </div>
+          <div class="field"><label>Opacity</label><input type="range" id="watermarkOpacity" min="3" max="100" value="18" /></div>
+          <div class="field"><label>Scale %</label><input type="range" id="watermarkScale" min="5" max="100" value="18" /></div>
+          <div class="field"><label>Spacing (pattern mode)</label><input type="range" id="watermarkSpacing" min="0" max="200" value="40" /></div>
+          <button class="action-btn" type="button" id="applyWatermarkBtn">Apply Watermark</button>
+        </div>
+
+        <div class="controls-section" id="tool-convert">
+          <div class="field"><label>Output Format</label>
+            <div class="row-3">
+              <button class="tool-btn active" type="button" data-format="png">PNG</button>
+              <button class="tool-btn" type="button" data-format="jpeg">JPG</button>
+              <button class="tool-btn" type="button" data-format="webp">WebP</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls-section" id="tool-compress">
+          <div class="field"><label>Quality</label><input type="range" id="compressQuality" min="20" max="100" value="82" /></div>
+          <div class="subtle">PNG ignores this. JPG and WebP use it during export.</div>
+        </div>
+
+        <div class="controls-section" id="tool-textTools">
+          <div class="field"><label>Paste Raw Text</label><textarea id="textInput" style="min-height:180px;resize:vertical;"></textarea></div>
+          <div class="field"><label>Conversion Type</label>
+            <select id="textConversionType">
+              <option value="html_paragraphs">Plain Text → HTML Paragraphs</option>
+              <option value="html_linebreaks">Plain Text → HTML with Line Breaks</option>
+              <option value="html_escape">Escape Text for HTML</option>
+              <option value="plain_text">Plain Text Clean Copy</option>
+              <option value="pdf_ready">Text → PDF Ready</option>
+              <option value="doc_ready">Text → DOC Ready</option>
+            </select>
+          </div>
+          <button class="action-btn" type="button" id="convertTextBtn">Convert Text</button>
+          <div class="field"><label>Output</label><textarea id="textOutput" readonly style="min-height:180px;resize:vertical;background:#0d1016;"></textarea></div>
+          <div class="row-2">
+            <button class="ghost-btn" type="button" id="copyTextOutputBtn">Copy Output</button>
+            <button class="ghost-btn" type="button" id="downloadTxtBtn">Download .txt</button>
+          </div>
+          <div class="row-2">
+            <button class="ghost-btn" type="button" id="downloadHtmlBtn">Download .html</button>
+            <button class="ghost-btn" type="button" id="downloadDocBtn">Download .doc</button>
+          </div>
+          <div class="row-2">
+            <button class="ghost-btn" type="button" id="printPdfBtn">Print / Save PDF</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <footer class="panel export">
+      <div class="field" style="margin:0;"><label>File name</label><input type="text" id="fileNameInput" value="image_final" /></div>
+      <div class="field" style="margin:0;"><label>Format</label>
+        <select id="exportFormatSelect"><option value="png">PNG</option><option value="jpeg">JPG</option><option value="webp">WebP</option></select>
+      </div>
+      <div class="field" style="margin:0;"><label>Quality</label><input type="range" id="exportQuality" min="20" max="100" value="92" /></div>
+      <button class="action-btn" id="exportBtn" type="button">Export</button>
+    </footer>
+  </div>
+
+  <script>
+    const state = {
+      originalImage: null,
+      currentCanvas: null,
+      originalName: 'image',
+      showingOriginal: false,
+      history: [],
+      cropMode: null,
+      cropRatio: null,
+      cropRect: null,
+      dragCrop: null,
+      upscaleFactor: 2,
+      watermarkImage: null
+    };
+
+    const $ = (id) => document.getElementById(id);
+    const editorCanvas = $('editorCanvas');
+    const ctx = editorCanvas.getContext('2d', { willReadFrequently: true });
+    const dropZone = $('dropZone');
+    const previewStack = $('previewStack');
+    const fileInput = $('fileInput');
+    const previewWrap = $('previewWrap');
+    const infoChip = $('infoChip');
+    const statusBar = $('statusBar');
+    const cropOverlay = $('cropOverlay');
+    const cropBox = $('cropBox');
+    const exportFormatSelect = $('exportFormatSelect');
+    const exportQuality = $('exportQuality');
+    const fileNameInput = $('fileNameInput');
+    const toolSections = Array.from(document.querySelectorAll('.controls-section'));
+    const toolButtons = Array.from(document.querySelectorAll('[data-tool]'));
+
+    function setStatus(message) {
+      statusBar.innerHTML = '<strong>Status:</strong> ' + message;
+    }
+
+    function showTool(tool) {
+      toolSections.forEach(sec => sec.classList.remove('active'));
+      const target = document.getElementById('tool-' + tool) || $('tool-home');
+      target.classList.add('active');
+      $('controlsTitle').textContent = tool === 'home' ? 'Choose a tool' : tool.replace(/([A-Z])/g, ' $1').replace(/^./, (c) => c.toUpperCase());
+      toolButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.tool === tool));
+    }
+
+    function mimeFromFormat(format) {
+      if (format === 'jpeg') return 'image/jpeg';
+      if (format === 'webp') return 'image/webp';
+      return 'image/png';
+    }
+
+    function normalizeExportFormat(type) {
+      if (type.includes('jpeg') || type.includes('jpg')) return 'jpeg';
+      if (type.includes('webp')) return 'webp';
+      return 'png';
+    }
+
+    function fileToImage(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const img = new Image();
+          img.onload = () => resolve(img);
+          img.onerror = reject;
+          img.src = reader.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function cloneCanvas(source) {
+      const c = document.createElement('canvas');
+      c.width = source.width;
+      c.height = source.height;
+      c.getContext('2d').drawImage(source, 0, 0);
+      return c;
+    }
+
+    function pushHistory() {
+      if (!state.currentCanvas) return;
+      state.history.push(cloneCanvas(state.currentCanvas));
+      if (state.history.length > 20) state.history.shift();
+    }
+
+    function updateInfo() {
+      const source = state.showingOriginal && state.originalImage
+        ? { width: state.originalImage.naturalWidth, height: state.originalImage.naturalHeight }
+        : state.currentCanvas;
+      if (!source) {
+        infoChip.textContent = '-';
+        return;
+      }
+      infoChip.textContent = source.width + ' × ' + source.height + ' | ' + exportFormatSelect.value.toUpperCase();
+    }
+
+    function syncResizeInputs() {
+      if (!state.currentCanvas) return;
+      $('resizeWidth').value = state.currentCanvas.width;
+      $('resizeHeight').value = state.currentCanvas.height;
+    }
+
+    function drawCanvas(sourceCanvas) {
+      editorCanvas.width = sourceCanvas.width;
+      editorCanvas.height = sourceCanvas.height;
+      ctx.clearRect(0, 0, editorCanvas.width, editorCanvas.height);
+      ctx.drawImage(sourceCanvas, 0, 0);
+      updateInfo();
+      syncResizeInputs();
+    }
+
+    function resetPreviewMode() {
+      state.showingOriginal = false;
+      $('toggleBeforeAfterBtn').textContent = 'Show Original';
+    }
+
+    function setFormat(format) {
+      exportFormatSelect.value = format;
+      Array.from(document.querySelectorAll('[data-format]')).forEach(btn => btn.classList.toggle('active', btn.dataset.format === format));
+      updateInfo();
+      setStatus('Output format set to ' + format.toUpperCase());
+    }
+
+    async function loadFile(file) {
+      if (!file || !file.type.startsWith('image/')) {
+        setStatus('Only PNG, JPG, and WebP are supported.');
+        return;
+      }
+      try {
+        const img = await fileToImage(file);
+        state.originalImage = img;
+        state.originalName = file.name.replace(/\.[^.]+$/, '');
+        fileNameInput.value = state.originalName + '_edited';
+        state.history = [];
+        resetPreviewMode();
+        const base = document.createElement('canvas');
+        base.width = img.naturalWidth;
+        base.height = img.naturalHeight;
+        base.getContext('2d').drawImage(img, 0, 0);
+        state.currentCanvas = base;
+        exportFormatSelect.value = normalizeExportFormat(file.type);
+        drawCanvas(base);
+        dropZone.style.display = 'none';
+        previewStack.style.display = 'grid';
+        hideCropUI();
+        showTool('home');
+        setStatus('Loaded ' + file.name);
+      } catch (err) {
+        console.error(err);
+        setStatus('Failed to load image');
+      }
+    }
+
+    $('browseBtn').addEventListener('click', (e) => {
+      e.preventDefault();
+      fileInput.click();
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (file) loadFile(file);
+      fileInput.value = '';
+    });
+
+    ['dragenter', 'dragover'].forEach(ev => {
+      previewWrap.addEventListener(ev, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.classList.add('dragover');
+      });
+    });
+
+    ['dragleave', 'drop'].forEach(ev => {
+      previewWrap.addEventListener(ev, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.classList.remove('dragover');
+      });
+    });
+
+    previewWrap.addEventListener('drop', (e) => {
+      const file = e.dataTransfer.files && e.dataTransfer.files[0];
+      if (file) loadFile(file);
+    });
+
+    toolButtons.forEach(btn => btn.addEventListener('click', () => showTool(btn.dataset.tool)));
+
+    $('rotateLeftBtn').addEventListener('click', () => rotateCanvas(-90));
+    $('rotateRightBtn').addEventListener('click', () => rotateCanvas(90));
+    $('flipHBtn').addEventListener('click', () => flipCanvas(true, false));
+    $('flipVBtn').addEventListener('click', () => flipCanvas(false, true));
+
+    function rotateCanvas(deg) {
+      if (!state.currentCanvas) return;
+      pushHistory();
+      const src = state.currentCanvas;
+      const c = document.createElement('canvas');
+      const angle = deg * Math.PI / 180;
+      const swap = Math.abs(deg) % 180 !== 0;
+      c.width = swap ? src.height : src.width;
+      c.height = swap ? src.width : src.height;
+      const cctx = c.getContext('2d');
+      cctx.translate(c.width / 2, c.height / 2);
+      cctx.rotate(angle);
+      cctx.drawImage(src, -src.width / 2, -src.height / 2);
+      state.currentCanvas = c;
+      resetPreviewMode();
+      drawCanvas(c);
+      setStatus('Rotated ' + (deg > 0 ? 'right' : 'left'));
+    }
+
+    function flipCanvas(horizontal, vertical) {
+      if (!state.currentCanvas) return;
+      pushHistory();
+      const src = state.currentCanvas;
+      const c = document.createElement('canvas');
+      c.width = src.width;
+      c.height = src.height;
+      const cctx = c.getContext('2d');
+      cctx.save();
+      cctx.translate(horizontal ? c.width : 0, vertical ? c.height : 0);
+      cctx.scale(horizontal ? -1 : 1, vertical ? -1 : 1);
+      cctx.drawImage(src, 0, 0);
+      cctx.restore();
+      state.currentCanvas = c;
+      resetPreviewMode();
+      drawCanvas(c);
+      setStatus('Flipped ' + (horizontal ? 'horizontal' : 'vertical'));
+    }
+
+    $('toggleBeforeAfterBtn').addEventListener('click', () => {
+      if (!state.currentCanvas || !state.originalImage) return;
+      state.showingOriginal = !state.showingOriginal;
+      if (state.showingOriginal) {
+        const temp = document.createElement('canvas');
+        temp.width = state.originalImage.naturalWidth;
+        temp.height = state.originalImage.naturalHeight;
+        temp.getContext('2d').drawImage(state.originalImage, 0, 0);
+        drawCanvas(temp);
+        $('toggleBeforeAfterBtn').textContent = 'Show Edited';
+        setStatus('Showing original');
+      } else {
+        drawCanvas(state.currentCanvas);
+        $('toggleBeforeAfterBtn').textContent = 'Show Original';
+        setStatus('Showing edited');
+      }
+    });
+
+    $('fitBtn').addEventListener('click', () => $('canvasStage').scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' }));
+
+    $('undoBtn').addEventListener('click', () => {
+      if (!state.history.length) return setStatus('Nothing to undo');
+      state.currentCanvas = state.history.pop();
+      resetPreviewMode();
+      drawCanvas(state.currentCanvas);
+      setStatus('Undid last action');
+    });
+
+    $('resetBtn').addEventListener('click', () => {
+      if (!state.originalImage) return;
+      const c = document.createElement('canvas');
+      c.width = state.originalImage.naturalWidth;
+      c.height = state.originalImage.naturalHeight;
+      c.getContext('2d').drawImage(state.originalImage, 0, 0);
+      state.currentCanvas = c;
+      state.history = [];
+      resetPreviewMode();
+      drawCanvas(c);
+      hideCropUI();
+      setStatus('Reset to original');
+    });
+
+    $('clearBtn').addEventListener('click', () => {
+      state.originalImage = null;
+      state.currentCanvas = null;
+      state.history = [];
+      resetPreviewMode();
+      dropZone.style.display = 'grid';
+      previewStack.style.display = 'none';
+      fileInput.value = '';
+      hideCropUI();
+      showTool('home');
+      setStatus('Waiting for file');
+    });
+
+    exportFormatSelect.addEventListener('change', updateInfo);
+    Array.from(document.querySelectorAll('[data-format]')).forEach(btn => btn.addEventListener('click', () => setFormat(btn.dataset.format)));
+    Array.from(document.querySelectorAll('[data-upscale]')).forEach(btn => btn.addEventListener('click', () => {
+      state.upscaleFactor = Number(btn.dataset.upscale);
+      Array.from(document.querySelectorAll('[data-upscale]')).forEach(b => b.classList.toggle('active', b === btn));
+    }));
+
+    const resizeWidth = $('resizeWidth');
+    const resizeHeight = $('resizeHeight');
+    const resizeLock = $('resizeLock');
+
+    resizeWidth.addEventListener('input', () => {
+      if (!resizeLock.checked || !state.currentCanvas) return;
+      const ratio = state.currentCanvas.height / state.currentCanvas.width;
+      resizeHeight.value = Math.max(1, Math.round(Number(resizeWidth.value) * ratio));
+    });
+    resizeHeight.addEventListener('input', () => {
+      if (!resizeLock.checked || !state.currentCanvas) return;
+      const ratio = state.currentCanvas.width / state.currentCanvas.height;
+      resizeWidth.value = Math.max(1, Math.round(Number(resizeHeight.value) * ratio));
+    });
+    Array.from(document.querySelectorAll('[data-size]')).forEach(btn => btn.addEventListener('click', () => {
+      if (!state.currentCanvas) return;
+      const size = Number(btn.dataset.size);
+      const ratio = state.currentCanvas.height / state.currentCanvas.width;
+      resizeWidth.value = size;
+      resizeHeight.value = Math.round(size * ratio);
+    }));
+
+    $('applyResizeBtn').addEventListener('click', () => {
+      if (!state.currentCanvas) return;
+      const w = Math.max(1, Number(resizeWidth.value));
+      const h = Math.max(1, Number(resizeHeight.value));
+      pushHistory();
+      const c = document.createElement('canvas');
+      c.width = w;
+      c.height = h;
+      const cctx = c.getContext('2d');
+      cctx.imageSmoothingEnabled = true;
+      cctx.imageSmoothingQuality = 'high';
+      cctx.drawImage(state.currentCanvas, 0, 0, w, h);
+      state.currentCanvas = c;
+      resetPreviewMode();
+      drawCanvas(c);
+      setStatus('Resized to ' + w + ' × ' + h);
+    });
+
+    function parseRatio(value) {
+      if (!value) return null;
+      const parts = value.split(':').map(Number);
+      if (!parts[0] || !parts[1]) return null;
+      return parts[0] / parts[1];
+    }
+
+    Array.from(document.querySelectorAll('[data-ratio]')).forEach(btn => btn.addEventListener('click', () => {
+      Array.from(document.querySelectorAll('[data-ratio]')).forEach(b => b.classList.toggle('active', b === btn));
+      state.cropRatio = btn.dataset.ratio === 'free' ? null : btn.dataset.ratio;
+      if (state.cropMode) initCropRect(state.cropMode === 'round');
+    }));
+
+    function initCropRect(round) {
+      if (!state.currentCanvas) return;
+      cropOverlay.style.display = 'block';
+      cropBox.classList.toggle('round', round);
+      const display = editorCanvas.getBoundingClientRect();
+      let boxW = display.width * 0.75;
+      let boxH = display.height * 0.75;
+      const ratio = round ? 1 : parseRatio(state.cropRatio);
+      if (ratio) {
+        if (boxW / boxH > ratio) boxW = boxH * ratio; else boxH = boxW / ratio;
+      }
+      if (round) {
+        const s = Math.min(boxW, boxH);
+        boxW = s; boxH = s;
+      }
+      state.cropRect = { x:(display.width - boxW)/2, y:(display.height - boxH)/2, w:boxW, h:boxH };
+      renderCropUI();
+    }
+
+    function renderCropUI() {
+      if (!state.cropRect) return;
+      cropBox.style.left = state.cropRect.x + 'px';
+      cropBox.style.top = state.cropRect.y + 'px';
+      cropBox.style.width = state.cropRect.w + 'px';
+      cropBox.style.height = state.cropRect.h + 'px';
+    }
+
+    function hideCropUI() {
+      cropOverlay.style.display = 'none';
+      state.cropMode = null;
+      state.cropRect = null;
+      state.dragCrop = null;
+      $('applyCropBtn').classList.add('hidden');
+      $('cancelCropBtn').classList.add('hidden');
+      $('applyRoundCropBtn').classList.add('hidden');
+      $('cancelRoundCropBtn').classList.add('hidden');
+      $('startCropBtn').classList.remove('hidden');
+      $('startRoundCropBtn').classList.remove('hidden');
+    }
+
+    $('startCropBtn').addEventListener('click', () => {
+      if (!state.currentCanvas) return;
+      state.cropMode = 'rect';
+      initCropRect(false);
+      $('startCropBtn').classList.add('hidden');
+      $('applyCropBtn').classList.remove('hidden');
+      $('cancelCropBtn').classList.remove('hidden');
+    });
+    $('cancelCropBtn').addEventListener('click', hideCropUI);
+
+    $('startRoundCropBtn').addEventListener('click', () => {
+      if (!state.currentCanvas) return;
+      state.cropMode = 'round';
+      state.cropRatio = '1:1';
+      Array.from(document.querySelectorAll('[data-ratio]')).forEach(b => b.classList.toggle('active', b.dataset.ratio === '1:1'));
+      initCropRect(true);
+      $('startRoundCropBtn').classList.add('hidden');
+      $('applyRoundCropBtn').classList.remove('hidden');
+      $('cancelRoundCropBtn').classList.remove('hidden');
+    });
+    $('cancelRoundCropBtn').addEventListener('click', hideCropUI);
+
+    function displayToCanvasRect() {
+      const display = editorCanvas.getBoundingClientRect();
+      return {
+        x: Math.round(state.cropRect.x * (state.currentCanvas.width / display.width)),
+        y: Math.round(state.cropRect.y * (state.currentCanvas.height / display.height)),
+        w: Math.round(state.cropRect.w * (state.currentCanvas.width / display.width)),
+        h: Math.round(state.cropRect.h * (state.currentCanvas.height / display.height))
+      };
+    }
+
+    $('applyCropBtn').addEventListener('click', () => {
+      if (!state.currentCanvas || !state.cropRect) return;
+      pushHistory();
+      const r = displayToCanvasRect();
+      const c = document.createElement('canvas');
+      c.width = r.w; c.height = r.h;
+      c.getContext('2d').drawImage(state.currentCanvas, r.x, r.y, r.w, r.h, 0, 0, r.w, r.h);
+      state.currentCanvas = c;
+      resetPreviewMode();
+      drawCanvas(c);
+      hideCropUI();
+      setStatus('Crop applied');
+    });
+
+    $('applyRoundCropBtn').addEventListener('click', () => {
+      if (!state.currentCanvas || !state.cropRect) return;
+      pushHistory();
+      const r = displayToCanvasRect();
+      const size = Math.min(r.w, r.h);
+      const c = document.createElement('canvas');
+      c.width = size; c.height = size;
+      const cctx = c.getContext('2d');
+      cctx.save();
+      cctx.beginPath();
+      cctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
+      cctx.closePath();
+      cctx.clip();
+      cctx.drawImage(state.currentCanvas, r.x, r.y, size, size, 0, 0, size, size);
+      cctx.restore();
+      state.currentCanvas = c;
+      resetPreviewMode();
+      drawCanvas(c);
+      hideCropUI();
+      setFormat('png');
+      setStatus('Round crop applied. Output switched to PNG.');
+    });
+
+    cropBox.addEventListener('pointerdown', (e) => {
+      if (!state.cropRect) return;
+      cropBox.setPointerCapture(e.pointerId);
+      state.dragCrop = { mode:e.target.dataset.handle || 'move', startX:e.clientX, startY:e.clientY, rect:{...state.cropRect} };
+    });
+
+    function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
+
+    window.addEventListener('pointermove', (e) => {
+      if (!state.dragCrop || !state.cropRect || !state.currentCanvas) return;
+      const display = editorCanvas.getBoundingClientRect();
+      const dx = e.clientX - state.dragCrop.startX;
+      const dy = e.clientY - state.dragCrop.startY;
+      const base = state.dragCrop.rect;
+      const ratio = state.cropMode === 'round' ? 1 : parseRatio(state.cropRatio);
+      let x = base.x, y = base.y, w = base.w, h = base.h;
+      if (state.dragCrop.mode === 'move') {
+        x = clamp(base.x + dx, 0, display.width - base.w);
+        y = clamp(base.y + dy, 0, display.height - base.h);
+      } else {
+        let nx = base.x, ny = base.y, nw = base.w, nh = base.h;
+        if (state.dragCrop.mode.includes('n')) { ny = base.y + dy; nh = base.h - dy; }
+        if (state.dragCrop.mode.includes('s')) { nh = base.h + dy; }
+        if (state.dragCrop.mode.includes('w')) { nx = base.x + dx; nw = base.w - dx; }
+        if (state.dragCrop.mode.includes('e')) { nw = base.w + dx; }
+        nw = Math.max(40, nw); nh = Math.max(40, nh);
+        if (ratio) {
+          if (state.cropMode === 'round') {
+            const size = Math.max(40, Math.min(nw, nh));
+            nw = size; nh = size;
+            if (state.dragCrop.mode.includes('w')) nx = base.x + (base.w - size);
+            if (state.dragCrop.mode.includes('n')) ny = base.y + (base.h - size);
+          } else {
+            if (nw / nh > ratio) nw = nh * ratio; else nh = nw / ratio;
+            if (state.dragCrop.mode.includes('w')) nx = base.x + (base.w - nw);
+            if (state.dragCrop.mode.includes('n')) ny = base.y + (base.h - nh);
+          }
+        }
+        x = clamp(nx, 0, display.width - nw);
+        y = clamp(ny, 0, display.height - nh);
+        w = Math.min(nw, display.width - x);
+        h = Math.min(nh, display.height - y);
+      }
+      state.cropRect = { x, y, w, h };
+      renderCropUI();
+    });
+    window.addEventListener('pointerup', () => { state.dragCrop = null; });
+
+    $('applyUpscaleBtn').addEventListener('click', () => {
+      if (!state.currentCanvas) return;
+      pushHistory();
+      const src = state.currentCanvas;
+      const c = document.createElement('canvas');
+      c.width = src.width * state.upscaleFactor;
+      c.height = src.height * state.upscaleFactor;
+      const cctx = c.getContext('2d');
+      cctx.imageSmoothingEnabled = true;
+      cctx.imageSmoothingQuality = 'high';
+      cctx.drawImage(src, 0, 0, c.width, c.height);
+      state.currentCanvas = c;
+      resetPreviewMode();
+      drawCanvas(c);
+      setStatus('Upscaled ' + state.upscaleFactor + 'x');
+    });
+
+    $('applySharpenBtn').addEventListener('click', () => {
+      if (!state.currentCanvas) return;
+      pushHistory();
+      const amount = Number($('sharpenAmount').value) / 100;
+      const src = cloneCanvas(state.currentCanvas);
+      const sctx = src.getContext('2d', { willReadFrequently: true });
+      const imageData = sctx.getImageData(0, 0, src.width, src.height);
+      const data = imageData.data;
+      const out = new Uint8ClampedArray(data);
+      const w = src.width;
+      const h = src.height;
+      const kernel = [0,-1,0,-1,5,-1,0,-1,0];
+      for (let y = 1; y < h - 1; y++) {
+        for (let x = 1; x < w - 1; x++) {
+          const i = (y * w + x) * 4;
+          for (let c = 0; c < 3; c++) {
+            let sum = 0, ki = 0;
+            for (let ky = -1; ky <= 1; ky++) {
+              for (let kx = -1; kx <= 1; kx++) {
+                const ii = ((y + ky) * w + (x + kx)) * 4 + c;
+                sum += data[ii] * kernel[ki++];
+              }
+            }
+            out[i + c] = Math.max(0, Math.min(255, data[i + c] * (1 - amount) + sum * amount));
+          }
+        }
+      }
+      const c = cloneCanvas(state.currentCanvas);
+      c.getContext('2d').putImageData(new ImageData(out, w, h), 0, 0);
+      state.currentCanvas = c;
+      resetPreviewMode();
+      drawCanvas(c);
+      setStatus('Sharpen applied');
+    });
+
+    function sampleCornerColor(data, w, h) {
+      const sampleSize = Math.max(2, Math.floor(Math.min(w, h) * 0.03));
+      let r = 0, g = 0, b = 0, count = 0;
+      for (let y = 0; y < sampleSize; y++) {
+        for (let x = 0; x < sampleSize; x++) {
+          const i = (y * w + x) * 4;
+          r += data[i]; g += data[i + 1]; b += data[i + 2]; count++;
+        }
+      }
+      return [Math.round(r / count), Math.round(g / count), Math.round(b / count)];
+    }
+
+    $('applyRemoveBgBtn').addEventListener('click', () => {
+      if (!state.currentCanvas) return;
+      pushHistory();
+      const tolerance = Number($('bgTolerance').value);
+      const feather = Number($('bgFeather').value);
+      const c = cloneCanvas(state.currentCanvas);
+      const cctx = c.getContext('2d', { willReadFrequently: true });
+      const imageData = cctx.getImageData(0, 0, c.width, c.height);
+      const data = imageData.data;
+      const bg = sampleCornerColor(data, c.width, c.height);
+      for (let i = 0; i < data.length; i += 4) {
+        const dr = data[i] - bg[0];
+        const dg = data[i + 1] - bg[1];
+        const db = data[i + 2] - bg[2];
+        const dist = Math.sqrt(dr*dr + dg*dg + db*db);
+        if (dist <= tolerance) data[i + 3] = 0;
+        else if (dist <= tolerance + feather) {
+          const alpha = 255 * ((dist - tolerance) / Math.max(1, feather));
+          data[i + 3] = Math.min(data[i + 3], alpha);
+        }
+      }
+      cctx.putImageData(imageData, 0, 0);
+      state.currentCanvas = c;
+      resetPreviewMode();
+      drawCanvas(c);
+      setFormat('png');
+      setStatus('Background removed. Output switched to PNG.');
+    });
+
+    $('applyFillBgBtn').addEventListener('click', () => {
+      if (!state.currentCanvas) return;
+      pushHistory();
+      const c = document.createElement('canvas');
+      c.width = state.currentCanvas.width;
+      c.height = state.currentCanvas.height;
+      const cctx = c.getContext('2d');
+      cctx.fillStyle = $('fillColor').value;
+      cctx.fillRect(0, 0, c.width, c.height);
+      cctx.drawImage(state.currentCanvas, 0, 0);
+      state.currentCanvas = c;
+      resetPreviewMode();
+      drawCanvas(c);
+      setStatus('Background color applied');
+    });
+
+    $('watermarkInput').addEventListener('change', async (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      state.watermarkImage = await fileToImage(file);
+      setStatus('Loaded watermark ' + file.name);
+    });
+
+    $('watermarkMode').addEventListener('change', (e) => {
+      const mode = e.target.value;
+      if (mode === 'signature') {
+        $('watermarkPosition').value = 'bottom-right';
+        $('watermarkOpacity').value = 18;
+        $('watermarkScale').value = 18;
+        $('watermarkSpacing').value = 40;
+      } else if (mode === 'pattern') {
+        $('watermarkPosition').value = 'center';
+        $('watermarkOpacity').value = 22;
+        $('watermarkScale').value = 14;
+        $('watermarkSpacing').value = 42;
+      } else if (mode === 'ghost') {
+        $('watermarkPosition').value = 'center';
+        $('watermarkOpacity').value = 8;
+        $('watermarkScale').value = 70;
+        $('watermarkSpacing').value = 40;
+      }
+      setStatus('Watermark mode set to ' + mode);
+    });
+
+    $('applyWatermarkBtn').addEventListener('click', () => {
+      if (!state.currentCanvas) return;
+      if (!state.watermarkImage) return setStatus('Load a watermark image first');
+      pushHistory();
+      const c = cloneCanvas(state.currentCanvas);
+      const cctx = c.getContext('2d');
+      const pos = $('watermarkPosition').value;
+      const mode = $('watermarkMode').value;
+      const opacity = Number($('watermarkOpacity').value) / 100;
+      const scale = Number($('watermarkScale').value) / 100;
+      const spacing = Number($('watermarkSpacing').value);
+      const margin = Math.round(Math.min(c.width, c.height) * 0.03);
+      const wmW = c.width * scale;
+      const ratio = state.watermarkImage.naturalHeight / state.watermarkImage.naturalWidth;
+      const wmH = wmW * ratio;
+      cctx.save();
+      cctx.globalAlpha = opacity;
+      if (mode === 'pattern') {
+        const stepX = wmW + spacing;
+        const stepY = wmH + spacing;
+        const offsetX = Math.max(0, spacing / 2);
+        const offsetY = Math.max(0, spacing / 2);
+        for (let y = offsetY; y < c.height + wmH; y += stepY) {
+          for (let x = offsetX; x < c.width + wmW; x += stepX) {
+            cctx.drawImage(state.watermarkImage, x, y, wmW, wmH);
+          }
+        }
+      } else {
+        let x = margin, y = margin;
+        if (pos.includes('right')) x = c.width - wmW - margin;
+        if (pos.includes('bottom')) y = c.height - wmH - margin;
+        if (pos === 'center') {
+          x = (c.width - wmW) / 2;
+          y = (c.height - wmH) / 2;
+        }
+        cctx.drawImage(state.watermarkImage, x, y, wmW, wmH);
+      }
+      cctx.restore();
+      state.currentCanvas = c;
+      resetPreviewMode();
+      drawCanvas(c);
+      setStatus(mode === 'pattern' ? 'Pattern watermark applied' : 'Watermark applied');
+    });
+
+    $('compressQuality').addEventListener('input', (e) => {
+      exportQuality.value = e.target.value;
+      setStatus('Export quality set to ' + e.target.value + '%');
+    });
+
+    $('exportBtn').addEventListener('click', async () => {
+      if (!state.currentCanvas) return setStatus('No file to export');
+      const format = exportFormatSelect.value;
+      const mime = mimeFromFormat(format);
+      const quality = Number(exportQuality.value) / 100;
+      const name = (fileNameInput.value || 'image_final').trim();
+      const blob = await new Promise(resolve => state.currentCanvas.toBlob(resolve, mime, quality));
+      if (!blob) return setStatus('Export failed');
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = name + '.' + (format === 'jpeg' ? 'jpg' : format);
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      setStatus('Exported ' + a.download);
+    });
+
+    function escapeHtml(str) {
+      return str.split('&').join('&amp;').split('<').join('&lt;').split('>').join('&gt;').split('"').join('&quot;').split("'").join('&#39;');
+    }
+
+    $('convertTextBtn').addEventListener('click', () => {
+      const input = $('textInput').value || '';
+      const type = $('textConversionType').value;
+      const nl = String.fromCharCode(10);
+      const cr = String.fromCharCode(13);
+      const normalized = input.split(cr + nl).join(nl).split(cr).join(nl);
+      let output = '';
+      if (type === 'html_paragraphs' || type === 'pdf_ready' || type === 'doc_ready') {
+        const blocks = normalized.split(nl + nl).map(s => s.trim()).filter(Boolean);
+        output = blocks.map(block => '<p>' + escapeHtml(block).split(nl).join(' ') + '</p>').join(nl);
+      } else if (type === 'html_linebreaks') {
+        output = escapeHtml(normalized).split(nl).join('<br>' + nl);
+      } else if (type === 'html_escape') {
+        output = escapeHtml(normalized);
+      } else {
+        output = normalized;
+      }
+      $('textOutput').value = output;
+      setStatus('Text converted');
+    });
+
+    $('copyTextOutputBtn').addEventListener('click', async () => {
+      const text = $('textOutput').value;
+      if (!text) return setStatus('Convert text first');
+      try {
+        await navigator.clipboard.writeText(text);
+        setStatus('Converted text copied');
+      } catch (e) {
+        setStatus('Copy failed. You can still copy manually.');
+      }
+    });
+
+    $('downloadTxtBtn').addEventListener('click', () => {
+      const text = $('textOutput').value;
+      if (!text) return setStatus('Convert text first');
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'converted_text.txt';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      setStatus('TXT file downloaded');
+    });
+
+    $('downloadHtmlBtn').addEventListener('click', () => {
+      const type = $('textConversionType').value;
+      const text = $('textOutput').value;
+      if (!text) return setStatus('Convert text first');
+      const body = type === 'plain_text' ? text.split('\n').map(line => '<p>' + escapeHtml(line) + '</p>').join('') : text;
+      const blob = new Blob([body], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'converted_text.html';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      setStatus('HTML file downloaded');
+    });
+
+    $('downloadDocBtn').addEventListener('click', () => {
+      const type = $('textConversionType').value;
+      const text = $('textOutput').value;
+      if (!text) return setStatus('Convert text first');
+      const body = type === 'plain_text' ? text.split('\n').map(line => '<p>' + escapeHtml(line) + '</p>').join('') : text;
+      const docHtml = '<html><head><meta charset="utf-8"></head><body>' + body + '</body></html>';
+      const blob = new Blob([docHtml], { type: 'application/msword' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'converted_text.doc';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      setStatus('DOC file downloaded');
+    });
+
+    $('printPdfBtn').addEventListener('click', () => {
+      const type = $('textConversionType').value;
+      const text = $('textOutput').value;
+      if (!text) return setStatus('Convert text first');
+      const body = type === 'plain_text' ? text.split('\n').map(line => '<p>' + escapeHtml(line) + '</p>').join('') : text;
+      const win = window.open('', '_blank');
+      if (!win) return setStatus('Popup blocked. Allow popups to save as PDF.');
+      win.document.open();
+      win.document.write('<!DOCTYPE html><html><head><meta charset="utf-8"><title>Converted Text</title><style>body{font-family:Arial,sans-serif;padding:40px;line-height:1.5;} p{margin:0 0 1em;}</style></head><body>' + body + '</body></html>');
+      win.document.close();
+      win.focus();
+      setTimeout(() => { win.print(); }, 300);
+      setStatus('PDF-ready document opened. Choose Save as PDF.');
+    });
+
+    setFormat('png');
+    showTool('home');
+  </script>
+</body>
+</html>
