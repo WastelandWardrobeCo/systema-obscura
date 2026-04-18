@@ -293,20 +293,31 @@
         linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
     }
 
-    .book-panel .panel-inner {
-      display: flex;
-      justify-content: space-between;
+    .book-feature {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 28px;
       align-items: center;
-      gap: 24px;
-      flex-wrap: wrap;
     }
 
-    .book-copy {
-      max-width: 720px;
+    .book-cover {
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      background: #090909;
     }
 
-    .book-copy .section-title {
-      margin-bottom: 10px;
+    .book-cover img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .book-details {
+      max-width: 640px;
     }
 
     .story-panel {
@@ -427,12 +438,9 @@
     @media (max-width: 980px) {
       .hero-grid,
       .story-grid,
-      .placeholder-grid {
+      .placeholder-grid,
+      .book-feature {
         grid-template-columns: 1fr;
-      }
-
-      .book-panel .panel-inner {
-        align-items: flex-start;
       }
     }
 
@@ -502,15 +510,22 @@
 
     <section class="section">
       <div class="panel book-panel">
-        <div class="panel-inner">
-          <div class="book-copy">
-            <p class="section-label">Book Signal</p>
-            <h2 class="section-title">The first Lady &amp; Delilah book is available now.</h2>
-            <p class="section-copy">
-              This channel is still growing, but the story has already begun. Follow the signal directly to the book and enter the world from its first active transmission.
-            </p>
+        <div class="panel-inner book-feature">
+          <div class="book-cover">
+            <img src="./assets/lady-book-cover.png" alt="Lady and Delilah book cover" />
           </div>
-          <a class="btn primary" href="https://www.amazon.com/dp/B0GXL5Q392" target="_blank" rel="noopener noreferrer">Read on Amazon</a>
+
+          <div class="book-details">
+            <p class="section-label">Live Transmission</p>
+            <h2 class="section-title">Lady &amp; Delilah is now available.</h2>
+            <p class="section-copy">
+              Five arrows. A wolf that does not wait for commands. A hunter who refuses to miss twice. The first entry into this world is no longer theoretical. It is active.
+            </p>
+
+            <div class="button-row" style="margin-top:16px;">
+              <a class="btn primary" href="https://www.amazon.com/dp/B0GXL5Q392" target="_blank" rel="noopener noreferrer">Read on Amazon</a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
