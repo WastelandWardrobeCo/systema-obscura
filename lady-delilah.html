@@ -104,6 +104,15 @@
       color: #fff;
     }
 
+    .nav .book-link {
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(210,106,51,.34);
+      background: linear-gradient(180deg, rgba(210,106,51,.20), rgba(210,106,51,.08));
+      color: #f7f2ea;
+      box-shadow: 0 0 28px rgba(210,106,51,.10);
+    }
+
     .hero {
       padding: 42px 0 30px;
     }
@@ -179,12 +188,21 @@
     }
 
     .quote {
-      margin: 0 0 24px;
+      margin: 0 0 16px;
       padding-left: 18px;
       border-left: 1px solid rgba(210,106,51,.38);
       color: #f3eadf;
       max-width: 42ch;
       font-size: 1.02rem;
+    }
+
+    .hero-note {
+      margin: 0 0 24px;
+      color: #f0e3d3;
+      font-size: 1rem;
+      font-family: var(--sans);
+      letter-spacing: .06em;
+      text-transform: uppercase;
     }
 
     .button-row {
@@ -266,6 +284,29 @@
         radial-gradient(circle at 30% 0%, rgba(210,106,51,.11), transparent 26%),
         linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.20));
       z-index: 0;
+    }
+
+    .book-panel {
+      border: 1px solid rgba(210,106,51,.24);
+      background:
+        radial-gradient(circle at 15% 0%, rgba(210,106,51,.14), transparent 25%),
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+    }
+
+    .book-panel .panel-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .book-copy {
+      max-width: 720px;
+    }
+
+    .book-copy .section-title {
+      margin-bottom: 10px;
     }
 
     .story-panel {
@@ -389,6 +430,10 @@
       .placeholder-grid {
         grid-template-columns: 1fr;
       }
+
+      .book-panel .panel-inner {
+        align-items: flex-start;
+      }
     }
 
     @media (max-width: 640px) {
@@ -420,6 +465,7 @@
     <div class="topbar-inner">
       <a class="brand" href="index.html">Systema Obscura</a>
       <nav class="nav">
+        <a href="https://www.amazon.com/dp/B0GXL5Q392" target="_blank" rel="noopener noreferrer" class="book-link">Read the Book</a>
         <a href="#story">Story</a>
         <a href="#signals">Signals</a>
         <a href="index.html">Return</a>
@@ -435,23 +481,36 @@
         </div>
 
         <div class="hero-copy">
-          <p class="eyebrow">Channel Pending</p>
+          <p class="eyebrow">Signal Live</p>
           <h1>Lady &amp; Delilah</h1>
           <p class="dek">
-            A harder mythology is forming here. For now, this page serves as the threshold: a signal, a face, and a promise of what is still coming.
+            A harder mythology is forming here. But this signal is no longer only a promise. The first book is now live.
           </p>
           <p class="quote">
             Not every story enters quietly. Some arrive with teeth.
           </p>
+          <p class="hero-note">Now available on Amazon</p>
 
-<div class="button-row">
-  <a class="btn primary" href="https://www.amazon.com/dp/B0GXL5Q392" target="_blank">
-    Read the Book
-  </a>
-  <a class="btn" href="#story">Enter the Signal</a>
-  <a class="btn" href="#signals">View Development Notes</a>
-</div>
-          
+          <div class="button-row">
+            <a class="btn primary" href="https://www.amazon.com/dp/B0GXL5Q392" target="_blank" rel="noopener noreferrer">Read the Book</a>
+            <a class="btn" href="#story">Enter the Signal</a>
+            <a class="btn" href="#signals">View Development Notes</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="panel book-panel">
+        <div class="panel-inner">
+          <div class="book-copy">
+            <p class="section-label">Book Signal</p>
+            <h2 class="section-title">The first Lady &amp; Delilah book is available now.</h2>
+            <p class="section-copy">
+              This channel is still growing, but the story has already begun. Follow the signal directly to the book and enter the world from its first active transmission.
+            </p>
+          </div>
+          <a class="btn primary" href="https://www.amazon.com/dp/B0GXL5Q392" target="_blank" rel="noopener noreferrer">Read on Amazon</a>
         </div>
       </div>
     </section>
@@ -459,10 +518,10 @@
     <section class="section">
       <div class="panel intro-panel">
         <div class="panel-inner">
-          <p class="section-label">Placeholder Broadcast</p>
-          <h2 class="section-title">A channel under construction.</h2>
+          <p class="section-label">Broadcast Status</p>
+          <h2 class="section-title">A channel under construction. A story already in motion.</h2>
           <p class="section-copy">
-            This page is intentionally spare for now. It gives Lady &amp; Delilah a dedicated place in the system before the full world, lore, and artifacts are ready to surface.
+            This page still serves as an archive threshold for Lady &amp; Delilah, but it now points clearly to the first released entry while the deeper world, lore, and artifacts continue to surface.
           </p>
         </div>
       </div>
@@ -474,18 +533,19 @@
           <div class="story-grid">
             <div class="story-card">
               <p class="section-label">Current Framing</p>
-              <h2 class="section-title">A survivor. A wolf. A myth still taking shape.</h2>
+              <h2 class="section-title">A survivor. A wolf. A myth already underway.</h2>
               <p class="card-copy">
-                Right now, this signal exists as a strong visual and a tonal promise. That is enough. It establishes presence without pretending the archive is complete.
+                What began as a strong visual and a tonal promise now has an active entry point. The signal exists not only as atmosphere, but as story. The world is still expanding, but the first path into it is open now.
               </p>
             </div>
 
             <div class="placeholder-card">
               <p class="section-label">Status</p>
-              <div class="status-line"><span class="status-dot"></span><span>Transmission forming</span></div>
+              <div class="status-line"><span class="status-dot"></span><span>Transmission active</span></div>
               <p class="card-copy" style="margin-top:14px;">
-                Future content can expand into lore, world rules, character notes, books, merch, or any hybrid path this channel becomes.
+                Future content can expand into lore, world rules, character notes, books, merch, or any hybrid path this channel becomes. For now, the clearest doorway is the book itself.
               </p>
+              <a class="btn" href="https://www.amazon.com/dp/B0GXL5Q392" target="_blank" rel="noopener noreferrer" style="margin-top:16px;">Open the Book</a>
             </div>
           </div>
         </div>
@@ -498,7 +558,7 @@
           <p class="section-label">Development Notes</p>
           <h2 class="section-title">Three directions this channel can grow.</h2>
           <p class="section-copy">
-            Until you build the deeper canon, this page can hold clean placeholders that still feel intentional and on-brand.
+            Until the deeper canon is fully surfaced, this page can still hold clean placeholders that feel intentional, branded, and alive.
           </p>
 
           <div class="placeholder-grid">
@@ -514,8 +574,9 @@
               <p class="card-kicker">Path 02</p>
               <h3 class="section-title" style="font-size:1.45rem;">Book Signal</h3>
               <p class="card-copy">
-                A launch point for novels, installments, or future episodes connected to this channel.
+                The first installment is already live. The signal is no longer theoretical.
               </p>
+              <a class="btn" href="https://www.amazon.com/dp/B0GXL5Q392" target="_blank" rel="noopener noreferrer" style="margin-top:14px;">Read Now</a>
             </article>
 
             <article class="signal-card placeholder">
