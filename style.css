@@ -1997,3 +1997,32 @@ animation: soPulse 2.2s 1;
 .transmission-item:hover {
   transform: translateY(-4px);
 }
+.book-feature {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 28px;
+  align-items: center;
+}
+
+.book-cover {
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+}
+
+.book-cover img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.book-details {
+  max-width: 600px;
+}
+
+@media (max-width: 768px) {
+  .book-feature {
+    grid-template-columns: 1fr;
+  }
+}
