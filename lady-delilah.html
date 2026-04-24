@@ -416,6 +416,74 @@
       box-shadow: 0 0 12px rgba(210,106,51,.55);
     }
 
+
+
+    .series-panel {
+      border: 1px solid rgba(210,106,51,.20);
+      background:
+        radial-gradient(circle at 50% 0%, rgba(210,106,51,.12), transparent 28%),
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+    }
+
+    .series-header {
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto 28px;
+    }
+
+    .series-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(220px, 320px));
+      gap: 28px;
+      justify-content: center;
+      align-items: start;
+      margin-top: 22px;
+    }
+
+    .series-card {
+      text-align: center;
+    }
+
+    .series-cover {
+      display: block;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.58);
+      background: #090909;
+      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+
+    .series-cover:hover,
+    .series-cover:focus-visible {
+      transform: translateY(-3px);
+      border-color: rgba(210,106,51,.36);
+      box-shadow: 0 26px 74px rgba(0,0,0,0.68), 0 0 30px rgba(210,106,51,.10);
+    }
+
+    .series-cover img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .series-title {
+      margin: 14px 0 6px;
+      font-size: 1.35rem;
+      line-height: 1.05;
+      font-weight: 600;
+      color: #f7f2ea;
+    }
+
+    .series-copy {
+      margin: 0 auto 14px;
+      max-width: 28ch;
+      color: #cfc5b9;
+      font-size: .95rem;
+    }
+
     .footer {
       padding: 34px 0 60px;
       color: #9f978c;
@@ -439,7 +507,8 @@
       .hero-grid,
       .story-grid,
       .placeholder-grid,
-      .book-feature {
+      .book-feature,
+      .series-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -473,7 +542,7 @@
     <div class="topbar-inner">
       <a class="brand" href="index.html">Systema Obscura</a>
       <nav class="nav">
-        <a href="https://www.amazon.com/dp/B0GXL5Q392" target="_blank" rel="noopener noreferrer" class="book-link">Read the Book</a>
+        <a href="#books" class="book-link">Books</a>
         <a href="#story">Story</a>
         <a href="#signals">Signals</a>
         <a href="index.html">Return</a>
@@ -481,32 +550,6 @@
     </div>
   </header>
 
-<section class="section">
-  <div class="panel book-panel">
-    <div class="panel-inner book-feature">
-
-      <div class="book-cover">
-        <img src="./assets/lady-book-2-cover.jpg" alt="Book 2 cover" />
-      </div>
-
-      <div class="book-details">
-        <p class="section-label">Current Transmission</p>
-        <h2 class="section-title">The White Tree</h2>
-        <p class="section-copy">
-          The path darkens. The hunt deepens. Something ancient waits in the white forest—and it sees them coming.
-        </p>
-
-        <div class="button-row" style="margin-top:16px;">
-          <a class="btn primary" href="https://www.amazon.com/dp/B0GX2SS328" target="_blank">
-            Read Book 2
-          </a>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-  
   <main class="wrap">
     <section class="hero">
       <div class="hero-grid">
@@ -518,15 +561,16 @@
           <p class="eyebrow">Signal Live</p>
           <h1>Lady &amp; Delilah</h1>
           <p class="dek">
-            A harder mythology is forming here. But this signal is no longer only a promise. The first book is now live.
+            The first hunt opened the path. The White Tree deepens it. Start at the beginning, or continue into the current transmission.
           </p>
           <p class="quote">
             Not every story enters quietly. Some arrive with teeth.
           </p>
-          <p class="hero-note">Now available on Amazon</p>
+          <p class="hero-note">Now expanding on Amazon</p>
 
           <div class="button-row">
-            <a class="btn primary" href="https://www.amazon.com/dp/B0GXL5Q392" target="_blank" rel="noopener noreferrer">Read the Book</a>
+            <a class="btn primary" href="https://www.amazon.com/dp/B0GX2SS328" target="_blank" rel="noopener noreferrer">Read Book 2</a>
+            <a class="btn" href="#books">Browse Books</a>
             <a class="btn" href="#story">Enter the Signal</a>
             <a class="btn" href="#signals">View Development Notes</a>
           </div>
@@ -534,23 +578,37 @@
       </div>
     </section>
 
-    <section class="section">
-      <div class="panel book-panel">
-        <div class="panel-inner book-feature">
-          <div class="book-cover">
-            <img src="./assets/lady-book-cover.png" alt="Lady and Delilah book cover" />
+    <section class="section" id="books">
+      <div class="panel series-panel">
+        <div class="panel-inner">
+          <div class="series-header">
+            <p class="section-label">Transmission Index</p>
+            <h2 class="section-title">Browse the Lady &amp; Delilah Archive</h2>
+            <p class="section-copy" style="margin-left:auto;margin-right:auto;">
+              Two books are currently live. Begin with the first hunt, then continue into The White Tree.
+            </p>
           </div>
 
-          <div class="book-details">
-            <p class="section-label">Live Transmission</p>
-            <h2 class="section-title">Lady &amp; Delilah is now available.</h2>
-            <p class="section-copy">
-              Five arrows. A wolf that does not wait for commands. A hunter who refuses to miss twice. The first entry into this world is no longer theoretical. It is active.
-            </p>
+          <div class="series-grid">
+            <article class="series-card">
+              <a class="series-cover" href="https://www.amazon.com/dp/B0GXL5Q392" target="_blank" rel="noopener noreferrer" aria-label="Read Lady and Delilah Book 1 on Amazon">
+                <img src="./assets/lady-book-cover.png" alt="Lady and Delilah Book 1 cover" />
+              </a>
+              <p class="card-kicker" style="margin-top:14px;">Book 01</p>
+              <h3 class="series-title">Lady &amp; Delilah</h3>
+              <p class="series-copy">Five arrows. One wolf. One hunter who refuses to miss twice.</p>
+              <a class="btn" href="https://www.amazon.com/dp/B0GXL5Q392" target="_blank" rel="noopener noreferrer">Read Book 1</a>
+            </article>
 
-            <div class="button-row" style="margin-top:16px;">
-              <a class="btn primary" href="https://www.amazon.com/dp/B0GXL5Q392" target="_blank" rel="noopener noreferrer">Read on Amazon</a>
-            </div>
+            <article class="series-card">
+              <a class="series-cover" href="https://www.amazon.com/dp/B0GX2SS328" target="_blank" rel="noopener noreferrer" aria-label="Read Lady and Delilah The White Tree on Amazon">
+                <img src="./assets/lady-book-2-cover.jpg" alt="Lady and Delilah The White Tree book cover" />
+              </a>
+              <p class="card-kicker" style="margin-top:14px;">Book 02</p>
+              <h3 class="series-title">The White Tree</h3>
+              <p class="series-copy">The path darkens. The hunt deepens. Something in the white forest is watching.</p>
+              <a class="btn primary" href="https://www.amazon.com/dp/B0GX2SS328" target="_blank" rel="noopener noreferrer">Read Book 2</a>
+            </article>
           </div>
         </div>
       </div>
@@ -562,7 +620,7 @@
           <p class="section-label">Broadcast Status</p>
           <h2 class="section-title">A channel under construction. A story already in motion.</h2>
           <p class="section-copy">
-            This page still serves as an archive threshold for Lady &amp; Delilah, but it now points clearly to the first released entry while the deeper world, lore, and artifacts continue to surface.
+            This page now serves as the Lady &amp; Delilah series archive: a clean doorway into the released books while the deeper world, lore, and artifacts continue to surface.
           </p>
         </div>
       </div>
@@ -584,9 +642,9 @@
               <p class="section-label">Status</p>
               <div class="status-line"><span class="status-dot"></span><span>Transmission active</span></div>
               <p class="card-copy" style="margin-top:14px;">
-                Future content can expand into lore, world rules, character notes, books, merch, or any hybrid path this channel becomes. For now, the clearest doorway is the book itself.
+                Future content can expand into lore, world rules, character notes, books, merch, or any hybrid path this channel becomes. For now, the archive gives readers a clean path through the active books.
               </p>
-              <a class="btn" href="https://www.amazon.com/dp/B0GXL5Q392" target="_blank" rel="noopener noreferrer" style="margin-top:16px;">Open the Book</a>
+              <a class="btn" href="#books" style="margin-top:16px;">Browse the Books</a>
             </div>
           </div>
         </div>
@@ -615,9 +673,9 @@
               <p class="card-kicker">Path 02</p>
               <h3 class="section-title" style="font-size:1.45rem;">Book Signal</h3>
               <p class="card-copy">
-                The first installment is already live. The signal is no longer theoretical.
+                The first two installments are live. The signal is no longer theoretical.
               </p>
-              <a class="btn" href="https://www.amazon.com/dp/B0GXL5Q392" target="_blank" rel="noopener noreferrer" style="margin-top:14px;">Read Now</a>
+              <a class="btn" href="https://www.amazon.com/dp/B0GX2SS328" target="_blank" rel="noopener noreferrer" style="margin-top:14px;">Read Book 2</a>
             </article>
 
             <article class="signal-card placeholder">
