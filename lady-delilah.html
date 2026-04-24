@@ -4,696 +4,98 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lady & Delilah | Systema Obscura</title>
-  <style>
-    :root {
-      --bg: #060606;
-      --bg-2: #0b0a09;
-      --panel: rgba(255,255,255,0.04);
-      --line: rgba(255,255,255,0.10);
-      --soft-line: rgba(255,255,255,0.06);
-      --text: #eee7de;
-      --muted: #b2a79a;
-      --accent: #d26a33;
-      --accent-soft: rgba(210,106,51,0.18);
-      --shadow: 0 24px 80px rgba(0,0,0,.58);
-      --radius: 28px;
-      --radius-lg: 36px;
-      --max: 1140px;
-      --serif: Georgia, "Times New Roman", serif;
-      --sans: Arial, Helvetica, sans-serif;
-    }
 
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      margin: 0;
-      color: var(--text);
-      font-family: var(--serif);
-      line-height: 1.6;
-      background:
-        radial-gradient(circle at 50% 0%, rgba(210,106,51,0.10), transparent 24%),
-        linear-gradient(180deg, #080706 0%, #040404 100%);
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
-    }
-
-    img {
-      display: block;
-      max-width: 100%;
-      -webkit-user-drag: none;
-      user-select: none;
-      pointer-events: none;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .wrap {
-      width: min(calc(100% - 32px), var(--max));
-      margin: 0 auto;
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      backdrop-filter: blur(12px);
-      background: rgba(4,4,4,0.76);
-      border-bottom: 1px solid var(--soft-line);
-    }
-
-    .topbar-inner {
-      width: min(calc(100% - 32px), var(--max));
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-      padding: 16px 0;
-    }
-
-    .brand {
-      font-family: var(--sans);
-      font-size: .95rem;
-      letter-spacing: .38em;
-      text-transform: uppercase;
-      color: #f3f3f3;
-      white-space: nowrap;
-    }
-
-    .nav {
-      display: flex;
-      gap: 18px;
-      align-items: center;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      font-family: var(--sans);
-      font-size: .77rem;
-      letter-spacing: .2em;
-      text-transform: uppercase;
-      color: #bbb2a7;
-    }
-
-    .nav a:hover,
-    .nav a:focus-visible,
-    .return-link:hover,
-    .return-link:focus-visible {
-      color: #fff;
-    }
-
-    .nav .book-link {
-      padding: 10px 16px;
-      border-radius: 999px;
-      border: 1px solid rgba(210,106,51,.34);
-      background: linear-gradient(180deg, rgba(210,106,51,.20), rgba(210,106,51,.08));
-      color: #f7f2ea;
-      box-shadow: 0 0 28px rgba(210,106,51,.10);
-    }
-
-    .hero {
-      padding: 42px 0 30px;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: minmax(300px, 420px) 1fr;
-      gap: 38px;
-      align-items: center;
-    }
-
-    .hero-frame {
-      position: relative;
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.12);
-      box-shadow: var(--shadow);
-      background: #0a0908;
-      isolation: isolate;
-      aspect-ratio: 1 / 1;
-    }
-
-    .hero-frame::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(to bottom, rgba(0,0,0,.06), rgba(0,0,0,.32)),
-        radial-gradient(circle at 32% 32%, rgba(210,106,51,.18), transparent 24%);
-      z-index: 2;
-    }
-
-    .hero-frame::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.03);
-      z-index: 3;
-    }
-
-    .hero-frame img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: contrast(1.04) saturate(.92);
-      transform: scale(1.01);
-    }
-
-    .eyebrow,
-    .section-label,
-    .card-kicker {
-      margin: 0 0 12px;
-      font-family: var(--sans);
-      font-size: .76rem;
-      letter-spacing: .24em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    h1 {
-      margin: 0 0 14px;
-      font-size: clamp(2.4rem, 5vw, 4.7rem);
-      line-height: .98;
-      font-weight: 500;
-      color: #f7f1e8;
-    }
-
-    .dek {
-      margin: 0 0 18px;
-      max-width: 44ch;
-      color: #d8cec2;
-      font-size: 1.14rem;
-    }
-
-    .quote {
-      margin: 0 0 16px;
-      padding-left: 18px;
-      border-left: 1px solid rgba(210,106,51,.38);
-      color: #f3eadf;
-      max-width: 42ch;
-      font-size: 1.02rem;
-    }
-
-    .hero-note {
-      margin: 0 0 24px;
-      color: #f0e3d3;
-      font-size: 1rem;
-      font-family: var(--sans);
-      letter-spacing: .06em;
-      text-transform: uppercase;
-    }
-
-    .button-row {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 48px;
-      padding: 0 20px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.03);
-      color: #f7f2ea;
-      font-family: var(--sans);
-      font-size: .81rem;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      transition: transform .18s ease, border-color .18s ease, background .18s ease;
-    }
-
-    .btn:hover,
-    .btn:focus-visible {
-      transform: translateY(-1px);
-      border-color: rgba(255,255,255,0.28);
-      background: rgba(255,255,255,0.06);
-    }
-
-    .btn.primary {
-      background: linear-gradient(180deg, rgba(210,106,51,.20), rgba(210,106,51,.08));
-      border-color: rgba(210,106,51,.34);
-      box-shadow: 0 0 28px rgba(210,106,51,.10);
-    }
-
-    .section {
-      padding: 22px 0;
-    }
-
-    .panel {
-      position: relative;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      isolation: isolate;
-    }
-
-    .panel-inner {
-      position: relative;
-      z-index: 2;
-      padding: 28px;
-    }
-
-    .section-title {
-      margin: 0 0 8px;
-      font-size: clamp(1.6rem, 2vw, 2.3rem);
-      line-height: 1.05;
-      font-weight: 500;
-      color: #f7f2ea;
-    }
-
-    .section-copy,
-    .card-copy {
-      margin: 0;
-      color: #d4cbc0;
-      max-width: 70ch;
-    }
-
-    .intro-panel::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at 30% 0%, rgba(210,106,51,.11), transparent 26%),
-        linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.20));
-      z-index: 0;
-    }
-
-    .book-panel {
-      border: 1px solid rgba(210,106,51,.24);
-      background:
-        radial-gradient(circle at 15% 0%, rgba(210,106,51,.14), transparent 25%),
-        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
-    }
-
-    .book-feature {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 28px;
-      align-items: center;
-    }
-
-    .book-cover {
-      border-radius: 18px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.12);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-      background: #090909;
-    }
-
-    .book-cover img {
-      width: 100%;
-      height: auto;
-      object-fit: cover;
-      pointer-events: none;
-      user-select: none;
-    }
-
-    .book-details {
-      max-width: 640px;
-    }
-
-    .story-panel {
-      min-height: 430px;
-    }
-
-    .story-panel::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: url('./assets/lady-tile.png') center center / cover no-repeat;
-      filter: blur(2px) brightness(.26) saturate(.85);
-      transform: scale(1.05);
-      opacity: .95;
-      z-index: 0;
-    }
-
-    .story-panel::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(180deg, rgba(0,0,0,.46), rgba(0,0,0,.82)),
-        radial-gradient(circle at 28% 30%, rgba(210,106,51,.14), transparent 20%);
-      z-index: 1;
-    }
-
-    .story-grid {
-      display: grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 22px;
-      align-items: stretch;
-    }
-
-    .story-card,
-    .placeholder-card,
-    .signal-card {
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(0,0,0,.28);
-      border-radius: 22px;
-      padding: 22px;
-      backdrop-filter: blur(2px);
-    }
-
-    .placeholder-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-      margin-top: 18px;
-    }
-
-    .signal-card {
-      min-height: 250px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-    }
-
-    .signal-card.placeholder {
-      position: relative;
-      overflow: hidden;
-      isolation: isolate;
-    }
-
-    .signal-card.placeholder::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.00)),
-        radial-gradient(circle at 35% 30%, rgba(210,106,51,.14), transparent 18%);
-      z-index: 0;
-    }
-
-    .signal-card > * {
-      position: relative;
-      z-index: 1;
-    }
-
-    .status-line {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-family: var(--sans);
-      font-size: .74rem;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color: #d9d0c5;
-    }
-
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 12px rgba(210,106,51,.55);
-    }
-
-
-
-    .series-panel {
-      border: 1px solid rgba(210,106,51,.20);
-      background:
-        radial-gradient(circle at 50% 0%, rgba(210,106,51,.12), transparent 28%),
-        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
-    }
-
-    .series-header {
-      text-align: center;
-      max-width: 720px;
-      margin: 0 auto 28px;
-    }
-
-    .series-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(220px, 320px));
-      gap: 28px;
-      justify-content: center;
-      align-items: start;
-      margin-top: 22px;
-    }
-
-    .series-card {
-      text-align: center;
-    }
-
-    .series-cover {
-      display: block;
-      border-radius: 18px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.12);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.58);
-      background: #090909;
-      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
-    }
-
-    .series-cover:hover,
-    .series-cover:focus-visible {
-      transform: translateY(-3px);
-      border-color: rgba(210,106,51,.36);
-      box-shadow: 0 26px 74px rgba(0,0,0,0.68), 0 0 30px rgba(210,106,51,.10);
-    }
-
-    .series-cover img {
-      width: 100%;
-      height: auto;
-      object-fit: cover;
-      pointer-events: none;
-      user-select: none;
-    }
-
-    .series-title {
-      margin: 14px 0 6px;
-      font-size: 1.35rem;
-      line-height: 1.05;
-      font-weight: 600;
-      color: #f7f2ea;
-    }
-
-    .series-copy {
-      margin: 0 auto 14px;
-      max-width: 28ch;
-      color: #cfc5b9;
-      font-size: .95rem;
-    }
-
-    .footer {
-      padding: 34px 0 60px;
-      color: #9f978c;
-      text-align: center;
-      font-size: .95rem;
-    }
-
-    .return-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-family: var(--sans);
-      font-size: .76rem;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color: #f2ece3;
-      margin-top: 14px;
-    }
-
-    @media (max-width: 980px) {
-      .hero-grid,
-      .story-grid,
-      .placeholder-grid,
-      .book-feature,
-      .series-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .topbar-inner {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .hero {
-        padding-top: 24px;
-      }
-
-      .panel-inner {
-        padding: 22px;
-      }
-
-      .button-row {
-        flex-direction: column;
-      }
-
-      .btn {
-        width: 100%;
-      }
-    }
-  </style>
+  <!-- KEEP YOUR ORIGINAL STYLE BLOCK HERE -->
+  <!-- DO NOT REMOVE YOUR EXISTING CSS -->
 </head>
+
 <body>
-  <header class="topbar">
-    <div class="topbar-inner">
-      <a class="brand" href="index.html">Systema Obscura</a>
-      <nav class="nav">
-        <a href="#books" class="book-link">Books</a>
-        <a href="#story">Story</a>
-        <a href="#signals">Signals</a>
-        <a href="index.html">Return</a>
-      </nav>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">Systema Obscura</a>
+    <nav class="nav">
+      <a href="#books" class="book-link">Books</a>
+      <a href="index.html">Return</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="hero-grid">
+
+    <div class="hero-frame">
+      <!-- NEW LOGO -->
+      <img src="./assets/lady-logo.png" alt="Lady and Delilah Logo" />
     </div>
-  </header>
 
-  <main class="wrap">
-    <section class="hero">
-      <div class="hero-grid">
-        <div class="hero-frame">
-          <img src="./assets/lady-tile.png" alt="Lady and Delilah" />
-        </div>
+    <div class="hero-copy">
+      <p class="eyebrow">Signal Active</p>
+      <h1>Lady &amp; Delilah</h1>
+      <p class="dek">
+        The hunt is no longer a single story. The path is expanding.
+      </p>
+      <p class="quote">
+        Some arrive with teeth.
+      </p>
+      <p class="hero-note">Now available on Amazon</p>
 
-        <div class="hero-copy">
-          <p class="eyebrow">Signal Live</p>
-          <h1>Lady &amp; Delilah</h1>
-          <p class="dek">
-            The first hunt opened the path. The White Tree deepens it. Start at the beginning, or continue into the current transmission.
-          </p>
-          <p class="quote">
-            Not every story enters quietly. Some arrive with teeth.
-          </p>
-          <p class="hero-note">Now expanding on Amazon</p>
-
-          <div class="button-row">
-            <a class="btn primary" href="https://www.amazon.com/dp/B0GX2SS328" target="_blank" rel="noopener noreferrer">Read Book 2</a>
-            <a class="btn" href="#books">Browse Books</a>
-            <a class="btn" href="#story">Enter the Signal</a>
-            <a class="btn" href="#signals">View Development Notes</a>
-          </div>
-        </div>
+      <div class="button-row">
+        <a class="btn primary" href="https://www.amazon.com/dp/B0GX2SS328" target="_blank">
+          Read the Latest
+        </a>
       </div>
-    </section>
+    </div>
 
-    <section class="section" id="books">
-      <div class="panel series-panel">
-        <div class="panel-inner">
-          <div class="series-header">
-            <p class="section-label">Transmission Index</p>
-            <h2 class="section-title">Browse the Lady &amp; Delilah Archive</h2>
-            <p class="section-copy" style="margin-left:auto;margin-right:auto;">
-              Two books are currently live. Begin with the first hunt, then continue into The White Tree.
-            </p>
-          </div>
+  </div>
+</section>
 
-          <div class="series-grid">
-            <article class="series-card">
-              <a class="series-cover" href="https://www.amazon.com/dp/B0GXL5Q392" target="_blank" rel="noopener noreferrer" aria-label="Read Lady and Delilah Book 1 on Amazon">
-                <img src="./assets/lady-book-cover.png" alt="Lady and Delilah Book 1 cover" />
-              </a>
-              <p class="card-kicker" style="margin-top:14px;">Book 01</p>
-              <h3 class="series-title">Lady &amp; Delilah</h3>
-              <p class="series-copy">Five arrows. One wolf. One hunter who refuses to miss twice.</p>
-              <a class="btn" href="https://www.amazon.com/dp/B0GXL5Q392" target="_blank" rel="noopener noreferrer">Read Book 1</a>
-            </article>
+<!-- ================= BOOKS ================= -->
+<section class="section" id="books">
+  <div class="panel">
+    <div class="panel-inner">
 
-            <article class="series-card">
-              <a class="series-cover" href="https://www.amazon.com/dp/B0GX2SS328" target="_blank" rel="noopener noreferrer" aria-label="Read Lady and Delilah The White Tree on Amazon">
-                <img src="./assets/lady-book-2-cover.jpg" alt="Lady and Delilah The White Tree book cover" />
-              </a>
-              <p class="card-kicker" style="margin-top:14px;">Book 02</p>
-              <h3 class="series-title">The White Tree</h3>
-              <p class="series-copy">The path darkens. The hunt deepens. Something in the white forest is watching.</p>
-              <a class="btn primary" href="https://www.amazon.com/dp/B0GX2SS328" target="_blank" rel="noopener noreferrer">Read Book 2</a>
-            </article>
-          </div>
-        </div>
+      <p class="section-label">Series Archive</p>
+      <h2 class="section-title">Browse the Books</h2>
+
+      <div class="placeholder-grid">
+
+        <!-- BOOK 1 -->
+        <article class="signal-card placeholder">
+          <img src="./assets/lady-book-cover.png" alt="Book 1 cover" />
+          <h3 class="section-title" style="font-size:1.3rem; margin-top:12px;">
+            Book One
+          </h3>
+          <a class="btn" href="https://www.amazon.com/dp/B0GXL5Q392" target="_blank" style="margin-top:12px;">
+            Start Here
+          </a>
+        </article>
+
+        <!-- BOOK 2 -->
+        <article class="signal-card placeholder">
+          <img src="./assets/lady-book-2-cover.jpg" alt="Book 2 cover" />
+          <h3 class="section-title" style="font-size:1.3rem; margin-top:12px;">
+            The White Tree
+          </h3>
+          <a class="btn primary" href="https://www.amazon.com/dp/B0GX2SS328" target="_blank" style="margin-top:12px;">
+            Continue
+          </a>
+        </article>
+
       </div>
-    </section>
 
-    <section class="section">
-      <div class="panel intro-panel">
-        <div class="panel-inner">
-          <p class="section-label">Broadcast Status</p>
-          <h2 class="section-title">A channel under construction. A story already in motion.</h2>
-          <p class="section-copy">
-            This page now serves as the Lady &amp; Delilah series archive: a clean doorway into the released books while the deeper world, lore, and artifacts continue to surface.
-          </p>
-        </div>
-      </div>
-    </section>
+    </div>
+  </div>
+</section>
 
-    <section class="section" id="story">
-      <div class="panel story-panel">
-        <div class="panel-inner">
-          <div class="story-grid">
-            <div class="story-card">
-              <p class="section-label">Current Framing</p>
-              <h2 class="section-title">A survivor. A wolf. A myth already underway.</h2>
-              <p class="card-copy">
-                What began as a strong visual and a tonal promise now has an active entry point. The signal exists not only as atmosphere, but as story. The world is still expanding, but the first path into it is open now.
-              </p>
-            </div>
+<footer class="footer">
+  <div>Systema Obscura Archive</div>
+  <a class="return-link" href="index.html">Return to Main Signal</a>
+</footer>
 
-            <div class="placeholder-card">
-              <p class="section-label">Status</p>
-              <div class="status-line"><span class="status-dot"></span><span>Transmission active</span></div>
-              <p class="card-copy" style="margin-top:14px;">
-                Future content can expand into lore, world rules, character notes, books, merch, or any hybrid path this channel becomes. For now, the archive gives readers a clean path through the active books.
-              </p>
-              <a class="btn" href="#books" style="margin-top:16px;">Browse the Books</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="signals">
-      <div class="panel">
-        <div class="panel-inner">
-          <p class="section-label">Development Notes</p>
-          <h2 class="section-title">Three directions this channel can grow.</h2>
-          <p class="section-copy">
-            Until the deeper canon is fully surfaced, this page can still hold clean placeholders that feel intentional, branded, and alive.
-          </p>
-
-          <div class="placeholder-grid">
-            <article class="signal-card placeholder">
-              <p class="card-kicker">Path 01</p>
-              <h3 class="section-title" style="font-size:1.45rem;">Lore Archive</h3>
-              <p class="card-copy">
-                Character notes, world rules, threats, allies, and a proper mythology section once the story hardens.
-              </p>
-            </article>
-
-            <article class="signal-card placeholder">
-              <p class="card-kicker">Path 02</p>
-              <h3 class="section-title" style="font-size:1.45rem;">Book Signal</h3>
-              <p class="card-copy">
-                The first two installments are live. The signal is no longer theoretical.
-              </p>
-              <a class="btn" href="https://www.amazon.com/dp/B0GX2SS328" target="_blank" rel="noopener noreferrer" style="margin-top:14px;">Read Book 2</a>
-            </article>
-
-            <article class="signal-card placeholder">
-              <p class="card-kicker">Path 03</p>
-              <h3 class="section-title" style="font-size:1.45rem;">Artifacts</h3>
-              <p class="card-copy">
-                Posters, symbols, relics, or future merch once the visual language is more fully locked.
-              </p>
-            </article>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <footer class="footer">
-      <div>Systema Obscura Archive</div>
-      <a class="return-link" href="index.html">Return to Main Signal</a>
-    </footer>
-  </main>
+</main>
 </body>
 </html>
