@@ -4,98 +4,466 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lady & Delilah | Systema Obscura</title>
+  <style>
+    :root {
+      --bg: #060606;
+      --bg-2: #0b0a09;
+      --panel: rgba(255,255,255,0.04);
+      --line: rgba(255,255,255,0.10);
+      --soft-line: rgba(255,255,255,0.06);
+      --text: #eee7de;
+      --muted: #b2a79a;
+      --accent: #d26a33;
+      --accent-soft: rgba(210,106,51,0.18);
+      --shadow: 0 24px 80px rgba(0,0,0,.58);
+      --radius: 28px;
+      --radius-lg: 36px;
+      --max: 1140px;
+      --serif: Georgia, "Times New Roman", serif;
+      --sans: Arial, Helvetica, sans-serif;
+    }
 
-  <!-- KEEP YOUR ORIGINAL STYLE BLOCK HERE -->
-  <!-- DO NOT REMOVE YOUR EXISTING CSS -->
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: var(--serif);
+      line-height: 1.6;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(210,106,51,0.10), transparent 24%),
+        linear-gradient(180deg, #080706 0%, #040404 100%);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+      -webkit-user-drag: none;
+      user-select: none;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .wrap {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+      background: rgba(4,4,4,0.76);
+      border-bottom: 1px solid var(--soft-line);
+    }
+
+    .topbar-inner {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      padding: 16px 0;
+    }
+
+    .brand {
+      font-family: var(--sans);
+      font-size: .95rem;
+      letter-spacing: .38em;
+      text-transform: uppercase;
+      color: #f3f3f3;
+      white-space: nowrap;
+    }
+
+    .nav {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      font-family: var(--sans);
+      font-size: .77rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: #bbb2a7;
+    }
+
+    .nav a:hover,
+    .nav a:focus-visible,
+    .return-link:hover,
+    .return-link:focus-visible { color: #fff; }
+
+    .nav .book-link {
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(210,106,51,.34);
+      background: linear-gradient(180deg, rgba(210,106,51,.20), rgba(210,106,51,.08));
+      color: #f7f2ea;
+      box-shadow: 0 0 28px rgba(210,106,51,.10);
+    }
+
+    .hero { padding: 42px 0 30px; }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(260px, 380px) 1fr;
+      gap: 38px;
+      align-items: center;
+    }
+
+    .hero-frame {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: var(--shadow);
+      background: #f7f7f4;
+      isolation: isolate;
+      aspect-ratio: 1 / 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+    }
+
+    .hero-frame::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 18%, rgba(210,106,51,.10), transparent 30%);
+      z-index: 2;
+      pointer-events: none;
+      mix-blend-mode: multiply;
+    }
+
+    .hero-frame::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.05), inset 0 0 50px rgba(0,0,0,.10);
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .hero-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: contrast(1.05);
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow,
+    .section-label,
+    .card-kicker {
+      margin: 0 0 12px;
+      font-family: var(--sans);
+      font-size: .76rem;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(2.4rem, 5vw, 4.7rem);
+      line-height: .98;
+      font-weight: 500;
+      color: #f7f1e8;
+    }
+
+    .dek {
+      margin: 0 0 18px;
+      max-width: 44ch;
+      color: #d8cec2;
+      font-size: 1.14rem;
+    }
+
+    .quote {
+      margin: 0 0 16px;
+      padding-left: 18px;
+      border-left: 1px solid rgba(210,106,51,.38);
+      color: #f3eadf;
+      max-width: 42ch;
+      font-size: 1.02rem;
+    }
+
+    .hero-note {
+      margin: 0 0 24px;
+      color: #f0e3d3;
+      font-size: 1rem;
+      font-family: var(--sans);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .button-row { display: flex; gap: 14px; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 20px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.03);
+      color: #f7f2ea;
+      font-family: var(--sans);
+      font-size: .81rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .btn:hover,
+    .btn:focus-visible {
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,0.28);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .btn.primary {
+      background: linear-gradient(180deg, rgba(210,106,51,.20), rgba(210,106,51,.08));
+      border-color: rgba(210,106,51,.34);
+      box-shadow: 0 0 28px rgba(210,106,51,.10);
+    }
+
+    .section { padding: 22px 0; }
+
+    .panel {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 30% 0%, rgba(210,106,51,.09), transparent 26%),
+        linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.22));
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .panel-inner {
+      position: relative;
+      z-index: 2;
+      padding: 34px 28px 30px;
+    }
+
+    .section-head {
+      text-align: center;
+      margin-bottom: 34px;
+    }
+
+    .section-title {
+      margin: 0 0 8px;
+      font-size: clamp(1.6rem, 2vw, 2.3rem);
+      line-height: 1.05;
+      font-weight: 500;
+      color: #f7f2ea;
+    }
+
+    .section-copy,
+    .card-copy {
+      margin: 0;
+      color: #d4cbc0;
+      max-width: 70ch;
+    }
+
+    .section-head .section-copy {
+      margin: 0 auto;
+      max-width: 62ch;
+    }
+
+    .book-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(220px, 320px));
+      gap: 28px;
+      justify-content: center;
+      align-items: start;
+    }
+
+    .book-card {
+      text-align: center;
+    }
+
+    .book-card a.cover-link {
+      display: block;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.58);
+      background: #090909;
+      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+
+    .book-card a.cover-link:hover,
+    .book-card a.cover-link:focus-visible {
+      transform: translateY(-3px);
+      border-color: rgba(210,106,51,.46);
+      box-shadow: 0 24px 75px rgba(0,0,0,0.68), 0 0 34px rgba(210,106,51,.10);
+    }
+
+    .book-card img {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 2 / 3;
+      object-fit: cover;
+    }
+
+    .book-title {
+      margin: 16px 0 5px;
+      font-size: 1.35rem;
+      line-height: 1.06;
+      font-weight: 600;
+      color: #f7f2ea;
+    }
+
+    .book-meta {
+      margin: 0 0 8px;
+      font-family: var(--sans);
+      font-size: .72rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .book-blurb {
+      margin: 0 auto 14px;
+      max-width: 30ch;
+      color: #cfc6ba;
+      font-size: .96rem;
+    }
+
+    .footer {
+      padding: 34px 0 60px;
+      color: #9f978c;
+      text-align: center;
+      font-size: .95rem;
+    }
+
+    .return-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--sans);
+      font-size: .76rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: #f2ece3;
+      margin-top: 14px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-frame { max-width: 420px; margin: 0 auto; }
+    }
+
+    @media (max-width: 720px) {
+      .book-grid { grid-template-columns: minmax(220px, 320px); }
+    }
+
+    @media (max-width: 640px) {
+      .topbar-inner { flex-direction: column; align-items: flex-start; }
+      .hero { padding-top: 24px; }
+      .panel-inner { padding: 24px 20px 26px; }
+      .button-row { flex-direction: column; }
+      .btn { width: 100%; }
+      .brand { letter-spacing: .28em; }
+    }
+  </style>
 </head>
-
 <body>
-
-<header class="topbar">
-  <div class="topbar-inner">
-    <a class="brand" href="index.html">Systema Obscura</a>
-    <nav class="nav">
-      <a href="#books" class="book-link">Books</a>
-      <a href="index.html">Return</a>
-    </nav>
-  </div>
-</header>
-
-<main class="wrap">
-
-<!-- ================= HERO ================= -->
-<section class="hero">
-  <div class="hero-grid">
-
-    <div class="hero-frame">
-      <!-- NEW LOGO -->
-      <img src="./assets/lady-logo.png" alt="Lady and Delilah Logo" />
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html">Systema Obscura</a>
+      <nav class="nav">
+        <a href="#books" class="book-link">Books</a>
+        <a href="index.html">Return</a>
+      </nav>
     </div>
+  </header>
 
-    <div class="hero-copy">
-      <p class="eyebrow">Signal Active</p>
-      <h1>Lady &amp; Delilah</h1>
-      <p class="dek">
-        The hunt is no longer a single story. The path is expanding.
-      </p>
-      <p class="quote">
-        Some arrive with teeth.
-      </p>
-      <p class="hero-note">Now available on Amazon</p>
+  <main class="wrap">
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="hero-frame">
+          <img src="./assets/lady-logo.png" alt="Lady and Delilah logo" />
+        </div>
 
-      <div class="button-row">
-        <a class="btn primary" href="https://www.amazon.com/dp/B0GX2SS328" target="_blank">
-          Read the Latest
-        </a>
+        <div class="hero-copy">
+          <p class="eyebrow">Signal Active</p>
+          <h1>Lady &amp; Delilah</h1>
+          <p class="dek">
+            The hunt is no longer a single story. The path is expanding.
+          </p>
+          <p class="quote">
+            Some stories arrive with teeth.
+          </p>
+          <p class="hero-note">Now available on Amazon</p>
+
+          <div class="button-row">
+            <a class="btn primary" href="https://www.amazon.com/dp/B0GX2SS328" target="_blank" rel="noopener noreferrer">Read the Latest</a>
+            <a class="btn" href="#books">Browse the Books</a>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
 
-  </div>
-</section>
+    <section class="section" id="books">
+      <div class="panel">
+        <div class="panel-inner">
+          <div class="section-head">
+            <p class="section-label">Series Archive</p>
+            <h2 class="section-title">Browse the Books</h2>
+            <p class="section-copy">
+              Follow the signal from the first hunt into the white forest.
+            </p>
+          </div>
 
-<!-- ================= BOOKS ================= -->
-<section class="section" id="books">
-  <div class="panel">
-    <div class="panel-inner">
+          <div class="book-grid">
+            <article class="book-card">
+              <a class="cover-link" href="https://www.amazon.com/dp/B0GXL5Q392" target="_blank" rel="noopener noreferrer" aria-label="Read Lady and Delilah Book One on Amazon">
+                <img src="./assets/lady-book-cover.png" alt="Lady and Delilah Book One cover" />
+              </a>
+              <p class="book-meta">Book One</p>
+              <h3 class="book-title">Lady &amp; Delilah</h3>
+              <p class="book-blurb">The first path opens. A hunter. A wolf. Five arrows.</p>
+              <a class="btn" href="https://www.amazon.com/dp/B0GXL5Q392" target="_blank" rel="noopener noreferrer">Start Here</a>
+            </article>
 
-      <p class="section-label">Series Archive</p>
-      <h2 class="section-title">Browse the Books</h2>
-
-      <div class="placeholder-grid">
-
-        <!-- BOOK 1 -->
-        <article class="signal-card placeholder">
-          <img src="./assets/lady-book-cover.png" alt="Book 1 cover" />
-          <h3 class="section-title" style="font-size:1.3rem; margin-top:12px;">
-            Book One
-          </h3>
-          <a class="btn" href="https://www.amazon.com/dp/B0GXL5Q392" target="_blank" style="margin-top:12px;">
-            Start Here
-          </a>
-        </article>
-
-        <!-- BOOK 2 -->
-        <article class="signal-card placeholder">
-          <img src="./assets/lady-book-2-cover.jpg" alt="Book 2 cover" />
-          <h3 class="section-title" style="font-size:1.3rem; margin-top:12px;">
-            The White Tree
-          </h3>
-          <a class="btn primary" href="https://www.amazon.com/dp/B0GX2SS328" target="_blank" style="margin-top:12px;">
-            Continue
-          </a>
-        </article>
-
+            <article class="book-card">
+              <a class="cover-link" href="https://www.amazon.com/dp/B0GX2SS328" target="_blank" rel="noopener noreferrer" aria-label="Read Lady and Delilah The White Tree on Amazon">
+                <img src="./assets/lady-book-2-cover.jpg" alt="Lady and Delilah The White Tree cover" />
+              </a>
+              <p class="book-meta">Book Two</p>
+              <h3 class="book-title">The White Tree</h3>
+              <p class="book-blurb">The road darkens. Something ancient waits in the white forest.</p>
+              <a class="btn primary" href="https://www.amazon.com/dp/B0GX2SS328" target="_blank" rel="noopener noreferrer">Continue</a>
+            </article>
+          </div>
+        </div>
       </div>
+    </section>
 
-    </div>
-  </div>
-</section>
-
-<footer class="footer">
-  <div>Systema Obscura Archive</div>
-  <a class="return-link" href="index.html">Return to Main Signal</a>
-</footer>
-
-</main>
+    <footer class="footer">
+      <div>Systema Obscura Archive</div>
+      <a class="return-link" href="index.html">Return to Main Signal</a>
+    </footer>
+  </main>
 </body>
 </html>
