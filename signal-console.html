@@ -136,6 +136,46 @@
     .status strong { color:var(--text); }
     .hidden { display:none !important; }
     .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .metric-grid { display:grid; grid-template-columns:repeat(2, 1fr); gap:10px; }
+    .metric {
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:10px;
+      background:#10141b;
+      min-height:62px;
+    }
+    .metric b { display:block; font-size:18px; line-height:1.1; }
+    .metric span { color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:.04em; }
+    .meter {
+      height:8px;
+      border-radius:999px;
+      background:#0d1016;
+      border:1px solid var(--line);
+      overflow:hidden;
+    }
+    .meter > div { height:100%; width:0%; background:var(--accent); transition:width .18s ease; }
+    .checklist { display:grid; gap:8px; }
+    .check {
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:9px 10px;
+      background:#10141b;
+      color:var(--muted);
+      font-size:12px;
+    }
+    .check.ok { border-color:#315f46; color:#b9e8c9; background:#122019; }
+    .check.warn { border-color:#64512f; color:#f1d69a; background:#211b11; }
+    .check.bad { border-color:#603435; color:#f3c3c3; background:#231617; }
+    .tag-list { display:flex; flex-wrap:wrap; gap:8px; }
+    .tag-pill {
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:7px 9px;
+      background:#10141b;
+      color:#d9e1ec;
+      font-size:12px;
+    }
+    .tag-pill.bad { border-color:#603435; color:#f3c3c3; }
     @media (max-width: 1180px) {
       .app {
         grid-template-columns:260px 1fr;
@@ -173,6 +213,7 @@
           <div class="menu-title">Quick Actions</div>
           <div class="menu-list">
             <button class="tool-btn" data-tool="removeBg">Remove Background</button>
+            <button class="tool-btn" data-tool="etsyImages">Etsy Image Prep</button>
             <button class="tool-btn" data-tool="resize">Resize</button>
             <button class="tool-btn" data-tool="roundCrop">Round Crop</button>
             <button class="tool-btn" data-tool="convert">Convert Format</button>
@@ -198,6 +239,7 @@
         <div class="menu-group">
           <div class="menu-title">Text Tools</div>
           <div class="menu-list">
+            <button class="tool-btn" data-tool="listingHelper">Listing Helper</button>
             <button class="tool-btn" data-tool="textTools">Raw Text Converter</button>
           </div>
         </div>
@@ -258,6 +300,32 @@
       <div class="controls-body">
         <div class="controls-section active" id="tool-home">
           <div class="subtle">Load an image, then pick an image tool. Text conversion works without loading any image.</div>
+        </div>
+
+        <div class="controls-section" id="tool-etsyImages">
+          <div class="field"><label>Etsy Asset Preset</label>
+            <select id="etsyPreset">
+              <option value="listingSquare">Listing photo - 2000 x 2000</option>
+              <option value="listingLandscape">Listing photo - 2000 x 1500</option>
+              <option value="listingWide">Listing photo - 3000 x 2250</option>
+              <option value="shopIcon">Shop icon - 500 x 500</option>
+              <option value="profilePhoto">Profile photo - 400 x 400</option>
+              <option value="bigBanner">Big shop banner - 3360 x 840</option>
+              <option value="miniBanner">Mini shop banner - 1200 x 160</option>
+              <option value="receiptBanner">Receipt banner - 760 x 100</option>
+            </select>
+          </div>
+          <div class="field"><label>Canvas Background</label><input type="color" id="etsyBgColor" value="#ffffff" /></div>
+          <label><input type="checkbox" id="etsyFitContain" checked /> Fit full image with padding</label>
+          <div class="row-2">
+            <button class="action-btn" type="button" id="applyEtsyPresetBtn">Apply Preset</button>
+            <button class="ghost-btn" type="button" id="copyEtsySpecsBtn">Copy Specs</button>
+          </div>
+          <div class="metric-grid">
+            <div class="metric"><b id="etsyDimsMetric">-</b><span>Dimensions</span></div>
+            <div class="metric"><b id="etsyShapeMetric">-</b><span>Shape</span></div>
+          </div>
+          <div class="checklist" id="etsyImageChecklist"></div>
         </div>
 
         <div class="controls-section" id="tool-resize">
@@ -363,12 +431,12 @@
           <div class="field"><label>Paste Raw Text</label><textarea id="textInput" style="min-height:180px;resize:vertical;"></textarea></div>
           <div class="field"><label>Conversion Type</label>
             <select id="textConversionType">
-              <option value="html_paragraphs">Plain Text → HTML Paragraphs</option>
-              <option value="html_linebreaks">Plain Text → HTML with Line Breaks</option>
+              <option value="html_paragraphs">Plain Text to HTML Paragraphs</option>
+              <option value="html_linebreaks">Plain Text to HTML with Line Breaks</option>
               <option value="html_escape">Escape Text for HTML</option>
               <option value="plain_text">Plain Text Clean Copy</option>
-              <option value="pdf_ready">Text → PDF Ready</option>
-              <option value="doc_ready">Text → DOC Ready</option>
+              <option value="pdf_ready">Text to PDF Ready</option>
+              <option value="doc_ready">Text to DOC Ready</option>
             </select>
           </div>
           <button class="action-btn" type="button" id="convertTextBtn">Convert Text</button>
@@ -384,6 +452,31 @@
           <div class="row-2">
             <button class="ghost-btn" type="button" id="printPdfBtn">Print / Save PDF</button>
           </div>
+        </div>
+
+        <div class="controls-section" id="tool-listingHelper">
+          <div class="field"><label>Primary Keyword</label><input type="text" id="listingKeyword" placeholder="personalized birth flower necklace" /></div>
+          <div class="field"><label>Product / Item</label><input type="text" id="listingProduct" placeholder="custom necklace" /></div>
+          <div class="row-2">
+            <div class="field"><label>Material</label><input type="text" id="listingMaterial" placeholder="gold stainless steel" /></div>
+            <div class="field"><label>Style</label><input type="text" id="listingStyle" placeholder="minimalist floral" /></div>
+          </div>
+          <div class="row-2">
+            <div class="field"><label>Buyer / Recipient</label><input type="text" id="listingAudience" placeholder="gift for mom" /></div>
+            <div class="field"><label>Occasion</label><input type="text" id="listingOccasion" placeholder="birthday gift" /></div>
+          </div>
+          <button class="action-btn" type="button" id="generateListingBtn">Generate Listing Copy</button>
+          <div class="field"><label>Title</label><textarea id="listingTitle" style="min-height:78px;resize:vertical;"></textarea></div>
+          <div class="meter"><div id="titleMeter"></div></div>
+          <div class="subtle" id="titleCount">0 / 140 characters</div>
+          <div class="field"><label>Tags</label><textarea id="listingTags" style="min-height:86px;resize:vertical;"></textarea></div>
+          <div class="tag-list" id="tagPreview"></div>
+          <div class="field"><label>Description Starter</label><textarea id="listingDescription" style="min-height:150px;resize:vertical;"></textarea></div>
+          <div class="row-2">
+            <button class="ghost-btn" type="button" id="auditListingBtn">Audit Fields</button>
+            <button class="ghost-btn" type="button" id="copyListingBtn">Copy Listing</button>
+          </div>
+          <div class="checklist" id="listingChecklist"></div>
         </div>
       </div>
     </aside>
@@ -429,6 +522,16 @@
     const fileNameInput = $('fileNameInput');
     const toolSections = Array.from(document.querySelectorAll('.controls-section'));
     const toolButtons = Array.from(document.querySelectorAll('[data-tool]'));
+    const etsyPresets = {
+      listingSquare: { label:'Listing photo', w:2000, h:2000, note:'Square listing image. Keep the product centered with breathing room.' },
+      listingLandscape: { label:'Listing photo', w:2000, h:1500, note:'Landscape listing image. Etsy recommends landscape or square for the first photo.' },
+      listingWide: { label:'Listing photo', w:3000, h:2250, note:'High-detail 4:3 listing image for zoom and clean thumbnails.' },
+      shopIcon: { label:'Shop icon', w:500, h:500, note:'Square upload that Etsy displays in a circle.' },
+      profilePhoto: { label:'Profile photo', w:400, h:400, note:'Seller profile photo.' },
+      bigBanner: { label:'Big shop banner', w:3360, h:840, note:'Wide storefront banner.' },
+      miniBanner: { label:'Mini shop banner', w:1200, h:160, note:'Compact storefront banner.' },
+      receiptBanner: { label:'Receipt banner', w:760, h:100, note:'Order receipt branding banner.' }
+    };
 
     function setStatus(message) {
       statusBar.innerHTML = '<strong>Status:</strong> ' + message;
@@ -490,7 +593,8 @@
         infoChip.textContent = '-';
         return;
       }
-      infoChip.textContent = source.width + ' × ' + source.height + ' | ' + exportFormatSelect.value.toUpperCase();
+      infoChip.textContent = source.width + ' x ' + source.height + ' | ' + exportFormatSelect.value.toUpperCase();
+      updateEtsyImageAudit();
     }
 
     function syncResizeInputs() {
@@ -726,7 +830,7 @@
       state.currentCanvas = c;
       resetPreviewMode();
       drawCanvas(c);
-      setStatus('Resized to ' + w + ' × ' + h);
+      setStatus('Resized to ' + w + ' x ' + h);
     });
 
     function parseRatio(value) {
@@ -1008,6 +1112,87 @@
       setStatus('Background color applied');
     });
 
+    function addCheck(container, level, text) {
+      const item = document.createElement('div');
+      item.className = 'check ' + level;
+      item.textContent = text;
+      container.appendChild(item);
+    }
+
+    function getEtsyPreset() {
+      return etsyPresets[$('etsyPreset').value] || etsyPresets.listingSquare;
+    }
+
+    function updateEtsyImageAudit() {
+      const list = $('etsyImageChecklist');
+      if (!list) return;
+      list.innerHTML = '';
+      if (!state.currentCanvas) {
+        $('etsyDimsMetric').textContent = '-';
+        $('etsyShapeMetric').textContent = '-';
+        addCheck(list, 'warn', 'Load an image to check Etsy readiness.');
+        return;
+      }
+      const w = state.currentCanvas.width;
+      const h = state.currentCanvas.height;
+      const ratio = w / h;
+      $('etsyDimsMetric').textContent = w + ' x ' + h;
+      $('etsyShapeMetric').textContent = Math.abs(ratio - 1) < 0.02 ? 'Square' : ratio > 1 ? 'Landscape' : 'Portrait';
+      addCheck(list, w >= 2000 && h >= 2000 ? 'ok' : 'warn', 'Listing photos work best at 2000 px or more on both sides.');
+      addCheck(list, ratio >= 1 ? 'ok' : 'warn', 'First listing photo should be landscape or square for stronger thumbnail control.');
+      addCheck(list, exportFormatSelect.value === 'jpeg' ? 'ok' : 'warn', 'JPG is usually the safest Etsy upload format unless you need transparency before adding a background.');
+      addCheck(list, 'ok', 'Keep the subject centered with extra border so square, portrait, and landscape thumbnails do not cut it off.');
+    }
+
+    function makeFittedCanvas(src, w, h, bg, contain) {
+      const c = document.createElement('canvas');
+      c.width = w;
+      c.height = h;
+      const cctx = c.getContext('2d');
+      cctx.fillStyle = bg;
+      cctx.fillRect(0, 0, w, h);
+      const padding = contain ? 0.88 : 1;
+      const scale = contain
+        ? Math.min((w * padding) / src.width, (h * padding) / src.height)
+        : Math.max(w / src.width, h / src.height);
+      const dw = Math.round(src.width * scale);
+      const dh = Math.round(src.height * scale);
+      const dx = Math.round((w - dw) / 2);
+      const dy = Math.round((h - dh) / 2);
+      cctx.imageSmoothingEnabled = true;
+      cctx.imageSmoothingQuality = 'high';
+      cctx.drawImage(src, dx, dy, dw, dh);
+      return c;
+    }
+
+    $('applyEtsyPresetBtn').addEventListener('click', () => {
+      if (!state.currentCanvas) return setStatus('Load an image first');
+      const preset = getEtsyPreset();
+      pushHistory();
+      state.currentCanvas = makeFittedCanvas(state.currentCanvas, preset.w, preset.h, $('etsyBgColor').value, $('etsyFitContain').checked);
+      resetPreviewMode();
+      drawCanvas(state.currentCanvas);
+      setFormat('jpeg');
+      fileNameInput.value = state.originalName + '_' + preset.label.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
+      setStatus('Applied ' + preset.label + ' preset at ' + preset.w + ' x ' + preset.h);
+    });
+
+    $('copyEtsySpecsBtn').addEventListener('click', async () => {
+      const preset = getEtsyPreset();
+      const text = preset.label + ': ' + preset.w + ' x ' + preset.h + ' px. ' + preset.note;
+      try {
+        await navigator.clipboard.writeText(text);
+        setStatus('Copied Etsy preset specs');
+      } catch (e) {
+        setStatus(text);
+      }
+    });
+
+    $('etsyPreset').addEventListener('change', () => {
+      const preset = getEtsyPreset();
+      setStatus(preset.note);
+    });
+
     $('watermarkInput').addEventListener('change', async (e) => {
       const file = e.target.files && e.target.files[0];
       if (!file) return;
@@ -1107,6 +1292,126 @@
     function escapeHtml(str) {
       return str.split('&').join('&amp;').split('<').join('&lt;').split('>').join('&gt;').split('"').join('&quot;').split("'").join('&#39;');
     }
+
+    function cleanPhrase(value) {
+      return (value || '').toLowerCase().replace(/[^a-z0-9 '\-]+/g, ' ').replace(/\s+/g, ' ').trim();
+    }
+
+    function titleCase(value) {
+      return cleanPhrase(value).replace(/\b\w/g, c => c.toUpperCase());
+    }
+
+    function uniquePhrases(items) {
+      const seen = new Set();
+      return items.map(cleanPhrase).filter(item => {
+        if (!item || seen.has(item)) return false;
+        seen.add(item);
+        return true;
+      });
+    }
+
+    function trimTitle(value) {
+      const clean = value.replace(/\s+,/g, ',').replace(/,\s*,/g, ',').replace(/\s+/g, ' ').trim();
+      return clean.length <= 140 ? clean : clean.slice(0, 140).replace(/,\s*[^,]*$/, '').trim();
+    }
+
+    function tagCandidates() {
+      const keyword = cleanPhrase($('listingKeyword').value);
+      const product = cleanPhrase($('listingProduct').value);
+      const material = cleanPhrase($('listingMaterial').value);
+      const style = cleanPhrase($('listingStyle').value);
+      const audience = cleanPhrase($('listingAudience').value);
+      const occasion = cleanPhrase($('listingOccasion').value);
+      return uniquePhrases([
+        keyword,
+        product,
+        material && product ? material + ' ' + product : material,
+        style && product ? style + ' ' + product : style,
+        audience,
+        occasion,
+        keyword && audience ? keyword.split(' ').slice(0, 2).join(' ') + ' ' + audience.replace(/^gift for /, '') : '',
+        product && occasion ? product + ' ' + occasion.replace(' gift', '') : '',
+        style && material ? style + ' ' + material : '',
+        'gift for her',
+        'handmade gift',
+        'small business',
+        'custom gift',
+        'etsy gift'
+      ]).map(tag => tag.slice(0, 20).trim()).filter(Boolean).slice(0, 13);
+    }
+
+    function updateListingAudit() {
+      const title = $('listingTitle').value.trim();
+      const tags = $('listingTags').value.split(/,|\n/).map(cleanPhrase).filter(Boolean);
+      const desc = $('listingDescription').value.trim();
+      const titlePct = Math.min(100, Math.round((title.length / 140) * 100));
+      $('titleCount').textContent = title.length + ' / 140 characters';
+      $('titleMeter').style.width = titlePct + '%';
+      $('titleMeter').style.background = title.length > 140 ? 'var(--danger)' : title.length >= 70 ? '#6fd08c' : 'var(--accent)';
+
+      const tagPreview = $('tagPreview');
+      tagPreview.innerHTML = '';
+      tags.forEach(tag => {
+        const pill = document.createElement('span');
+        pill.className = 'tag-pill' + (tag.length > 20 ? ' bad' : '');
+        pill.textContent = tag + ' (' + tag.length + ')';
+        tagPreview.appendChild(pill);
+      });
+
+      const list = $('listingChecklist');
+      list.innerHTML = '';
+      addCheck(list, title.length > 0 && title.length <= 140 ? 'ok' : 'bad', 'Title must be 140 characters or fewer.');
+      addCheck(list, title.length >= 70 && title.length <= 140 ? 'ok' : 'warn', 'Use enough title space for clear buyer keywords without stuffing.');
+      addCheck(list, tags.length === 13 ? 'ok' : 'warn', 'Use all 13 Etsy tag slots.');
+      addCheck(list, tags.every(tag => tag.length <= 20) ? 'ok' : 'bad', 'Each tag must be 20 characters or fewer.');
+      addCheck(list, desc.length >= 160 ? 'ok' : 'warn', 'Make the first 160 description characters useful for search snippets.');
+    }
+
+    $('generateListingBtn').addEventListener('click', () => {
+      const keyword = titleCase($('listingKeyword').value);
+      const product = titleCase($('listingProduct').value);
+      const material = titleCase($('listingMaterial').value);
+      const style = titleCase($('listingStyle').value);
+      const audience = titleCase($('listingAudience').value);
+      const occasion = titleCase($('listingOccasion').value);
+      const titleParts = uniquePhrases([keyword, product, material, style, audience, occasion]);
+      $('listingTitle').value = trimTitle(titleParts.map(titleCase).join(', '));
+      const tags = tagCandidates();
+      $('listingTags').value = tags.join(', ');
+      const lead = [keyword || product, style, material].filter(Boolean).join(' ');
+      $('listingDescription').value = [
+        (lead || 'This item') + ' is made for shoppers who want something clear, giftable, and easy to love.',
+        '',
+        'Highlights:',
+        '- Product: ' + (product || 'Add product type'),
+        '- Style: ' + (style || 'Add style details'),
+        '- Material: ' + (material || 'Add materials'),
+        '- Best for: ' + (audience || occasion || 'Add buyer or occasion'),
+        '',
+        'Before ordering, review the photos, sizing, processing time, and personalization notes so everything is exactly right.'
+      ].join('\n');
+      updateListingAudit();
+      setStatus('Generated Etsy listing starter copy');
+    });
+
+    ['listingTitle', 'listingTags', 'listingDescription'].forEach(id => {
+      $(id).addEventListener('input', updateListingAudit);
+    });
+
+    $('auditListingBtn').addEventListener('click', () => {
+      updateListingAudit();
+      setStatus('Listing fields audited');
+    });
+
+    $('copyListingBtn').addEventListener('click', async () => {
+      const text = 'TITLE:\n' + $('listingTitle').value + '\n\nTAGS:\n' + $('listingTags').value + '\n\nDESCRIPTION:\n' + $('listingDescription').value;
+      try {
+        await navigator.clipboard.writeText(text);
+        setStatus('Listing copy copied');
+      } catch (e) {
+        setStatus('Copy failed. You can still copy manually.');
+      }
+    });
 
     $('convertTextBtn').addEventListener('click', () => {
       const input = $('textInput').value || '';
